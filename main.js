@@ -11,19 +11,20 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 camera.position.setZ(30);
+camera.position.setY(10);
+camera.rotateX(-Math.PI/10)
 
 renderer.render(scene,camera);
 
 const geometry = new THREE.BoxGeometry(10, 10, 10, 5,5,5);
 const material = new THREE.MeshBasicMaterial({color: 0x3343A3, wireframe:true});
 const box = new THREE.Mesh(geometry, material);
+box.rotation.set(-3*Math.PI/6, 0 ,Math.PI/10);
 
 scene.add(box);
 
 function animate(){
     requestAnimationFrame(animate);
-    box.rotation.x += 0.006;
-    box.rotation.y += 0.001;
     box.rotation.z += 0.006;
     renderer.render(scene,camera);
 }
