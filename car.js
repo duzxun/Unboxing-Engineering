@@ -44,7 +44,7 @@ scene.add(light4);
 function animate() {
     renderer.render(scene,camera);
     requestAnimationFrame(animate);
-    car.rotation.y += 0.01;
+    car.rotation.z += 0.01;
 }
 
 let loader = new GLTFLoader();
