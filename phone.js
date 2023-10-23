@@ -49,8 +49,10 @@ function animate() {
 
 let loader = new GLTFLoader();
 let car;
-loader.load('models/iphone12/scene.gltf', function(gltf){
+loader.load('models/testing/test.glb', function(gltf){
   car = gltf.scene.children[0];
+  console.log(gltf.scene.children.length);
+
   car.scale.set(5000,5000,5000);
   if (car) car.rotation.y += 0.01;
   scene.add(gltf.scene);
