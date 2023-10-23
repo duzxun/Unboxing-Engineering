@@ -17,7 +17,7 @@ camera.rotateX(-Math.PI/10)
 renderer.render(scene,camera);
 
 const geometry = new THREE.BoxGeometry(10, 10, 10, 5,5,5);
-const material = new THREE.MeshBasicMaterial({color: 0x3343A3, wireframe:true});
+const material = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe:true});
 const box = new THREE.Mesh(geometry, material);
 box.rotation.set(-3*Math.PI/6, 0 ,Math.PI/10);
 

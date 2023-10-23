@@ -1,0 +1,11 @@
+Model Information:
+* title:	iPhone 12 Teardown
+* source:	https://sketchfab.com/3d-models/iphone-12-teardown-708eaa5d195544918e5f70b69eedcdfa
+* author:	Peter_D (https://sketchfab.com/better_peter)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "iPhone 12 Teardown" (https://sketchfab.com/3d-models/iphone-12-teardown-708eaa5d195544918e5f70b69eedcdfa) by Peter_D (https://sketchfab.com/better_peter) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

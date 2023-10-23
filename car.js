@@ -49,7 +49,7 @@ function animate() {
 
 let loader = new GLTFLoader();
 let car;
-loader.load('models/scene.gltf', function(gltf){
+loader.load('models/car/scene.gltf', function(gltf){
   car = gltf.scene.children[0];
   car.scale.set(0.5,0.5,0.5);
   if (car) car.rotation.y += 0.01;
