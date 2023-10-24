@@ -9,9 +9,9 @@ scene.background = new THREE.Color(0xdddddd);
 
 let camera = new THREE.PerspectiveCamera(40,window.innerWidth/window.innerHeight,1,5000);
 camera.rotation.y = 45/180*Math.PI;
-camera.position.x = 1000;
+camera.position.x = 1100;
 camera.position.y = 400;
-camera.position.z = 1000;
+camera.position.z = 1200;
 
 let renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(window.innerWidth,window.innerHeight);
@@ -53,7 +53,7 @@ loader.load('models/testing/test.glb', function(gltf){
   car = gltf.scene.children[0];
   console.log(gltf.scene.children.length);
 
-  car.scale.set(5000,5000,5000);
+  car.scale.set(4600,4600,4600);
   if (car) car.rotation.y += 0.01;
   scene.add(gltf.scene);
   animate();
