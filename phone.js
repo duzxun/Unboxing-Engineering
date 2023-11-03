@@ -36,25 +36,25 @@ directionalLight.position.set(0,1,0);
 directionalLight.castShadow = true;
 scene.add(directionalLight);
 
-let light = new THREE.PointLight(0xc4c4c4,10);
-light.position.set(0,300,500);
-scene.add(light);
-
-let light2 = new THREE.PointLight(0xc4c4c4,10);
-light2.position.set(500,100,0);
-scene.add(light2);
-
-let light3 = new THREE.PointLight(0xc4c4c4,10);
-light3.position.set(0,100,-500);
-scene.add(light3);
-
-let light4 = new THREE.PointLight(0xc4c4c4,10);
-light4.position.set(-500,300,500);
-scene.add(light4);
+// let light = new THREE.PointLight(0xc4c4c4,10);
+// light.position.set(0,300,500);
+// scene.add(light);
+//
+// let light2 = new THREE.PointLight(0xc4c4c4,10);
+// light2.position.set(500,100,0);
+// scene.add(light2);
+//
+// let light3 = new THREE.PointLight(0xc4c4c4,10);
+// light3.position.set(0,100,-500);
+// scene.add(light3);
+//
+// let light4 = new THREE.PointLight(0xc4c4c4,10);
+// light4.position.set(-500,300,500);
+// scene.add(light4);
 
 let mixer;
 let loader = new GLTFLoader();
-loader.load('models/iphone12/scene.gltf', function(gltf){
+loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf){
     const model = gltf.scene;
     let phone = gltf.scene.children[0];
     phone.scale.set(4600,4600,4600);
