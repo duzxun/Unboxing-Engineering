@@ -1,4 +1,4 @@
-import './styles.css'
+// import './styles.css'
 
 import * as THREE from 'three';
 
@@ -53,9 +53,29 @@ scene.add(directionalLight);
 // scene.add(light4);
 
 let mixer;
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let model;
+function onClick(event) {
+  // Calculate mouse coordinates
+  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+  // Update the picking ray with the camera and mouse position
+  raycaster.setFromCamera(mouse, camera);
+
+  // Check for intersections
+  const intersects = raycaster.intersectObjects(model.children, true);
+
+  if (intersects.length > 0) {
+    const clickedObject = intersects[0].object;
+    console.log('Clicked on:', clickedObject.userData.name);
+  }
+}
+
 let loader = new GLTFLoader();
 loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf){
-    const model = gltf.scene;
+    model = gltf.scene;
     let phone = gltf.scene.children[0];
     phone.scale.set(4600,4600,4600);
     mixer = new THREE.AnimationMixer(model);
@@ -67,6 +87,7 @@ loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf)
     })
 
     scene.add(model);
+    renderer.domElement.addEventListener('click', onClick);
 })
 
 const clock = new THREE.Clock();
