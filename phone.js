@@ -6,12 +6,16 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
-const renderer = new THREE.WebGLRenderer();
+import TWEEN from '@tweenjs/tween.js'
+
+const renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
 
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
+
+renderer.setClearColor( 0xffffff, 1); 
 
 const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
 camera.rotation.y = 45/180*Math.PI;
@@ -19,7 +23,12 @@ camera.position.x = 1100;
 camera.position.y = 400;
 camera.position.z = 1100;
 
-scene.background = new THREE.Color(0xdddddd);
+const loaded = new THREE.TextureLoader();
+loaded.load('/gradient-dynamic-purple-lines-background_23-2148995757.jpg' , function(texture)
+            {
+             scene.background = texture;  
+            });
+
 
 const orbit = new OrbitControls(camera, renderer.domElement);
 
@@ -56,6 +65,62 @@ let mixer;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
 let model;
+
+function tweenToClick(intersection){
+    var startRotation = new THREE.Euler().copy(camera.rotation);
+
+    camera.lookAt(intersection.point);
+    var endRotation = new THREE.Euler().copy(camera.rotation);
+
+    camera.rotation.copy(startRotation);
+
+    new TWEEN.Tween( camera ).to( { rotation: endRotation }, 600 ).start();
+}
+
+function fitCameraToObject( camera, object, offset, controls ) {
+
+    offset = offset || 1.25;
+
+    const boundingBox = object.geometry.boundingBox;
+    console.log(object.geometry.boundingBox);
+
+    // get bounding box of object - this will be used to setup controls and camera
+
+    const center = object.geometry.boundingBox.getCenter();
+
+    const size = object.geometry.boundingBox.getSize();
+
+    // get the max side of the bounding box (fits to width OR height as needed )
+    const maxDim = Math.max( size.x, size.y, size.z );
+    const fov = camera.fov * ( Math.PI / 180 );
+    let cameraZ = Math.abs( maxDim / 4 * Math.tan( fov * 2 ) );
+
+    cameraZ *= offset; // zoom out a little so that objects don't fill the screen
+
+    camera.position.z = cameraZ;
+
+    const minZ = boundingBox.min.z;
+    const cameraToFarEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
+}
+
+function hide(object, targetObject){
+    if (object.children.length = 0){
+        if (object != targetObject){
+            object.visible = false
+            return;
+        }
+    }else{
+        for(let i = 0; i < object.children.length; i++){
+            if (object.children[i] != targetObject){
+                hide(object.children[i], targetObject)
+                return;
+            } 
+        }
+    }
+}
+
+
+
 function onClick(event) {
   // Calculate mouse coordinates
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -69,15 +134,27 @@ function onClick(event) {
 
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    console.log('Clicked on:', clickedObject.userData.name);
+    console.log('Clicked on:', clickedObject.name);
+    camera.lookAt(mouse.x, mouse.y, 0);
+    //tweenToClick(intersects[0]);
+    hide(model.children[0], clickedObject);
+    clickedObject.rotateX(-Math.PI*1/2)
+    clickedObject.frustumCulled = true;
+    clickedObject.scale.set(50,50,50);
+    scene.add(clickedObject);
+    console.log(clickedObject);
+    //camera.position.set(50,20,0);
+    fitCameraToObject(camera, clickedObject, null, orbit);
+    orbit.update();
   }
 }
+
+
 
 let loader = new GLTFLoader();
 loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf){
     model = gltf.scene;
-    let phone = gltf.scene.children[0];
-    phone.scale.set(4600,4600,4600);
+    model.children[0].scale.set(4600,4600,4600);
     mixer = new THREE.AnimationMixer(model);
     const clips = gltf.animations;
 
@@ -85,6 +162,12 @@ loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf)
         const action = mixer.clipAction(clip);
         action.play();
     })
+
+    model.traverse( function( object ) {
+
+        object.frustumCulled = false;
+    
+    } );
 
     scene.add(model);
     renderer.domElement.addEventListener('click', onClick);
