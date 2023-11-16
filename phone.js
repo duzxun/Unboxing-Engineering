@@ -69,7 +69,8 @@ function onClick(event) {
 
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
-    console.log('Clicked on:', clickedObject.userData.name);
+    // console.log('Clicked on:', clickedObject.name);
+    console.log('Clicked on:', clickedObject.parent.name);
   }
 }
 
