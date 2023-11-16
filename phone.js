@@ -77,7 +77,7 @@ function tweenToClick(intersection){
     new TWEEN.Tween( camera ).to( { rotation: endRotation }, 600 ).start();
 }
 
-function fitCameraToObject( camera, object, offset, controls ) {
+/*function fitCameraToObject( camera, object, offset, controls ) {
 
     offset = offset || 1.25;
 
@@ -85,8 +85,18 @@ function fitCameraToObject( camera, object, offset, controls ) {
     console.log(object.geometry.boundingBox);
 
     // get bounding box of object - this will be used to setup controls and camera
+    const minX =  object.geometry.boundingBox.min.x;
+    const maxX = object.geometry.boundingBox.max.x;
 
-    const center = object.geometry.boundingBox.getCenter();
+    const minY =  object.geometry.boundingBox.min.y;
+    const maxY = object.geometry.boundingBox.max.y;
+
+    const miniZ =  object.geometryo.boundingBox.min.z;
+    const maxZ = object.geometry.boundingBx.max.z;
+
+
+
+    const center =  new THREE.Vector3(object.geometry.boundingBox);
 
     const size = object.geometry.boundingBox.getSize();
 
@@ -101,7 +111,7 @@ function fitCameraToObject( camera, object, offset, controls ) {
 
     const minZ = boundingBox.min.z;
     const cameraToFarEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
-}
+}*/
 
 function hide(object, targetObject){
     if (object.children.length = 0){
@@ -134,6 +144,7 @@ function onClick(event) {
 
   if (intersects.length > 0) {
     const clickedObject = intersects[0].object;
+    console.log(clickedObject);
     console.log('Clicked on:', clickedObject.name);
     camera.lookAt(mouse.x, mouse.y, 0);
     //tweenToClick(intersects[0]);
@@ -143,9 +154,7 @@ function onClick(event) {
     clickedObject.scale.set(50,50,50);
     scene.add(clickedObject);
     console.log(clickedObject);
-    //camera.position.set(50,20,0);
-    fitCameraToObject(camera, clickedObject, null, orbit);
-    orbit.update();
+    camera.lookAt(0,0,0);
   }
 }
 
