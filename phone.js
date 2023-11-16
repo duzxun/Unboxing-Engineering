@@ -24,7 +24,7 @@ camera.position.y = 400;
 camera.position.z = 1100;
 
 const loaded = new THREE.TextureLoader();
-loaded.load('/gradient-dynamic-purple-lines-background_23-2148995757.jpg' , function(texture)
+loaded.load('background.jpg' , function(texture)
             {
              scene.background = texture;  
             });
