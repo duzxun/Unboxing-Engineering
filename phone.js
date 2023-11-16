@@ -34,6 +34,8 @@ const orbit = new OrbitControls(camera, renderer.domElement);
 
 orbit.update();
 
+orbit.enablePan = false;
+
 const grid = new THREE.GridHelper(30,30);
 scene.add(grid);
 
@@ -152,9 +154,11 @@ function onClick(event) {
     clickedObject.rotateX(-Math.PI*1/2)
     clickedObject.frustumCulled = true;
     clickedObject.scale.set(50,50,50);
+    clickedObject.translateZ(-300);
     scene.add(clickedObject);
     console.log(clickedObject);
-    camera.lookAt(0,0,0);
+    //camera.position.set(50,20,0);
+    
   }
 }
 
@@ -177,7 +181,8 @@ loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf)
         object.frustumCulled = false;
     
     } );
-
+    
+    model.translateY(-300);
     scene.add(model);
     renderer.domElement.addEventListener('click', onClick);
 })
