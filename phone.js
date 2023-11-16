@@ -83,17 +83,27 @@ loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf)
 
     clips.forEach(function(clip) {
         const action = mixer.clipAction(clip);
+        action.repetitions = 1;
         action.play();
     })
-
+    mixer.addEventListener('finished', (e) => mixer.stopAllAction()); 
     scene.add(model);
     renderer.domElement.addEventListener('click', onClick);
 })
 
 const clock = new THREE.Clock();
+// let clock;
+let elapsed = 0
+let curr = 0;
+let stoptime = 19
+
 function animate() {
     if(mixer) {
-        mixer.update(clock.getDelta());
+        curr = clock.getDelta()
+        elapsed += curr;
+        if (elapsed < stoptime) {
+            mixer.update(curr);
+        }
     }
     renderer.render(scene, camera);
 }
