@@ -19,9 +19,10 @@ renderer.setClearColor( 0xffffff, 1);
 
 const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
 camera.rotation.y = 45/180*Math.PI;
-camera.position.x = 1100;
-camera.position.y = 400;
-camera.position.z = 1100;
+camera.position.x = 2300;
+camera.position.y = 0;
+camera.position.z = -2500;
+camera.lookAt(0,0,0);
 
 const loaded = new THREE.TextureLoader();
 loaded.load('background.jpg' , function(texture)
