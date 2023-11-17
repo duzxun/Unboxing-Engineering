@@ -6,10 +6,40 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Unboxing Engineering</title>
     </head>
-    <body>
-        <canvas id="bg"></canvas>
-        <!-- <script type="module" src="/main.js"></script> -->
-        <!-- <script type="module" src="/car.js"></script> -->
-        <script type="module" src="/phone.js"></script>
-    </body>
+    
+<style>
+    body {
+      margin: 0;
+      display: flex;
+      height: 100vh; /* Full height of the viewport */
+    }
+
+    .column {
+      flex: 1; /* Equal width for all columns */
+      display: flex;
+      flex-direction: column;
+    }
+
+    #canvas-container {
+      position: relative;
+      width: 100%;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+
+    .info-column{
+      background-color: #f0f0f0;
+    }
+  </style>
+  <body>
+      <div class="column" id="canvas-container">
+          <!-- Three.js canvas will be inserted here -->
+      </div>
+      <!-- <canvas id="bg"></canvas> -->
+      <script type="module" src="/phone.js"></script>
+  </body>
 </html>
