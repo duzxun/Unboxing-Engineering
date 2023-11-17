@@ -120,7 +120,7 @@ function tweenToClick(intersection){
 }*/
 
 function hide(object, targetObject){
-    if (object.children.length = 0){
+    if (object.children.length == 0){
         if (object != targetObject){
             object.visible = false
             return;
@@ -129,14 +129,29 @@ function hide(object, targetObject){
         for(let i = 0; i < object.children.length; i++){
             if (object.children[i] != targetObject){
                 hide(object.children[i], targetObject)
+                object.visible = false;
                 return;
             } 
         }
     }
 }
 
+function unhide(object){
+    if (object.children.length == 0){
+            console.log(object)
+            object.visible = true
+        
+    }else{
+        console.log(object.children.length)
+        for(let i = 0; i < object.children.length; i++){
+            unhide(object.children[i])
+            object.visible = true;
+            return;
+        }
+    }
+}
 
-
+let clickedObject = new THREE.Object3D();
 function onClick(event) {
   // Calculate mouse coordinates
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -148,8 +163,9 @@ function onClick(event) {
   // Check for intersections
   const intersects = raycaster.intersectObjects(model.children, true);
 
-  if (intersects.length > 0) {
-    const clickedObject = intersects[0].object;
+  if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
+    // clickedObject = intersects[0].object;
+    clickedObject.copy(intersects[0].object.parent, true)
     console.log(clickedObject);
     console.log('Clicked on:', clickedObject.name);
     camera.lookAt(mouse.x, mouse.y, 0);
@@ -159,13 +175,12 @@ function onClick(event) {
     clickedObject.frustumCulled = true;
     clickedObject.scale.set(50,50,50);
     clickedObject.translateZ(-300);
-    scene.add(clickedObject);
+      scene.add(clickedObject);
     console.log(clickedObject);
 
-    // Create and append three table cells (columns) to the row
       for (var i = 1; i <= 2; i++) {
           var div = document.createElement("div");
-          div.className = "info-column"; // Add the "column" class for styling
+          div.className = "info-column"; // Add the "info-column" class for styling
           div.textContent = "Column " + (i + 1); // Set content (you can add your own content here)
           document.body.appendChild(div);
       }
@@ -188,6 +203,8 @@ document.addEventListener('keydown', function(event) {
     if (zoomedin) { 
         if (event.ctrlKey || event.metaKey) {
             if (event.key === 'z' || event.key === 'Z') {
+
+                scene.remove(clickedObject);
                 // Your Ctrl+Z key press logic here
                 zoomedin = false;
 
@@ -197,6 +214,8 @@ document.addEventListener('keydown', function(event) {
                     col.remove()
                 });
 
+                unhide(scene.children[3])
+
                 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
                 const newWidth = canvasContainer.clientWidth;
@@ -204,6 +223,8 @@ document.addEventListener('keydown', function(event) {
 
                 renderer.setSize(newWidth, newHeight);
                 camera.aspect = newWidth / newHeight;
+
+                clickedObject = new THREE.Object3D();
 
                 camera.updateProjectionMatrix();
             }
