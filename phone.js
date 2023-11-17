@@ -33,6 +33,7 @@ loaded.load('background.jpg' , function(texture)
             });
 
 
+let zoomedin = false;
 const orbit = new OrbitControls(camera, renderer.domElement);
 
 orbit.update();
@@ -164,8 +165,8 @@ function onClick(event) {
     // Create and append three table cells (columns) to the row
       for (var i = 1; i <= 2; i++) {
           var div = document.createElement("div");
-          div.className = "column"; // Add the "column" class for styling
-          div.textContent = "Column " + i + 1; // Set content (you can add your own content here)
+          div.className = "info-column"; // Add the "column" class for styling
+          div.textContent = "Column " + (i + 1); // Set content (you can add your own content here)
           document.body.appendChild(div);
       }
 
@@ -176,11 +177,39 @@ function onClick(event) {
 
       renderer.setSize(newWidth, newHeight);
       camera.aspect = newWidth / newHeight;
+
       camera.updateProjectionMatrix();
+      zoomedin = true;
   }
 }
 
+document.addEventListener('keydown', function(event) {
+    // Check if Ctrl (or Command on Mac) and 'Z' key are pressed
+    if (zoomedin) { 
+        if (event.ctrlKey || event.metaKey) {
+            if (event.key === 'z' || event.key === 'Z') {
+                // Your Ctrl+Z key press logic here
+                zoomedin = false;
 
+                var cols = document.getElementsByClassName("info-column");
+                var colsArr = Array.from(cols)
+                colsArr.forEach(function(col) {
+                    col.remove()
+                });
+
+                renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+
+                const newWidth = canvasContainer.clientWidth;
+                const newHeight = canvasContainer.clientHeight;
+
+                renderer.setSize(newWidth, newHeight);
+                camera.aspect = newWidth / newHeight;
+
+                camera.updateProjectionMatrix();
+            }
+        }
+    }
+});
 
 let loader = new GLTFLoader();
 loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf){
