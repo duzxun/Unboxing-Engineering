@@ -184,6 +184,9 @@ function onClick(event) {
           var div = document.createElement("div");
           div.className = "info-column"; // Add the "info-column" class for styling
           div.textContent = "Column " + (i + 1); // Set content (you can add your own content here)
+          var child = document.createElement("div");
+          child.className = "info-container";
+          div.appendChild(child);
           document.body.appendChild(div);
       }
 

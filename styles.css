@@ -1,5 +1,6 @@
 :root { 
    --background-color: #000000;
+   --info-color: #d0d0d0;
 }
 
 canvas{
@@ -12,28 +13,47 @@ body {
     margin: 0;
     display: flex;
     height: 100vh; /* Full height of the viewport */
+    background-color: var(--background-color);
   }
 
   .column {
     flex: 1; /* Equal width for all columns */
     display: flex;
     flex-direction: column;
+    min-height: 500px;
+    align-items: center;
+    justify-content: center;
   }
 
   #canvas-container {
     position: relative;
     width: 100%;
+    min-height: 500px;
   }
 
   canvas {
     display: block;
     width: 100%;
     height: 100%;
+    min-height: 500px;
   }
 
   .info-column{
-    background-color: var(--background-color);
+    position: relative;
     flex: 1; /* Equal width for all columns */
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+  }
+
+  .info-container{
+    background-color: var(--info-color);
+    display: block;
+    height: 70vh; /* Fill 80% of viewport */
+    width: 90%;
+    justify-content: center;
+    border-radius: 6%;
+    min-height: 400px;
   }
