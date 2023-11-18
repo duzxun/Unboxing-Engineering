@@ -1,3 +1,7 @@
+:root { 
+   --background-color: #000000;
+}
+
 canvas{
     position: fixed;
     top: 0;
@@ -28,7 +32,7 @@ body {
   }
 
   .info-column{
-    background-color: #f0f0f0;
+    background-color: var(--background-color);
     flex: 1; /* Equal width for all columns */
     display: flex;
     flex-direction: column;

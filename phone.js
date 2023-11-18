@@ -7,7 +7,7 @@ import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
 import TWEEN from '@tweenjs/tween.js'
-const renderer = new THREE.WebGLRenderer({ alpha: true });
+const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true});
 const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 canvasContainer.appendChild(renderer.domElement);
@@ -24,12 +24,14 @@ camera.rotation.y = 45/180*Math.PI;
 camera.position.x = 2300;
 camera.position.y = 0;
 camera.position.z = -2500;
+camera.near = 10;
 camera.lookAt(0,0,0);
 
 const loaded = new THREE.TextureLoader();
-loaded.load('background.jpg' , function(texture)
+loaded.load('background.png', function (texture)
             {
-             scene.background = texture;  
+            scene.background = texture;  
+            scene.background.encoding = THREE.sRGBEncoding;
             });
 
 
