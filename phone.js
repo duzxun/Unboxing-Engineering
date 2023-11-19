@@ -116,7 +116,12 @@ function tweenToClick(intersection){
     camera.position.z = cameraZ;
 
     const minZ = boundingBox.min.z;
-    const cameraToFarEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
+    const cameraToFar (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43993:46)
+    at TransformContext.error (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43989:19)
+    at TransformContext.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:41740:22)
+    at async Object.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:44283:30)
+    at async loadAndTransform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:54950:29)
+    at async viteTransformMiddrEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
 }*/
 
 function hide(object, targetObject){
@@ -197,6 +202,67 @@ function onClick(event) {
       zoomedin = true;
   }
 }
+
+document.addEventListener('mousemove', onMouseMove);
+let highlighted = 0;
+let oldparent = new THREE.Object3D();
+var popup = document.createElement("div");
+popup.className = "main-popup";
+document.body.appendChild(popup);
+
+
+function onMouseMove(event) {
+    // Calculate mouse coordinates
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
+
+    // Check for intersections
+    const intersects = raycaster.intersectObjects(model.children, true);
+
+    if (intersects.length > 0 && !zoomedin) {
+        // handle the popup
+        const position = intersects[0].point.clone().project(camera);
+        const x = (position.x + 1) / 2 * window.innerWidth;
+        const y = -(position.y - 1) / 2 * window.innerHeight;
+        popup.style.display = 'block';
+        popup.style.left = `${x}px`;
+        popup.style.top = `${y}px`;
+        popup.innerHTML = intersects[0].object.parent.name.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
+        if (intersects[0].object.parent != highlighted) {
+            if (highlighted != 0) {
+                highlighted.children.forEach(function(child) {
+                    child.material.emissive.setHex(0x000000)
+                })
+            }
+
+
+            oldparent.copy(intersects[0].object.parent, true)
+            highlighted = intersects[0].object.parent;
+            highlighted.children.forEach(function(child) {
+
+                let newmat = child.material.clone()
+                if (child.material.map != null) {
+                    let newmap = child.material.map.clone()
+                    child.material.map = newmap;
+                } else {
+                    child.material.map = null;
+                }
+                child.material = newmat;
+
+                child.material.emissive.setHex(0x555555);
+            })
+    }
+    } else if (highlighted != 0) {
+        highlighted.children.forEach(function(child) {
+            child.material.emissive.setHex(0x000000)
+        })
+            popup.style.display = 'none';
+    }
+} 
+
 
 document.addEventListener('keydown', function(event) {
     // Check if Ctrl (or Command on Mac) and 'Z' key are pressed
