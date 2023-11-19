@@ -46,10 +46,10 @@ scene.add(grid);
 let hlight = new THREE.AmbientLight (0x404040,100);
 scene.add(hlight);
 
-let directionalLight = new THREE.DirectionalLight(0xffffff,100);
-directionalLight.position.set(0,1,0);
-directionalLight.castShadow = true;
-scene.add(directionalLight);
+// let directionalLight = new THREE.DirectionalLight(0xffffff,100);
+// directionalLight.position.set(0,1,0);
+// directionalLight.castShadow = true;
+// scene.add(directionalLight);
 
 // let light = new THREE.PointLight(0xc4c4c4,10);
 // light.position.set(0,300,500);
