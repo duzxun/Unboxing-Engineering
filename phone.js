@@ -279,7 +279,7 @@ document.addEventListener('keydown', function(event) {
                     col.remove()
                 });
 
-                unhide(scene.children[3])
+                unhide(scene.children[2])
 
                 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
