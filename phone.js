@@ -210,7 +210,6 @@ var popup = document.createElement("div");
 popup.className = "main-popup";
 document.body.appendChild(popup);
 
-
 function onMouseMove(event) {
     // Calculate mouse coordinates
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -259,7 +258,7 @@ function onMouseMove(event) {
         highlighted.children.forEach(function(child) {
             child.material.emissive.setHex(0x000000)
         })
-            popup.style.display = 'none';
+        popup.style.display = 'none';
     }
 } 
 
