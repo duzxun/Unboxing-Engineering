@@ -29,7 +29,8 @@ camera.lookAt(0,0,0);
 const loaded = new THREE.TextureLoader();
 loaded.load('background.jpg' , function(texture)
             {
-             scene.background = texture;  
+             scene.background = texture;
+             scene.background.encoding = THREE.sRGBEncoding;
             });
 
 
