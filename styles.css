@@ -1,6 +1,7 @@
 :root { 
-   --background-color: #000000;
-   --info-color: #d0d0d0;
+   --background-dark: #0D1643;
+   --background-light: #212880;
+   --info-color: #202020;
 }
 
 canvas{
@@ -13,8 +14,9 @@ body {
     margin: 0;
     display: flex;
     height: 100vh; /* Full height of the viewport */
-    background-color: var(--background-color);
-  }
+    background-image: url("background.png");
+    background-size: cover;
+}
 
   .column {
     flex: 1; /* Equal width for all columns */
@@ -48,6 +50,16 @@ body {
     min-height: 500px;
   }
 
+  .diagram-column{
+    position: relative;
+    flex: 1; /* Equal width for all columns */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 500px;
+  }
+  
   .info-container{
     background-color: var(--info-color);
     display: block;
@@ -56,4 +68,5 @@ body {
     justify-content: center;
     border-radius: 6%;
     min-height: 400px;
+    box-shadow:  4px 2px -2px gray;
   }

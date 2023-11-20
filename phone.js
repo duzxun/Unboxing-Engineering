@@ -17,7 +17,7 @@ document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 
-renderer.setClearColor( 0xffffff, 1); 
+renderer.setClearColor( 0xffffff, 0); 
 
 const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
 camera.rotation.y = 45/180*Math.PI;
@@ -27,12 +27,7 @@ camera.position.z = -2500;
 camera.near = 10;
 camera.lookAt(0,0,0);
 
-const loaded = new THREE.TextureLoader();
-loaded.load('background.jpg', function (texture)
-            {
-            scene.background = texture;  
-            scene.background.encoding = THREE.sRGBEncoding;
-            });
+
 
 
 let zoomedin = false;
