@@ -1,7 +1,8 @@
 :root { 
    --background-dark: #0D1643;
    --background-light: #212880;
-   --info-color: #202020;
+   --info-color: #383838;
+   --info-white: #f0f0f0;
 }
 
 canvas{
@@ -24,7 +25,8 @@ body {
     flex-direction: column;
     min-height: 500px;
     align-items: center;
-    justify-content: center;
+    margin-right: 3%;
+    min-width: 360px;
   }
 
   #canvas-container {
@@ -48,6 +50,7 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 500px;
+    margin-right: 3%;
   }
 
   .diagram-column{
@@ -62,11 +65,47 @@ body {
   
   .info-container{
     background-color: var(--info-color);
-    display: block;
+    display: flex;
     height: 70vh; /* Fill 80% of viewport */
-    width: 90%;
+    width: 95%;
     justify-content: center;
     border-radius: 6%;
-    min-height: 400px;
-    box-shadow:  4px 2px -2px gray;
+    min-height: 300px;
+    box-shadow:  8px 8px 30px #000000;
+    min-width: 360px;
+    align-content: center;
+    padding: 2%;
+  }
+
+  .navbar{
+    display: flex;
+    flex-direction: columnn;
+    width: 10%;
+    height: 90%;
+    margin-top: 6%;
+    padding-right: 2%;
+    padding-left: 2%;
+  }
+
+  .info-block{
+    display: flex;
+    width: 80%;
+    height: 90%;
+    margin-top: 6%;
+    flex-direction: column;
+  }
+
+  .info-title{
+    display: block;
+    width: 100%;
+    height: 10%;
+    margin-top: 6%;
+  }
+
+  .info-content{
+    background-color: var(--info-white);
+    display: block;
+    width: 100%;
+    height: 90%;
+    border-radius: 30px;
   }

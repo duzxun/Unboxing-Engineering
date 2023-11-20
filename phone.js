@@ -171,7 +171,7 @@ function onClick(event) {
     clickedObject.rotateX(-Math.PI*1/2)
     clickedObject.frustumCulled = true;
     clickedObject.scale.set(50,50,50);
-    clickedObject.translateZ(-300);
+    clickedObject.translateZ(-375);
       scene.add(clickedObject);
     console.log(clickedObject);
 
@@ -180,6 +180,25 @@ function onClick(event) {
           div.className = "info-column"; // Add the "info-column" class for styling
           div.textContent = "Column " + (i + 1); // Set content (you can add your own content here)
           var child = document.createElement("div");
+          if(i == 1){
+            var navBar = document.createElement("div");
+            navBar.className = "navbar";
+            child.appendChild(navBar);
+
+            var info = document.createElement("div");
+            info.className = "info-block";
+
+            var title = document.createElement("div");
+            title.className = "info-title";
+
+            var content = document.createElement("div");
+            content.className = "info-content";
+
+            info.appendChild(title);
+            info.appendChild(content)
+            child.appendChild(info);
+
+          }
           child.className = "info-container";
           div.appendChild(child);
           document.body.appendChild(div);
@@ -250,7 +269,7 @@ loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf)
 
     } );
 
-    model.translateY(-300);
+    model.translateY(-350);
     scene.add(model);
     renderer.domElement.addEventListener('click', onClick);
 })
