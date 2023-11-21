@@ -299,7 +299,7 @@ document.addEventListener('keydown', function(event) {
 });
 
 let loader = new GLTFLoader();
-loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf){
+loader.load('models/iphone12_less_parts/iphone_explosion.glb', function(gltf){
     model = gltf.scene;
     model.children[0].scale.set(4600,4600,4600);
     mixer = new THREE.AnimationMixer(model);
@@ -325,7 +325,7 @@ const clock = new THREE.Clock();
 // let clock;
 let elapsed = 0
 let curr = 0;
-let stoptime = 19
+let stoptime = 2.9
 
 function animate() {
     if(mixer) {
