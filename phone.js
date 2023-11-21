@@ -27,8 +27,14 @@ camera.position.z = -2500;
 camera.near = 10;
 camera.lookAt(0,0,0);
 
+class navBarElement{
+    constructor(name, icon){
+        this.name = name;  
+        this.icon = icon;
+    }
+}
 
-
+let navBarElements = [];
 
 let zoomedin = false;
 const orbit = new OrbitControls(camera, renderer.domElement);
@@ -63,6 +69,18 @@ scene.add(directionalLight);
 // let light4 = new THREE.PointLight(0xc4c4c4,10);
 // light4.position.set(-500,300,500);
 // scene.add(light4);
+
+//Used to setup navbar list that can be iterated through
+function setupNav(){
+    navBarElements.push(new navBarElement("Chemical Engineering", "fa-flask"));
+    navBarElements.push(new navBarElement("Civil Engineering", "fa-drafting-compass"));
+    navBarElements.push(new navBarElement("Computer Engineering", "fa-desktop"));
+    navBarElements.push(new navBarElement("Electrical Engineering", "fa-microchip"));
+    navBarElements.push(new navBarElement("Industrial Engineering", "fa-chart-line"));
+    navBarElements.push(new navBarElement("Materials Engineering", "fa-atom"));
+    navBarElements.push(new navBarElement("Mechanical Engineering", "fa-cogs"));
+    navBarElements.push(new navBarElement("Mineral Engineering", "fa-gem"));
+}
 
 let mixer;
 const raycaster = new THREE.Raycaster();
@@ -183,6 +201,19 @@ function onClick(event) {
           if(i == 1){
             var navBar = document.createElement("div");
             navBar.className = "navbar";
+
+            var navBarList = document.createElement("ul");
+            for(let i = 0; i < navBarElements.length; i++){
+                let list = document.createElement("li");
+                let icon = document.createElement("i");
+                icon.className = "fa ";
+                icon.className += "fa-lg ";
+                icon.className += navBarElements[i].icon;
+                list.appendChild(icon)
+                navBarList.appendChild(list);
+            }
+
+            navBar.appendChild(navBarList);
             child.appendChild(navBar);
 
             var info = document.createElement("div");
@@ -269,6 +300,7 @@ loader.load('models/iphone12_less_parts/iphone12_less_parts.glb', function(gltf)
 
     } );
 
+    setupNav();
     model.translateY(-350);
     scene.add(model);
     renderer.domElement.addEventListener('click', onClick);
