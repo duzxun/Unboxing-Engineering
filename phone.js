@@ -217,7 +217,7 @@ function onClick(event) {
                 button.className = "btn";
                 button.onclick = function(){
                     title = document.getElementById("title");
-                    title.innerHTML = navBarElements[i].name + " Engineering";
+                    title.innerHTML = `<i class="fa fa-lg ${navBarElements[i].icon}"></i> ${navBarElements[i].name} Engineering`;
                 };
                 let icon = document.createElement("i");
                 icon.className = "fa ";
@@ -241,7 +241,8 @@ function onClick(event) {
             var title = document.createElement("div");
             title.className = "info-title";
             title.id = "title";
-            title.innerHTML = "Chemical Engineering";
+
+            title.innerHTML = `<i class="fa fa-lg fa-flask"></i> Chemical Engineering`;
 
             var content = document.createElement("div");
             content.className = "info-content";
