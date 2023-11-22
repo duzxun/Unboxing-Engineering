@@ -72,14 +72,14 @@ scene.add(directionalLight);
 
 //Used to setup navbar list that can be iterated through
 function setupNav(){
-    navBarElements.push(new navBarElement("Chemical Engineering", "fa-flask"));
-    navBarElements.push(new navBarElement("Civil Engineering", "fa-drafting-compass"));
-    navBarElements.push(new navBarElement("Computer Engineering", "fa-desktop"));
-    navBarElements.push(new navBarElement("Electrical Engineering", "fa-microchip"));
-    navBarElements.push(new navBarElement("Industrial Engineering", "fa-chart-line"));
-    navBarElements.push(new navBarElement("Materials Engineering", "fa-atom"));
-    navBarElements.push(new navBarElement("Mechanical Engineering", "fa-cogs"));
-    navBarElements.push(new navBarElement("Mineral Engineering", "fa-gem"));
+    navBarElements.push(new navBarElement("Chemical", "fa-flask"));
+    navBarElements.push(new navBarElement("Civil", "fa-drafting-compass"));
+    navBarElements.push(new navBarElement("Computer", "fa-desktop"));
+    navBarElements.push(new navBarElement("Electrical", "fa-microchip"));
+    navBarElements.push(new navBarElement("Industrial", "fa-chart-line"));
+    navBarElements.push(new navBarElement("Materials", "fa-atom"));
+    navBarElements.push(new navBarElement("Mechanical", "fa-cogs"));
+    navBarElements.push(new navBarElement("Mineral", "fa-gem"));
 }
 
 let mixer;
@@ -203,17 +203,36 @@ function onClick(event) {
             navBar.className = "navbar";
 
             var navBarList = document.createElement("ul");
+            let hamburger = document.createElement("label");
+            hamburger.className = "hamburger-menu";
+            let check = document.createElement("input");
+            check.type = "checkbox";
+            hamburger.appendChild(check);
+            let li = document.createElement("li");
+            li.appendChild(hamburger);
+            navBarList.appendChild(li);
             for(let i = 0; i < navBarElements.length; i++){
                 let list = document.createElement("li");
+                let button = document.createElement("button");
+                button.className = "btn";
+                button.onclick = function(){
+                    title = document.getElementById("title");
+                    title.innerHTML = navBarElements[i].name + " Engineering";
+                };
                 let icon = document.createElement("i");
                 icon.className = "fa ";
                 icon.className += "fa-lg ";
                 icon.className += navBarElements[i].icon;
-                list.appendChild(icon)
+                button.appendChild(icon);
+                list.appendChild(button);
                 navBarList.appendChild(list);
             }
 
-            navBar.appendChild(navBarList);
+            let iconColumn = document.createElement("div");
+            iconColumn.className = "navbar-icons";
+            iconColumn.appendChild(navBarList);
+
+            navBar.appendChild(iconColumn);
             child.appendChild(navBar);
 
             var info = document.createElement("div");
@@ -221,6 +240,8 @@ function onClick(event) {
 
             var title = document.createElement("div");
             title.className = "info-title";
+            title.id = "title";
+            title.innerHTML = "Chemical Engineering";
 
             var content = document.createElement("div");
             content.className = "info-content";
