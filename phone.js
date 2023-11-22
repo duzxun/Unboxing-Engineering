@@ -232,8 +232,46 @@ function onClick(event) {
             iconColumn.className = "navbar-icons";
             iconColumn.appendChild(navBarList);
 
+            let labelColumn = document.createElement("div");
+            labelColumn.className = "navbar-labels";
+            
             navBar.appendChild(iconColumn);
+            navBar.appendChild(labelColumn);
             child.appendChild(navBar);
+
+            let closer = document.createElement("button");
+            closer.id = "X";
+            closer.className = "X"
+            closer.innerHTML = "X";
+            closer.onclick = function(){
+                if (zoomedin) { 
+            
+                            scene.remove(clickedObject);
+                            // Your Ctrl+Z key press logic here
+                            zoomedin = false;
+            
+                            var cols = document.getElementsByClassName("info-column");
+                            var colsArr = Array.from(cols)
+                            colsArr.forEach(function(col) {
+                                col.remove()
+                            });
+            
+                            unhide(scene.children[3])
+            
+                            renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+            
+                            const newWidth = canvasContainer.clientWidth;
+                            const newHeight = canvasContainer.clientHeight;
+            
+                            renderer.setSize(newWidth, newHeight);
+                            camera.aspect = newWidth / newHeight;
+            
+                            clickedObject = new THREE.Object3D();
+            
+                            camera.updateProjectionMatrix();
+                }
+            };
+            child.appendChild(closer);
 
             var info = document.createElement("div");
             info.className = "info-block";
@@ -249,8 +287,8 @@ function onClick(event) {
 
             info.appendChild(title);
             info.appendChild(content)
+        
             child.appendChild(info);
-
           }
           child.className = "info-container";
           div.appendChild(child);
@@ -269,6 +307,7 @@ function onClick(event) {
       zoomedin = true;
   }
 }
+
 
 document.addEventListener('keydown', function(event) {
     // Check if Ctrl (or Command on Mac) and 'Z' key are pressed

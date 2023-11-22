@@ -44,6 +44,8 @@ ul{
   height: 80%;
   margin-top: 6%;
   z-index: 10;
+  text-align: center;
+  align-items: center;
 }
 
 li {
@@ -120,6 +122,7 @@ li i{
     min-width: 360px;
     align-content: center;
     padding: 2%;
+    color: #f0f0f0;
   }
 
   .navbar{
@@ -141,14 +144,41 @@ li i{
     padding-left: 2%;
   }
 
+  .X{
+    padding-left: 1px;
+    padding-right: 1px;
+    font-family: Inter;
+    font-size: 12px;
+    float: right;
+    position: relative;
+    top: 5;
+    right: 5;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    justify-content: center;
+    z-index: 9999;
+    background-color: transparent;
+    border-color: none;
+    color: var(--info-white);
+    box-shadow: none;
+  }
+
   .navbar-icons{
     width: 33%;
     height: 100%;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
   }
 
   .navbar-labels{
     width: 66%;
     height: 100%;
+    margin-top: 5%;
+    transition: translate var(--animation-timing);
+    translate: -100%;
+    background-color: var(--info-color);
   }
 
   .info-block{
@@ -166,7 +196,7 @@ li i{
     font-size: 16px;
     color: var(--info-white);
     display: block;
-    width: 100%;
+    width: 90%;
     height: 10%;
     margin-top: 6%;
     text-align: center;
@@ -190,6 +220,7 @@ li i{
     color: var(--info-white);
     text-align: center;
     align-items: center;
+    justify-content: center;
     cursor: pointer;
     z-index: 10;
   }
