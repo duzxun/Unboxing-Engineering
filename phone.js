@@ -277,7 +277,7 @@ function onClick(event) {
             let li = document.createElement("li");
             li.appendChild(hamburger);
             navBarList.appendChild(li);
-            if(clickedObject.name == "battery_mat_metal_0"){
+            if(clickedObject.name == "Battery"){
                 for(let i = 0; i < batteryInfo.elements.length; i++){
                     if(batteryInfo.elements[i].exists != false){
                         let list = document.createElement("li");
@@ -385,7 +385,7 @@ function onClick(event) {
             closer.innerHTML = "X";
             closer.onclick = function(){
                 if (zoomedin) { 
-            
+                            camera.copy(camera_state, true);
                             scene.remove(clickedObject);
                             // Your Ctrl+Z key press logic here
                             zoomedin = false;
@@ -396,7 +396,7 @@ function onClick(event) {
                                 col.remove()
                             });
             
-                            unhide(scene.children[3])
+                            unhide(scene.children[2])
             
                             renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
             
@@ -409,7 +409,7 @@ function onClick(event) {
                             clickedObject = new THREE.Object3D();
             
                             camera.updateProjectionMatrix();
-                }
+                        }
             };
             child.appendChild(closer);
           }else{
