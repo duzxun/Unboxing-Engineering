@@ -35,6 +35,7 @@ loaded.load('background.jpg' , function(texture)
 
 
 let zoomedin = false;
+let camera_state = new THREE.PerspectiveCamera();
 const orbit = new OrbitControls(camera, renderer.domElement);
 
 orbit.update();
@@ -44,7 +45,7 @@ orbit.enablePan = false;
 const grid = new THREE.GridHelper(30,30);
 scene.add(grid);
 
-let hlight = new THREE.AmbientLight (0x404040,100);
+let hlight = new THREE.AmbientLight (0x404040,150);
 scene.add(hlight);
 
 // let directionalLight = new THREE.DirectionalLight(0xffffff,100);
@@ -170,6 +171,7 @@ function onClick(event) {
   const intersects = raycaster.intersectObjects(model.children, true);
 
   if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
+    camera_state.copy(camera, true);
     // clickedObject = intersects[0].object;
     clickedObject.copy(intersects[0].object.parent, true)
     console.log(clickedObject);
@@ -270,6 +272,7 @@ document.addEventListener('keydown', function(event) {
         if (event.ctrlKey || event.metaKey) {
             if (event.key === 'z' || event.key === 'Z') {
 
+                camera.copy(camera_state, true);
                 scene.remove(clickedObject);
                 // Your Ctrl+Z key press logic here
                 zoomedin = false;
