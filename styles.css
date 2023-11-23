@@ -22,7 +22,14 @@ canvas{
     top: 0;
     left: 0;
 }
-
+.main-popup {
+    position: absolute;
+    display: none;
+    background-color: #fff;
+    padding: 10px;
+    border: 1px solid #ccc;
+    pointer-events: none; /* Allow interaction with the underlying Three.js scene */
+}
 body {
     margin: 0;
     display: flex;
@@ -93,6 +100,7 @@ li i{
     flex: 1; /* Equal width for all columns */
     display: flex;
     flex-direction: column;
+
     align-items: center;
     justify-content: center;
     min-height: 500px;

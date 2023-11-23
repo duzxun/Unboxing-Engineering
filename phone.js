@@ -113,6 +113,10 @@ scene.add(hlight);
 // directionalLight.position.set(0,1,0);
 // directionalLight.castShadow = true;
 // scene.add(directionalLight);
+// let directionalLight = new THREE.DirectionalLight(0xffffff,100);
+// directionalLight.position.set(0,1,0);
+// directionalLight.castShadow = true;
+// scene.add(directionalLight);
 
 // let light = new THREE.PointLight(0xc4c4c4,10);
 // light.position.set(0,300,500);
@@ -191,6 +195,12 @@ function tweenToClick(intersection){
     camera.position.z = cameraZ;
 
     const minZ = boundingBox.min.z;
+    const cameraToFar (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43993:46)
+    at TransformContext.error (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43989:19)
+    at TransformContext.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:41740:22)
+    at async Object.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:44283:30)
+    at async loadAndTransform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:54950:29)
+    at async viteTransformMiddrEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
     const cameraToFar (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43993:46)
     at TransformContext.error (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43989:19)
     at TransformContext.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:41740:22)
