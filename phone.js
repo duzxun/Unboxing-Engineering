@@ -330,12 +330,25 @@ function onClick(event) {
                     title.className = "info-title";
                     title.id = "title";
         
-                    title.innerHTML = `<i class="fa fa-lg fa-flask"></i> Chemical Engineering`;
+                    title.innerHTML = `<i class="fa fa-lg fa-flask"></i> What is a Battery?`;
         
                     var content = document.createElement("div");
                     content.className = "info-content";
                     content.id = "info-content";
-                    content.innerHTML = ``;
+                    content.innerHTML = `<div info-content>Lithium-Ion Battery:<br>The iPhone
+                    12 uses a type of battery called "lithium-ion." This kind of battery is 
+                    commonly used in many electronic devices because it's lightweight, has a 
+                    high energy density (stores a lot of energy in a small space), and can be 
+                    recharged.<br><br>
+                    How it Works: <br>
+                    Inside the battery,
+                    there are two types of materials called electrodes—one is positive (cathode), 
+                    and the other is negative (anode).<br><br>
+                   Between these electrodes is an electrolyte, a substance that allows ions 
+                   (charged particles) to move between the positive and negative sides.<br><br>
+                   When you use your iPhone, it draws electrical power from the battery. This 
+                   causes the lithium ions in the anode to move through the electrolyte to the 
+                   cathode, creating an electric current that powers your device.</div>`
         
                     info.appendChild(title);
                     info.appendChild(content)
@@ -377,11 +390,12 @@ function onClick(event) {
                 title.className = "info-title";
                 title.id = "title";
     
-                title.innerHTML = `<i class="fa fa-lg fa-flask"></i> Chemical Engineering`;
+                title.innerHTML = `<i class="fa fa-lg fa-flask"></i> General Info`;
     
                 var content = document.createElement("div");
                 content.className = "info-content";
                 content.id = "info-content";
+                content.innerHTML = ``
     
                 info.appendChild(title);
                 info.appendChild(content)
