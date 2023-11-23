@@ -301,15 +301,16 @@ li i{
     margin-top: 10%;
     margin-right: 5%;
     margin-left: 5%;
-    width: 90%;
-    height: 90%;
+    width: 80%;
+    height: 80%;
     background-color: var(--info-white);
     border-radius: 30px;
     align-items: center;
     justify-content: center;
+    text-align: center;
+    padding: 20px;
   }
 
   img{
     width: 80%;
-    height: 50%;
   }

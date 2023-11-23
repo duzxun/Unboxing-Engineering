@@ -302,7 +302,7 @@ function onClick(event) {
                             content.innerHTML = batteryInfo.elements[i].content;
 
                             let image = document.getElementById("image-block");
-                            image.innerHTML = `<img src ${batteryInfo.elements[i].img}>`;
+                            image.innerHTML = `<img src=${batteryInfo.elements[i].img}>`;
                         };
                         let icon = document.createElement("i");
                         icon.className = "fa ";
