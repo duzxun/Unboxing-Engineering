@@ -53,10 +53,10 @@ function batteryContent(){
     `Battery Chemistry: Chemical engineers are involved in selecting and 
     optimizing the chemical composition of the battery cells. They work to 
     improve energy density, lifespan, and safety of the battery through 
-    advancements in battery chemistry.\n\n Over time, a lithium-ion battery's 
+    advancements in battery chemistry.<br><br> Over time, a lithium-ion battery's 
     ability to hold a charge decreases. This is a natural part of the aging
      process for these batteries. However, advancements in battery technology 
-     and careful usage can help prolong the overall lifespan of the battery.\n\n
+     and careful usage can help prolong the overall lifespan of the battery.<br><br>
     Facility Design: Chemical engineers are involved in designing the layout of 
     battery manufacturing plants. They ensure that the facilities are optimized
     for efficient production, taking into account factors like workflow, safety 
@@ -88,7 +88,7 @@ function batteryContent(){
     disciplineElements.push(new navBarElement("Mechanical", "fa-cogs", true, `Enclosure Design: Mechanical 
     engineers contribute to the design of the iPhone 12's overall structure and housing, ensuring that the 
     battery fits securely within the device while also considering factors like heat dissipation and 
-    weight distribution.`, "https://techcrunch.com/wp-content/uploads/2022/04/Screen-Shot-2022-04-27-at-8.09.11-AM.png?resize=1200,777"));
+    weight distribution.`, "https://techcrunch.com/wp-content/uploads/2022/04/Screen-Shot-2022-04-27-at-8.09.11-AM.png"));
     disciplineElements.push(new navBarElement("Mineral", "fa-gem", false));
     return disciplineElements;
 }
@@ -281,8 +281,11 @@ function onClick(event) {
                             title.innerHTML = `<i class="fa fa-lg ${batteryInfo.elements[i].icon}"></i> 
                             ${batteryInfo.elements[i].name} Engineering`;
 
-                            content = getElementById("info-content");
+                            content = document.getElementById("info-content");
                             content.innerHTML = batteryInfo.elements[i].content;
+
+                            let image = document.getElementById("image-block");
+                            image.innerHTML = `<img src ${batteryInfo.elements[i].img}>`;
                         };
                         let icon = document.createElement("i");
                         icon.className = "fa ";
@@ -402,13 +405,16 @@ function onClick(event) {
                 }
             };
             child.appendChild(closer);
-           
+          }else{
+            let imageBlock = document.createElement("div");
+            imageBlock.className = "diagram-block" ;
+            imageBlock.id = "image-block";
+            child.appendChild(imageBlock);
           }
           child.className = "info-container";
           div.appendChild(child);
           document.body.appendChild(div);
-      }
-
+        }
       renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
       const newWidth = canvasContainer.clientWidth;
