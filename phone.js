@@ -102,7 +102,7 @@ orbit.update();
 
 orbit.enablePan = false;
 
-const grid = new THREE.GridHelper(30,30);
+const grid = new THREE.GridHelper(0,0);
 scene.add(grid);
 
 let hlight = new THREE.AmbientLight (0x404040,150);
@@ -518,6 +518,7 @@ mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
             child.material.emissive.setHex(0x000000)
         })
             popup.style.display = 'none';
+        highlighted = 0;
     }
 } 
 
