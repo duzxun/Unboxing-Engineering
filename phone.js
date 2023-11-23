@@ -28,14 +28,73 @@ camera.near = 10;
 camera.lookAt(0,0,0);
 
 class navBarElement{
-    constructor(name, icon){
-        this.name = name;  
+    constructor(name, icon, exists, content = ``, img=null){
+        this.name = name;
         this.icon = icon;
+        this.exists = exists;
+        this.content = content;
+        this.img = img;
+    }
+}
+
+class objectContent{
+    constructor(name, elements){
+        this.name = name;
+        this.elements = elements;
     }
 }
 
 let navBarElements = [];
 
+
+function batteryContent(){
+    let disciplineElements = []
+    disciplineElements.push(new navBarElement("Chemical", "fa-flask", true,
+    `Battery Chemistry: Chemical engineers are involved in selecting and 
+    optimizing the chemical composition of the battery cells. They work to 
+    improve energy density, lifespan, and safety of the battery through 
+    advancements in battery chemistry.\n\n Over time, a lithium-ion battery's 
+    ability to hold a charge decreases. This is a natural part of the aging
+     process for these batteries. However, advancements in battery technology 
+     and careful usage can help prolong the overall lifespan of the battery.\n\n
+    Facility Design: Chemical engineers are involved in designing the layout of 
+    battery manufacturing plants. They ensure that the facilities are optimized
+    for efficient production, taking into account factors like workflow, safety 
+    regulations, and environmental considerations.`, `https://www.vecteezy.com/vector-art
+    /7003741-battery-lifetime-rgb-color-icon-accumulator-lifespan-and-durability-energy-cell-
+    working-period-charge-and-discharge-cycles-number-isolated-vector-illustration-simple-
+    filled-line-drawin` ));
+    disciplineElements.push(new navBarElement("Civil", "fa-drafting-compass", true, `Manufacturing 
+    Facilities: Civil engineers may be involved in the construction and layout of manufacturing
+     facilities where the battery is produced. They ensure that the infrastructure meets
+      safety standards and supports efficient production processes.`, ""));
+    disciplineElements.push(new navBarElement("Computer", "fa-desktop" , true, `Embedded Systems: 
+    Computer engineers are responsible for designing and implementing embedded systems within 
+    the battery and the overall device. This includes programming the microcontrollers and 
+    ensuring communication between the battery and other device components.`, `https://www.mdpi.com
+    /sensors/sensors-22-06376/article_deploy/html/images/sensors-22-06376-g001-550.jpg`));
+    disciplineElements.push(new navBarElement("Electrical", "fa-microchip", true, `Design of Battery 
+    Management System (BMS): Electrical engineers play a crucial role in designing the Battery Management 
+    System, which monitors and controls the charging and discharging of the battery to ensure safety and 
+    efficiency.`, ""));
+    disciplineElements.push(new navBarElement("Industrial", "fa-chart-line", true, `Process Optimization: Industrial 
+    engineers work on optimizing the manufacturing processes involved in producing the battery. This includes 
+    streamlining assembly lines, improving efficiency, minimizing waste and optimizing costs in the production 
+    process.`, "https://cicenergigune.com/media/uploads/mediacenter/battery-materials-cost-cic-energigune.jpg"));
+    disciplineElements.push(new navBarElement("Materials", "fa-atom", true, `Material Selection:
+     Materials engineers focus on selecting the appropriate materials for various components of 
+     the battery, such as the electrodes and electrolytes, considering factors like conductivity, 
+     durability, and weight.`, "https://cen.acs.org/content/dam/cen/97/28/WEB/09728-cover-schematic.jpg"));
+    disciplineElements.push(new navBarElement("Mechanical", "fa-cogs", true, `Enclosure Design: Mechanical 
+    engineers contribute to the design of the iPhone 12's overall structure and housing, ensuring that the 
+    battery fits securely within the device while also considering factors like heat dissipation and 
+    weight distribution.`, "https://techcrunch.com/wp-content/uploads/2022/04/Screen-Shot-2022-04-27-at-8.09.11-AM.png?resize=1200,777"));
+    disciplineElements.push(new navBarElement("Mineral", "fa-gem", false));
+    return disciplineElements;
+}
+
+let batteryStuff = batteryContent();
+let batteryInfo = new objectContent("battery", batteryStuff);
 let zoomedin = false;
 const orbit = new OrbitControls(camera, renderer.domElement);
 
@@ -211,34 +270,105 @@ function onClick(event) {
             let li = document.createElement("li");
             li.appendChild(hamburger);
             navBarList.appendChild(li);
-            for(let i = 0; i < navBarElements.length; i++){
-                let list = document.createElement("li");
-                let button = document.createElement("button");
-                button.className = "btn";
-                button.onclick = function(){
-                    title = document.getElementById("title");
-                    title.innerHTML = `<i class="fa fa-lg ${navBarElements[i].icon}"></i> ${navBarElements[i].name} Engineering`;
-                };
-                let icon = document.createElement("i");
-                icon.className = "fa ";
-                icon.className += "fa-lg ";
-                icon.className += navBarElements[i].icon;
-                button.appendChild(icon);
-                list.appendChild(button);
-                navBarList.appendChild(list);
-            }
+            if(clickedObject.name == "battery_mat_metal_0"){
+                for(let i = 0; i < batteryInfo.elements.length; i++){
+                    if(batteryInfo.elements[i].exists != false){
+                        let list = document.createElement("li");
+                        let button = document.createElement("button");
+                        button.className = "btn";
+                        button.onclick = function(){
+                            title = document.getElementById("title");
+                            title.innerHTML = `<i class="fa fa-lg ${batteryInfo.elements[i].icon}"></i> 
+                            ${batteryInfo.elements[i].name} Engineering`;
 
-            let iconColumn = document.createElement("div");
-            iconColumn.className = "navbar-icons";
-            iconColumn.appendChild(navBarList);
+                            content = getElementById("info-content");
+                            content.innerHTML = batteryInfo.elements[i].content;
+                        };
+                        let icon = document.createElement("i");
+                        icon.className = "fa ";
+                        icon.className += "fa-lg ";
+                        icon.className += batteryInfo.elements[i].icon;
+                        button.appendChild(icon);
+                        list.appendChild(button);
+                        navBarList.appendChild(list);
+                    }
+                }
+                let iconColumn = document.createElement("div");
+                    iconColumn.className = "navbar-icons";
+                    iconColumn.appendChild(navBarList);
 
-            let labelColumn = document.createElement("div");
-            labelColumn.className = "navbar-labels";
+                    let labelColumn = document.createElement("div");
+                    labelColumn.className = "navbar-labels";
+                    
+                    navBar.appendChild(iconColumn);
+                    navBar.appendChild(labelColumn);
+                    child.appendChild(navBar);
+
+                    var info = document.createElement("div");
+                    info.className = "info-block";
+        
+                    var title = document.createElement("div");
+                    title.className = "info-title";
+                    title.id = "title";
+        
+                    title.innerHTML = `<i class="fa fa-lg fa-flask"></i> Chemical Engineering`;
+        
+                    var content = document.createElement("div");
+                    content.className = "info-content";
+                    content.id = "info-content";
+                    content.innerHTML = ``;
+        
+                    info.appendChild(title);
+                    info.appendChild(content)
+                
+                    child.appendChild(info);
+            }else{
+                for(let i = 0; i < navBarElements.length; i++){
+                    let list = document.createElement("li");
+                    let button = document.createElement("button");
+                    button.className = "btn";
+                    button.onclick = function(){
+                        title = document.getElementById("title");
+                        title.innerHTML = `<i class="fa fa-lg ${navBarElements[i].icon}"></i> ${navBarElements[i].name} Engineering`;
+                    };
+                    let icon = document.createElement("i");
+                    icon.className = "fa ";
+                    icon.className += "fa-lg ";
+                    icon.className += navBarElements[i].icon;
+                    button.appendChild(icon);
+                    list.appendChild(button);
+                    navBarList.appendChild(list);
+                }
+
+                let iconColumn = document.createElement("div");
+                iconColumn.className = "navbar-icons";
+                iconColumn.appendChild(navBarList);
+
+                let labelColumn = document.createElement("div");
+                labelColumn.className = "navbar-labels";
+                
+                navBar.appendChild(iconColumn);
+                navBar.appendChild(labelColumn);
+                child.appendChild(navBar);
+
+                var info = document.createElement("div");
+                info.className = "info-block";
+    
+                var title = document.createElement("div");
+                title.className = "info-title";
+                title.id = "title";
+    
+                title.innerHTML = `<i class="fa fa-lg fa-flask"></i> Chemical Engineering`;
+    
+                var content = document.createElement("div");
+                content.className = "info-content";
+                content.id = "info-content";
+    
+                info.appendChild(title);
+                info.appendChild(content)
             
-            navBar.appendChild(iconColumn);
-            navBar.appendChild(labelColumn);
-            child.appendChild(navBar);
-
+                child.appendChild(info);
+            }
             let closer = document.createElement("button");
             closer.id = "X";
             closer.className = "X"
@@ -272,23 +402,7 @@ function onClick(event) {
                 }
             };
             child.appendChild(closer);
-
-            var info = document.createElement("div");
-            info.className = "info-block";
-
-            var title = document.createElement("div");
-            title.className = "info-title";
-            title.id = "title";
-
-            title.innerHTML = `<i class="fa fa-lg fa-flask"></i> Chemical Engineering`;
-
-            var content = document.createElement("div");
-            content.className = "info-content";
-
-            info.appendChild(title);
-            info.appendChild(content)
-        
-            child.appendChild(info);
+           
           }
           child.className = "info-container";
           div.appendChild(child);
