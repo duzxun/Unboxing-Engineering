@@ -71,8 +71,7 @@ function batteryContent(){
     disciplineElements.push(new navBarElement("Computer", "fa-desktop" , true, `Embedded Systems: 
     Computer engineers are responsible for designing and implementing embedded systems within 
     the battery and the overall device. This includes programming the microcontrollers and 
-    ensuring communication between the battery and other device components.`, `https://www.mdpi.com
-    /sensors/sensors-22-06376/article_deploy/html/images/sensors-22-06376-g001-550.jpg`));
+    ensuring communication between the battery and other device components.`, `/diagrams/battery/comp_eng.webp`));
     disciplineElements.push(new navBarElement("Electrical", "fa-microchip", true, `Design of Battery 
     Management System (BMS): Electrical engineers play a crucial role in designing the Battery Management 
     System, which monitors and controls the charging and discharging of the battery to ensure safety and 
@@ -80,15 +79,15 @@ function batteryContent(){
     disciplineElements.push(new navBarElement("Industrial", "fa-chart-line", true, `Process Optimization: Industrial 
     engineers work on optimizing the manufacturing processes involved in producing the battery. This includes 
     streamlining assembly lines, improving efficiency, minimizing waste and optimizing costs in the production 
-    process.`, "https://cicenergigune.com/media/uploads/mediacenter/battery-materials-cost-cic-energigune.jpg"));
+    process.`, "/diagrams/battery/indy.jpg"));
     disciplineElements.push(new navBarElement("Materials", "fa-atom", true, `Material Selection:
      Materials engineers focus on selecting the appropriate materials for various components of 
      the battery, such as the electrodes and electrolytes, considering factors like conductivity, 
-     durability, and weight.`, "https://cen.acs.org/content/dam/cen/97/28/WEB/09728-cover-schematic.jpg"));
+     durability, and weight.`, "/diagrams/battery/material.jpg"));
     disciplineElements.push(new navBarElement("Mechanical", "fa-cogs", true, `Enclosure Design: Mechanical 
     engineers contribute to the design of the iPhone 12's overall structure and housing, ensuring that the 
     battery fits securely within the device while also considering factors like heat dissipation and 
-    weight distribution.`, "https://techcrunch.com/wp-content/uploads/2022/04/Screen-Shot-2022-04-27-at-8.09.11-AM.png"));
+    weight distribution.`, "/diagrams/battery/mech.webp"));
     disciplineElements.push(new navBarElement("Mineral", "fa-gem", false));
     return disciplineElements;
 }
