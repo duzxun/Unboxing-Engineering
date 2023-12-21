@@ -16,6 +16,9 @@ canvasContainer.appendChild(renderer.domElement);
 document.body.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
+let clickedObject = new THREE.Object3D();
+let navBarElements = [];
+let zoomedin = false;
 
 renderer.setClearColor( 0xffffff, 0); 
 
@@ -26,6 +29,27 @@ camera.position.y = 0;
 camera.position.z = -2500;
 camera.near = 10;
 camera.lookAt(0,0,0);
+
+let camera_state = new THREE.PerspectiveCamera();
+const orbit = new OrbitControls(camera, renderer.domElement);
+
+orbit.update();
+
+orbit.enablePan = false;
+
+const grid = new THREE.GridHelper(0,0);
+scene.add(grid);
+
+let hlight = new THREE.AmbientLight (0x404040,150);
+scene.add(hlight);
+
+let mixer;
+const raycaster = new THREE.Raycaster();
+const mouse = new THREE.Vector2();
+let model;
+
+let loader = new GLTFLoader();
+
 
 class navBarElement{
     constructor(name, icon, exists, content = ``, img=null){
@@ -43,9 +67,6 @@ class objectContent{
         this.elements = elements;
     }
 }
-
-let navBarElements = [];
-
 
 function batteryContent(){
     let disciplineElements = []
@@ -94,19 +115,6 @@ function batteryContent(){
 
 let batteryStuff = batteryContent();
 let batteryInfo = new objectContent("battery", batteryStuff);
-let zoomedin = false;
-let camera_state = new THREE.PerspectiveCamera();
-const orbit = new OrbitControls(camera, renderer.domElement);
-
-orbit.update();
-
-orbit.enablePan = false;
-
-const grid = new THREE.GridHelper(0,0);
-scene.add(grid);
-
-let hlight = new THREE.AmbientLight (0x404040,150);
-scene.add(hlight);
 
 // let directionalLight = new THREE.DirectionalLight(0xffffff,100);
 // directionalLight.position.set(0,1,0);
@@ -144,11 +152,6 @@ function setupNav(){
     navBarElements.push(new navBarElement("Mechanical", "fa-cogs"));
     navBarElements.push(new navBarElement("Mineral", "fa-gem"));
 }
-
-let mixer;
-const raycaster = new THREE.Raycaster();
-const mouse = new THREE.Vector2();
-let model;
 
 function tweenToClick(intersection){
     var startRotation = new THREE.Euler().copy(camera.rotation);
@@ -208,15 +211,24 @@ function tweenToClick(intersection){
     at async viteTransformMiddrEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
 }*/
 
+
+/*      HIDING AND UNHIDING PIECES      */
+
+// function that hides an object that has been clicked on recursively
 function hide(object, targetObject){
+    // base case that checks whether we've reached the end of component tree
     if (object.children.length == 0){
+        // if this object isn't the object clicked on, hide it
         if (object != targetObject){
             object.visible = false
             return;
         }
+    // recursive case that runs through all the children of a component and
+    // recursively calls hide
     }else{
         for(let i = 0; i < object.children.length; i++){
             if (object.children[i] != targetObject){
+                // call hide on the child of this component
                 hide(object.children[i], targetObject)
                 object.visible = false;
                 return;
@@ -225,13 +237,18 @@ function hide(object, targetObject){
     }
 }
 
+// function that unhides an object recursively
 function unhide(object){
+    // base case that checks whether we've reached the end of the component tree
     if (object.children.length == 0){
             console.log(object)
+            // make the component visible again
             object.visible = true
         
     }else{
         console.log(object.children.length)
+        // recursive case that runs through all the children of a component
+        // and recursively unhides them
         for(let i = 0; i < object.children.length; i++){
             unhide(object.children[i])
             object.visible = true;
@@ -240,7 +257,8 @@ function unhide(object){
     }
 }
 
-let clickedObject = new THREE.Object3D();
+/*      MAIN FUNCTIONS      */
+
 function onClick(event) {
   // Calculate mouse coordinates
   mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -458,6 +476,61 @@ function onClick(event) {
   }
 }
 
+// main model loader that loads navigation and phone model as well as animation
+loader.load('models/iphone12_less_parts/iphone_explosion.glb', function(gltf){
+    model = gltf.scene;
+    model.children[0].scale.set(4600,4600,4600);
+    mixer = new THREE.AnimationMixer(model);
+    const clips = gltf.animations;
+
+    clips.forEach(function(clip) {
+        const action = mixer.clipAction(clip);
+        action.repetitions = 1;
+        action.play();
+    })
+    model.traverse( function( object ) {
+
+        object.frustumCulled = false;
+
+    } );
+
+    setupNav();
+    model.translateY(-350);
+    scene.add(model);
+    renderer.domElement.addEventListener('click', onClick);
+})
+
+const clock = new THREE.Clock();
+// let clock;
+let elapsed = 0
+let curr = 0;
+let stoptime = 2.9
+
+function animate() {
+    if(mixer) {
+        curr = clock.getDelta()
+        elapsed += curr;
+        if (elapsed < stoptime) {
+            mixer.update(curr);
+        }
+    }
+    renderer.render(scene, camera);
+}
+
+renderer.setAnimationLoop(animate);
+
+
+window.addEventListener('resize', () => {
+    const newWidth = canvasContainer.clientWidth;
+    const newHeight = canvasContainer.clientHeight;
+
+    renderer.setSize(newWidth, newHeight);
+    camera.aspect = newWidth / newHeight;
+    camera.updateProjectionMatrix();
+});
+
+/*  CODE FOR HIGHLIGHTING A PIECE   */
+
 document.addEventListener('mousemove', onMouseMove);
 let highlighted = 0;
 let oldparent = new THREE.Object3D();
@@ -467,9 +540,6 @@ document.body.appendChild(popup);
 
 
 function onMouseMove(event) {
-    // Calculate mouse coordinates
-    //mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    //mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 let canvas = document.querySelector('canvas');
 
 mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
@@ -522,6 +592,9 @@ mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
     }
 } 
 
+
+/*      ARCHIVED FUNCTIONS      */
+
 // Debug function that was used to close content info columns and set back to main phone model
 document.addEventListener('keydown', function(event) {
     // Check if Ctrl (or Command on Mac) and 'Z' key are pressed
@@ -556,58 +629,4 @@ document.addEventListener('keydown', function(event) {
             }
         }
     }
-});
-
-// main model loader that loads navigation and phone model as well as animation
-let loader = new GLTFLoader();
-loader.load('models/iphone12_less_parts/iphone_explosion.glb', function(gltf){
-    model = gltf.scene;
-    model.children[0].scale.set(4600,4600,4600);
-    mixer = new THREE.AnimationMixer(model);
-    const clips = gltf.animations;
-
-    clips.forEach(function(clip) {
-        const action = mixer.clipAction(clip);
-        action.repetitions = 1;
-        action.play();
-    })
-    model.traverse( function( object ) {
-
-        object.frustumCulled = false;
-
-    } );
-
-    setupNav();
-    model.translateY(-350);
-    scene.add(model);
-    renderer.domElement.addEventListener('click', onClick);
-})
-
-const clock = new THREE.Clock();
-// let clock;
-let elapsed = 0
-let curr = 0;
-let stoptime = 2.9
-
-function animate() {
-    if(mixer) {
-        curr = clock.getDelta()
-        elapsed += curr;
-        if (elapsed < stoptime) {
-            mixer.update(curr);
-        }
-    }
-    renderer.render(scene, camera);
-}
-
-renderer.setAnimationLoop(animate);
-
-
-window.addEventListener('resize', () => {
-    const newWidth = canvasContainer.clientWidth;
-    const newHeight = canvasContainer.clientHeight;
-
-    renderer.setSize(newWidth, newHeight);
-    camera.aspect = newWidth / newHeight;
-    camera.updateProjectionMatrix();
 });
