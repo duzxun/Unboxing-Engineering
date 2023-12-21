@@ -31,11 +31,12 @@ camera.near = 10;
 camera.lookAt(0,0,0);
 
 let camera_state = new THREE.PerspectiveCamera();
+
 const orbit = new OrbitControls(camera, renderer.domElement);
-
 orbit.update();
-
 orbit.enablePan = false;
+orbit.minDistance= 3;
+orbit.maxDistance = 3500;
 
 const grid = new THREE.GridHelper(0,0);
 scene.add(grid);
