@@ -262,8 +262,11 @@ function unhide(object){
 
 function onClick(event) {
   // Calculate mouse coordinates
-  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  let canvas = document.querySelector('canvas');
+  mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
+  mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
 
   // Update the picking ray with the camera and mouse position
   raycaster.setFromCamera(mouse, camera);
