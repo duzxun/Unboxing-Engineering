@@ -78,23 +78,11 @@ navSetup()
 
 var partsMapOfAvailableEngineering = {}
 
-// Order of navbar elements is guaranteed, so define which to display
-// Order can be seen in navSetup
-// Chemical, Civil, Computer, Electrical, Industrial, Materials, Mechanical, Mineral
-const disciplines = [
-    'Chemical',
-    'Civil',
-    'Computer',
-    'Electrical',
-    'Industrial',
-    'Materials',
-    'Mechanical',
-    'Mineral'
-];
-var currentlySelectedDiscipline = ""
+function enableEngineeringForPart(engineering, part) {
+     
+}
+partsMapOfAvailableEngineering["Battery"] = {}
 
-partsMapOfAvailableEngineering["Battery"] = [true,true,true,true,true,true,true,false]
-partsMapOfAvailableEngineering["Screen"] = [true,true,true,true,true,true,true,true]
 // End of Georgy trying to do dynamic loading with HTMX
 
 
@@ -108,44 +96,44 @@ class objectContent{
 function batteryContent(){
     let disciplineElements = []
     disciplineElements.push(new navBarElement("Chemical", "fa-flask", true,
-        `Battery Chemistry: Chemical engineers are involved in selecting and 
-        optimizing the chemical composition of the battery cells. They work to 
-        improve energy density, lifespan, and safety of the battery through 
-        advancements in battery chemistry.<br><br> Over time, a lithium-ion battery's 
-        ability to hold a charge decreases. This is a natural part of the aging
-        process for these batteries. However, advancements in battery technology 
-        and careful usage can help prolong the overall lifespan of the battery.<br><br>
-        Facility Design: Chemical engineers are involved in designing the layout of 
-        battery manufacturing plants. They ensure that the facilities are optimized
-        for efficient production, taking into account factors like workflow, safety 
-        regulations, and environmental considerations.`, `https://www.vecteezy.com/vector-art
-        /7003741-battery-lifetime-rgb-color-icon-accumulator-lifespan-and-durability-energy-cell-
-        working-period-charge-and-discharge-cycles-number-isolated-vector-illustration-simple-
-        filled-line-drawin` ));
+    `Battery Chemistry: Chemical engineers are involved in selecting and 
+    optimizing the chemical composition of the battery cells. They work to 
+    improve energy density, lifespan, and safety of the battery through 
+    advancements in battery chemistry.<br><br> Over time, a lithium-ion battery's 
+    ability to hold a charge decreases. This is a natural part of the aging
+     process for these batteries. However, advancements in battery technology 
+     and careful usage can help prolong the overall lifespan of the battery.<br><br>
+    Facility Design: Chemical engineers are involved in designing the layout of 
+    battery manufacturing plants. They ensure that the facilities are optimized
+    for efficient production, taking into account factors like workflow, safety 
+    regulations, and environmental considerations.`, `https://www.vecteezy.com/vector-art
+    /7003741-battery-lifetime-rgb-color-icon-accumulator-lifespan-and-durability-energy-cell-
+    working-period-charge-and-discharge-cycles-number-isolated-vector-illustration-simple-
+    filled-line-drawin` ));
     disciplineElements.push(new navBarElement("Civil", "fa-drafting-compass", true, `Manufacturing 
-        Facilities: Civil engineers may be involved in the construction and layout of manufacturing
-        facilities where the battery is produced. They ensure that the infrastructure meets
-        safety standards and supports efficient production processes.`, ""));
+    Facilities: Civil engineers may be involved in the construction and layout of manufacturing
+     facilities where the battery is produced. They ensure that the infrastructure meets
+      safety standards and supports efficient production processes.`, ""));
     disciplineElements.push(new navBarElement("Computer", "fa-desktop" , true, `Embedded Systems: 
-        Computer engineers are responsible for designing and implementing embedded systems within 
-        the battery and the overall device. This includes programming the microcontrollers and 
-        ensuring communication between the battery and other device components.`, `/diagrams/battery/comp_eng.webp`));
+    Computer engineers are responsible for designing and implementing embedded systems within 
+    the battery and the overall device. This includes programming the microcontrollers and 
+    ensuring communication between the battery and other device components.`, `/diagrams/battery/comp_eng.webp`));
     disciplineElements.push(new navBarElement("Electrical", "fa-microchip", true, `Design of Battery 
-        Management System (BMS): Electrical engineers play a crucial role in designing the Battery Management 
-        System, which monitors and controls the charging and discharging of the battery to ensure safety and 
-        efficiency.`, ""));
+    Management System (BMS): Electrical engineers play a crucial role in designing the Battery Management 
+    System, which monitors and controls the charging and discharging of the battery to ensure safety and 
+    efficiency.`, ""));
     disciplineElements.push(new navBarElement("Industrial", "fa-chart-line", true, `Process Optimization: Industrial 
-        engineers work on optimizing the manufacturing processes involved in producing the battery. This includes 
-        streamlining assembly lines, improving efficiency, minimizing waste and optimizing costs in the production 
-        process.`, "/diagrams/battery/indy.jpg"));
+    engineers work on optimizing the manufacturing processes involved in producing the battery. This includes 
+    streamlining assembly lines, improving efficiency, minimizing waste and optimizing costs in the production 
+    process.`, "/diagrams/battery/indy.jpg"));
     disciplineElements.push(new navBarElement("Materials", "fa-atom", true, `Material Selection:
-        Materials engineers focus on selecting the appropriate materials for various components of 
-        the battery, such as the electrodes and electrolytes, considering factors like conductivity, 
-        durability, and weight.`, "/diagrams/battery/material.jpg"));
+     Materials engineers focus on selecting the appropriate materials for various components of 
+     the battery, such as the electrodes and electrolytes, considering factors like conductivity, 
+     durability, and weight.`, "/diagrams/battery/material.jpg"));
     disciplineElements.push(new navBarElement("Mechanical", "fa-cogs", true, `Enclosure Design: Mechanical 
-        engineers contribute to the design of the iPhone 12's overall structure and housing, ensuring that the 
-        battery fits securely within the device while also considering factors like heat dissipation and 
-        weight distribution.`, "/diagrams/battery/mech.webp"));
+    engineers contribute to the design of the iPhone 12's overall structure and housing, ensuring that the 
+    battery fits securely within the device while also considering factors like heat dissipation and 
+    weight distribution.`, "/diagrams/battery/mech.webp"));
     disciplineElements.push(new navBarElement("Mineral", "fa-gem", false));
     return disciplineElements;
 }
@@ -166,15 +154,15 @@ let batteryInfo = new objectContent("battery", batteryStuff);
 // light.position.set(0,300,500);
 // scene.add(light);
 //
-    // let light2 = new THREE.PointLight(0xc4c4c4,10);
+// let light2 = new THREE.PointLight(0xc4c4c4,10);
 // light2.position.set(500,100,0);
 // scene.add(light2);
 //
-    // let light3 = new THREE.PointLight(0xc4c4c4,10);
+// let light3 = new THREE.PointLight(0xc4c4c4,10);
 // light3.position.set(0,100,-500);
 // scene.add(light3);
 //
-    // let light4 = new THREE.PointLight(0xc4c4c4,10);
+// let light4 = new THREE.PointLight(0xc4c4c4,10);
 // light4.position.set(-500,300,500);
 // scene.add(light4);
 
@@ -249,9 +237,9 @@ function tweenToClick(intersection){
 }*/
 
 
-    /*      HIDING AND UNHIDING PIECES      */
+/*      HIDING AND UNHIDING PIECES      */
 
-    // function that hides an object that has been clicked on recursively
+// function that hides an object that has been clicked on recursively
 function hide(object, targetObject){
     // base case that checks whether we've reached the end of component tree
     if (object.children.length == 0){
@@ -260,8 +248,8 @@ function hide(object, targetObject){
             object.visible = false
             return;
         }
-        // recursive case that runs through all the children of a component and
-        // recursively calls hide
+    // recursive case that runs through all the children of a component and
+    // recursively calls hide
     }else{
         for(let i = 0; i < object.children.length; i++){
             if (object.children[i] != targetObject){
@@ -278,10 +266,10 @@ function hide(object, targetObject){
 function unhide(object){
     // base case that checks whether we've reached the end of the component tree
     if (object.children.length == 0){
-        console.log(object)
-        // make the component visible again
-        object.visible = true
-
+            console.log(object)
+            // make the component visible again
+            object.visible = true
+        
     }else{
         console.log(object.children.length)
         // recursive case that runs through all the children of a component
@@ -296,174 +284,225 @@ function unhide(object){
 
 /*      MAIN FUNCTIONS      */
 
-    async function onClick(event) {
-        // Calculate mouse coordinates
-        // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        let canvas = document.querySelector('canvas');
-        mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
-        mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
+function onClick(event) {
+  // Calculate mouse coordinates
+  // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+  // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  let canvas = document.querySelector('canvas');
+  mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
+  mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
 
-        // Update the picking ray with the camera and mouse position
-        raycaster.setFromCamera(mouse, camera);
+  // Update the picking ray with the camera and mouse position
+  raycaster.setFromCamera(mouse, camera);
 
-        // Check for intersections
-        const intersects = raycaster.intersectObjects(model.children, true);
+  // Check for intersections
+  const intersects = raycaster.intersectObjects(model.children, true);
 
-        if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
-            camera_state.copy(camera, true);
-            // clickedObject = intersects[0].object;
-            clickedObject.copy(intersects[0].object.parent, true)
-            console.log(clickedObject);
-            console.log('Clicked on:', clickedObject.name);
-            camera.lookAt(mouse.x, mouse.y, 0);
-            //tweenToClick(intersects[0]);
-            hide(model.children[0], clickedObject);
-            clickedObject.rotateX(-Math.PI*1/2)
-            clickedObject.frustumCulled = true;
-            clickedObject.scale.set(50,50,50);
-            clickedObject.translateZ(-375);
-            scene.add(clickedObject);
-            console.log(clickedObject);
+  if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
+    camera_state.copy(camera, true);
+    // clickedObject = intersects[0].object;
+    clickedObject.copy(intersects[0].object.parent, true)
+    console.log(clickedObject);
+    console.log('Clicked on:', clickedObject.name);
+    camera.lookAt(mouse.x, mouse.y, 0);
+    //tweenToClick(intersects[0]);
+    hide(model.children[0], clickedObject);
+    clickedObject.rotateX(-Math.PI*1/2)
+    clickedObject.frustumCulled = true;
+    clickedObject.scale.set(50,50,50);
+    clickedObject.translateZ(-375);
+      scene.add(clickedObject);
+    console.log(clickedObject);
 
-            for (var i = 1; i <= 2; i++) {
-                var div = document.createElement("div");
-                div.className = "info-column"; // Add the "info-column" class for styling
-                div.textContent = "Column " + (i + 1); // Set content (you can add your own content here)
-                var child = document.createElement("div");
-                if(i == 1){
-                    var navBar = document.createElement("div");
-                    navBar.className = "navbar";
+      for (var i = 1; i <= 2; i++) {
+          var div = document.createElement("div");
+          div.className = "info-column"; // Add the "info-column" class for styling
+          div.textContent = "Column " + (i + 1); // Set content (you can add your own content here)
+          var child = document.createElement("div");
+          if(i == 1){
+            var navBar = document.createElement("div");
+            navBar.className = "navbar";
 
-                    var navBarList = document.createElement("ul");
-                    let hamburger = document.createElement("label");
-                    hamburger.className = "hamburger-menu";
-                    let check = document.createElement("input");
-                    check.type = "checkbox";
-                    hamburger.appendChild(check);
-                    let li = document.createElement("li");
-                    li.appendChild(hamburger);
-                    navBarList.appendChild(li);
-                    navBar.setAttribute("id", "navBar")
-                    child.appendChild(navBar)
+            var navBarList = document.createElement("ul");
+            let hamburger = document.createElement("label");
+            hamburger.className = "hamburger-menu";
+            let check = document.createElement("input");
+            check.type = "checkbox";
+            hamburger.appendChild(check);
+            let li = document.createElement("li");
+            li.appendChild(hamburger);
+            navBarList.appendChild(li);
+            if(clickedObject.name == "Battery"){
+                for(let i = 0; i < batteryInfo.elements.length; i++){
+                    if(batteryInfo.elements[i].exists != false){
+                        let list = document.createElement("li");
+                        let button = document.createElement("button");
+                        button.className = "btn";
+                        button.onclick = function(){
+                            title = document.getElementById("title");
+                            title.innerHTML = `<i class="fa fa-lg ${batteryInfo.elements[i].icon}"></i> 
+                            ${batteryInfo.elements[i].name} Engineering`;
 
-                    // Get the navbar using a GET request, replace it in-place
-                    htmx.ajax("GET", "/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
+                            content = document.getElementById("info-content");
+                            content.innerHTML = batteryInfo.elements[i].content;
 
-                        // Now configure which icons are available for which parts
-                        let iconList = document.getElementById("navbar-list")
-                        let liList = iconList.getElementsByTagName("li")
+                            let image = document.getElementById("image-block");
+                            image.innerHTML = `<img src=${batteryInfo.elements[i].img}>`;
+                        };
+                        let icon = document.createElement("i");
+                        icon.className = "fa ";
+                        icon.className += "fa-lg ";
+                        icon.className += batteryInfo.elements[i].icon;
+                        button.appendChild(icon);
+                        list.appendChild(button);
+                        navBarList.appendChild(list);
+                    }
+                }
+                let iconColumn = document.createElement("div");
+                    iconColumn.className = "navbar-icons";
+                    iconColumn.appendChild(navBarList);
 
-                        for (let i = 0; i < liList.length; i++) {
-                            let listElement = liList[i]
-                            if (partsMapOfAvailableEngineering[clickedObject.name][i-1] == false) {
-                                listElement.remove()
-                            } else if (i > 0) {
-                                let icon = listElement.getElementsByTagName("i")[0]
-                                icon.title = disciplines[i-1] + " Engineering"
-                                icon.addEventListener('click', function(event) {
-                                    // Replace the info-box title with the contents of the title of the icon
-                                    console.log(event.target)
-                                    let title = document.getElementById("title")
-                                    title.innerHTML = clickedObject.name + ": " + event.target.title
-
-                                    currentlySelectedDiscipline = event.target.title.split(" ")[0]
-
-                                    // Replace the content in the info-box with new content via HTMX ajax GET request
-                                    let textBox = document.getElementById("info-content") 
-                                    htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
-
-                                    // Replace the img tag with the associated img
-                                    let imgBox = document.getElementById("image-block")
-                                    htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
-                                });
-                            }
-                        }
-                    })
+                    let labelColumn = document.createElement("div");
+                    labelColumn.className = "navbar-labels";
+                    
+                    navBar.appendChild(iconColumn);
+                    navBar.appendChild(labelColumn);
+                    child.appendChild(navBar);
 
                     var info = document.createElement("div");
                     info.className = "info-block";
-
+        
                     var title = document.createElement("div");
                     title.className = "info-title";
                     title.id = "title";
-                    title.innerHTML = "What is a " + clickedObject.name + "?"
-
+        
+                    title.innerHTML = `What is a Battery?`;
+        
                     var content = document.createElement("div");
                     content.className = "info-content";
                     content.id = "info-content";
-
+                    content.innerHTML = `<div info-content>Lithium-Ion Battery:<br>The iPhone
+                    12 uses a type of battery called "lithium-ion." This kind of battery is 
+                    commonly used in many electronic devices because it's lightweight, has a 
+                    high energy density (stores a lot of energy in a small space), and can be 
+                    recharged.<br><br>
+                    How it Works: <br>
+                    Inside the battery,
+                    there are two types of materials called electrodes—one is positive (cathode), 
+                    and the other is negative (anode).<br><br>
+                   Between these electrodes is an electrolyte, a substance that allows ions 
+                   (charged particles) to move between the positive and negative sides.<br><br>
+                   When you use your iPhone, it draws electrical power from the battery. This 
+                   causes the lithium ions in the anode to move through the electrolyte to the 
+                   cathode, creating an electric current that powers your device.</div>`
+        
                     info.appendChild(title);
-
-                    // Make an HTMX request to dynamically fill in the title of the default page
                     info.appendChild(content)
-
-
+                
                     child.appendChild(info);
-                    let closer = document.createElement("button");
-                    closer.id = "X";
-                    closer.className = "X"
-                    closer.innerHTML = "X";
-                    closer.onclick = function(){
-                        if (zoomedin) { 
+            }else{
+                for(let i = 0; i < navBarElements.length; i++){
+                    let list = document.createElement("li");
+                    let button = document.createElement("button");
+                    button.className = "btn";
+                    button.onclick = function(){
+                        title = document.getElementById("title");
+                        title.innerHTML = `<i class="fa fa-lg ${navBarElements[i].icon}"></i> ${navBarElements[i].name} Engineering`;
+                    };
+                    let icon = document.createElement("i");
+                    icon.className = "fa ";
+                    icon.className += "fa-lg ";
+                    icon.className += navBarElements[i].icon;
+                    button.appendChild(icon);
+                    list.appendChild(button);
+                    navBarList.appendChild(list);
+                }
+
+                let iconColumn = document.createElement("div");
+                iconColumn.className = "navbar-icons";
+                iconColumn.appendChild(navBarList);
+
+                let labelColumn = document.createElement("div");
+                labelColumn.className = "navbar-labels";
+                
+                navBar.appendChild(iconColumn);
+                navBar.appendChild(labelColumn);
+                child.appendChild(navBar);
+
+                var info = document.createElement("div");
+                info.className = "info-block";
+    
+                var title = document.createElement("div");
+                title.className = "info-title";
+                title.id = "title";
+    
+                title.innerHTML = `<i class="fa fa-lg fa-flask"></i> General Info`;
+    
+                var content = document.createElement("div");
+                content.className = "info-content";
+                content.id = "info-content";
+                content.innerHTML = ``
+    
+                info.appendChild(title);
+                info.appendChild(content)
+            
+                child.appendChild(info);
+            }
+            let closer = document.createElement("button");
+            closer.id = "X";
+            closer.className = "X"
+            closer.innerHTML = "X";
+            closer.onclick = function(){
+                if (zoomedin) { 
                             camera.copy(camera_state, true);
                             scene.remove(clickedObject);
                             // Your Ctrl+Z key press logic here
                             zoomedin = false;
-
+            
                             var cols = document.getElementsByClassName("info-column");
                             var colsArr = Array.from(cols)
                             colsArr.forEach(function(col) {
                                 col.remove()
                             });
-
+            
                             unhide(scene.children[2])
-
+            
                             renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-
+            
                             const newWidth = canvasContainer.clientWidth;
                             const newHeight = canvasContainer.clientHeight;
-
+            
                             renderer.setSize(newWidth, newHeight);
                             camera.aspect = newWidth / newHeight;
-
+            
                             clickedObject = new THREE.Object3D();
-
+            
                             camera.updateProjectionMatrix();
                         }
-                    };
-                    child.appendChild(closer);
-                }else{
-                    let imageBlock = document.createElement("div");
-                    imageBlock.className = "diagram-block" ;
-                    imageBlock.id = "image-block";
-                    child.appendChild(imageBlock);
-
-                    // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {swap: "innerHTML", target: imageBlock})
-                }
-                child.className = "info-container";
-                div.appendChild(child);
-                document.body.appendChild(div);
-
-                let imgElem = document.getElementById("image-block")
-                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML"})
-
-                let contentElem = document.getElementById("info-content")
-                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML"})
-
-            }
-            renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-
-            const newWidth = canvasContainer.clientWidth;
-            const newHeight = canvasContainer.clientHeight;
-
-            renderer.setSize(newWidth, newHeight);
-            camera.aspect = newWidth / newHeight;
-
-            camera.updateProjectionMatrix();
-            zoomedin = true;
+            };
+            child.appendChild(closer);
+          }else{
+            let imageBlock = document.createElement("div");
+            imageBlock.className = "diagram-block" ;
+            imageBlock.id = "image-block";
+            child.appendChild(imageBlock);
+          }
+          child.className = "info-container";
+          div.appendChild(child);
+          document.body.appendChild(div);
         }
-    }
+      renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+
+      const newWidth = canvasContainer.clientWidth;
+      const newHeight = canvasContainer.clientHeight;
+
+      renderer.setSize(newWidth, newHeight);
+      camera.aspect = newWidth / newHeight;
+
+      camera.updateProjectionMatrix();
+      zoomedin = true;
+  }
+}
 
 // main model loader that loads navigation and phone model as well as animation
 loader.load('models/iphone12_less_parts/iphone_explosion.glb', function(gltf){
@@ -520,7 +559,7 @@ window.addEventListener('resize', () => {
 
 /*  CODE FOR HIGHLIGHTING A PIECE   */
 
-    document.addEventListener('mousemove', onMouseMove);
+document.addEventListener('mousemove', onMouseMove);
 let highlighted = 0;
 let oldparent = new THREE.Object3D();
 var popup = document.createElement("div");
@@ -529,10 +568,10 @@ document.body.appendChild(popup);
 
 
 function onMouseMove(event) {
-    let canvas = document.querySelector('canvas');
+let canvas = document.querySelector('canvas');
 
-    mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
-    mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
+mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
+mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
     // Update the picking ray with the camera and mouse position
     raycaster.setFromCamera(mouse, camera);
 
@@ -571,12 +610,12 @@ function onMouseMove(event) {
 
                 child.material.emissive.setHex(0x555555);
             })
-        }
+    }
     } else if (highlighted != 0) {
         highlighted.children.forEach(function(child) {
             child.material.emissive.setHex(0x000000)
         })
-        popup.style.display = 'none';
+            popup.style.display = 'none';
         highlighted = 0;
     }
 } 
@@ -584,7 +623,7 @@ function onMouseMove(event) {
 
 /*      ARCHIVED FUNCTIONS      */
 
-    // Debug function that was used to close content info columns and set back to main phone model
+// Debug function that was used to close content info columns and set back to main phone model
 document.addEventListener('keydown', function(event) {
     // Check if Ctrl (or Command on Mac) and 'Z' key are pressed
     if (zoomedin) { 
