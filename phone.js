@@ -95,8 +95,23 @@ const disciplines = [
 ];
 var currentlySelectedDiscipline = ""
 
+// Have to hard code which disciplines are enabled for which part :)
 partsMapOfAvailableEngineering["Battery"] = [true,true,true,true,true,true,true,false]
 partsMapOfAvailableEngineering["Screen"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Wireless_Charging_Coil"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Chassis"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Front_Sensors"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Back_Cameras"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Vibration_Motor"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Microphone"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Earspeaker"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Front_Camera"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Volume_Off_Button"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Volume_Buttons"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Charging_Port"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Antenna"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Simholder"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Motherboard"] = [true,true,true,true,true,true,true,true]
 // End of Georgy trying to do dynamic loading with HTMX
 
 
