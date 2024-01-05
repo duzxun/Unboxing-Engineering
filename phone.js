@@ -392,8 +392,9 @@ function unhide(object){
                                     htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
                                     // Replace the img tag with the associated img
-                                    let imgBox = document.getElementById("image-block")
-                                    htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
+                                    let imgBox = document.getElementById("image-block").getElementsByTagName("img")[0]
+                                    imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
+                                    // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
                                 });
                             }
                         }
