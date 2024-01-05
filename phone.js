@@ -76,6 +76,8 @@ function navSetup(){
 }
 navSetup()
 
+var tmpA = []
+
 var partsMapOfAvailableEngineering = {}
 
 // Order of navbar elements is guaranteed, so define which to display
@@ -310,11 +312,11 @@ function unhide(object){
         // Check for intersections
         const intersects = raycaster.intersectObjects(model.children, true);
 
+
         if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
             camera_state.copy(camera, true);
             // clickedObject = intersects[0].object;
             clickedObject.copy(intersects[0].object.parent, true)
-            console.log(clickedObject);
             console.log('Clicked on:', clickedObject.name);
             camera.lookAt(mouse.x, mouse.y, 0);
             //tweenToClick(intersects[0]);
@@ -324,7 +326,8 @@ function unhide(object){
             clickedObject.scale.set(50,50,50);
             clickedObject.translateZ(-375);
             scene.add(clickedObject);
-            console.log(clickedObject);
+            tmpA.push(clickedObject.name)
+            console.log(tmpA)
 
             for (var i = 1; i <= 2; i++) {
                 var div = document.createElement("div");
@@ -445,9 +448,11 @@ function unhide(object){
                 div.appendChild(child);
                 document.body.appendChild(div);
 
-                let imgElem = document.getElementById("image-block")
-                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML"})
+                // TODO: WAITING FOR DEVS TO FIX LOST REQUEST :(
+                // let imgElem = document.getElementById("image-block")
+                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML"})
 
+                // For now fix with another hx-get inside of the content to replace the image ;)
                 let contentElem = document.getElementById("info-content")
                 htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML"})
 
@@ -471,6 +476,8 @@ loader.load('models/iphone12_less_parts/iphone_explosion.glb', function(gltf){
     model.children[0].scale.set(4600,4600,4600);
     mixer = new THREE.AnimationMixer(model);
     const clips = gltf.animations;
+
+    console.log(model.children[0])
 
     clips.forEach(function(clip) {
         const action = mixer.clipAction(clip);
