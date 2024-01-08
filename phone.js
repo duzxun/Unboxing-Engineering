@@ -458,19 +458,18 @@ function unhide(object){
                     imageBlock.id = "image-block";
                     child.appendChild(imageBlock);
 
-                    // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {swap: "innerHTML", target: imageBlock})
+                    imageBlock.setAttribute("src", "/htmx-templates/" + clickedObject.name + "/Default-image.jpg")
                 }
                 child.className = "info-container";
                 div.appendChild(child);
                 document.body.appendChild(div);
 
-                // TODO: WAITING FOR DEVS TO FIX LOST REQUEST :(
-                // let imgElem = document.getElementById("image-block")
-                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML"})
+                // // TODO: WAITING FOR DEVS TO FIX LOST REQUEST :(
+                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML", source: imgElem})
 
                 // For now fix with another hx-get inside of the content to replace the image ;)
                 let contentElem = document.getElementById("info-content")
-                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML"})
+                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML", source: contentElem})
 
             }
             renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
