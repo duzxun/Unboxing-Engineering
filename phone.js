@@ -392,7 +392,7 @@ function unhide(object){
                                     htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
                                     // Replace the img tag with the associated img
-                                    let imgBox = document.getElementById("image-block").getElementsByTagName("img")[0]
+                                    let imgBox = document.getElementById("diagram")
                                     imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
                                     // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
                                 });
@@ -456,9 +456,12 @@ function unhide(object){
                     let imageBlock = document.createElement("div");
                     imageBlock.className = "diagram-block" ;
                     imageBlock.id = "image-block";
+                    let img = document.createElement("img")
+                    img.id = "diagram"
+                    imageBlock.appendChild(img)
                     child.appendChild(imageBlock);
 
-                    imageBlock.setAttribute("src", "/htmx-templates/" + clickedObject.name + "/Default-image.jpg")
+                    img.setAttribute("src", "/diagrams/" + clickedObject.name + "/Default-image.jpg")
                 }
                 child.className = "info-container";
                 div.appendChild(child);
