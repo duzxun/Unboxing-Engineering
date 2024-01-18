@@ -350,7 +350,7 @@ function unhide(object){
                 var navBar = document.createElement("div");
                 navBar.className = "navbar";
 
-                var navBarList = document.createElement("ul");
+                var navBarList = document.createElement("ul");  
                 navBar.setAttribute("id", "navBar")
                 child.appendChild(navBar)
 

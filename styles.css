@@ -50,7 +50,7 @@ ul{
   padding: 0;
   width: 100%;
   height: 80%;
-  margin-top: 20%;
+  margin-top: 6%;
   z-index: 10;
   text-align: center;
   align-items: center;
@@ -89,12 +89,13 @@ li i{
   position: relative;
   width: 100%;
   min-height: 500px;
+  height: 100vh
 }
 
 canvas {
   display: block;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   min-height: 500px;
 }
 
@@ -147,7 +148,7 @@ canvas {
     z-index: 1;
     flex-direction: column;
     width: 10%;
-    height: 100%; 
+    height: 100%;
     padding-right: 2%;
     padding-left: 2%;
     box-shadow: -10px 8px 20px -10px #000000;
@@ -181,9 +182,7 @@ canvas {
     justify-content: center;
   }
 
-  #navbar-list{
-    padding-top: 100%;
-  }
+    
   .navbar-labels{
     width: 66%;
     height: 100%;
@@ -195,11 +194,11 @@ canvas {
 
   .info-block{
     position: absolute;
-    margin-left: 15%;
+    margin-left: 4%;
     margin-right: 2%;
     float: right;
-    width: 80%;
-    height: 85%;
+    width: 96%;
+    height: 90%;
     margin-top: 2%;
     flex-direction: column;
     z-index:0;
