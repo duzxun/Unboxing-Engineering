@@ -344,128 +344,114 @@ function unhide(object){
             tmpA.push(clickedObject.name)
             console.log(tmpA)
 
-            for (var i = 1; i <= 2; i++) {
                 var div = document.createElement("div");
                 div.className = "info-column"; // Add the "info-column" class for styling
-                div.textContent = "Column " + (i + 1); // Set content (you can add your own content here)
                 var child = document.createElement("div");
-                if(i == 1){
-                    var navBar = document.createElement("div");
-                    navBar.className = "navbar";
+                var navBar = document.createElement("div");
+                navBar.className = "navbar";
 
-                    var navBarList = document.createElement("ul");
-                    let hamburger = document.createElement("label");
-                    hamburger.className = "hamburger-menu";
-                    let check = document.createElement("input");
-                    check.type = "checkbox";
-                    hamburger.appendChild(check);
-                    let li = document.createElement("li");
-                    li.appendChild(hamburger);
-                    navBarList.appendChild(li);
-                    navBar.setAttribute("id", "navBar")
-                    child.appendChild(navBar)
+                var navBarList = document.createElement("ul");
+                let hamburger = document.createElement("label");
+                hamburger.className = "hamburger-menu";
+                let check = document.createElement("input");
+                check.type = "checkbox";
+                hamburger.appendChild(check);
+                let li = document.createElement("li");
+                li.appendChild(hamburger);
+                navBarList.appendChild(li);
+                navBar.setAttribute("id", "navBar")
+                child.appendChild(navBar)
 
-                    // Get the navbar using a GET request, replace it in-place
-                    htmx.ajax("GET", "/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
+                // Get the navbar using a GET request, replace it in-place
+                htmx.ajax("GET", "/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
 
-                        // Now configure which icons are available for which parts
-                        let iconList = document.getElementById("navbar-list")
-                        let liList = iconList.getElementsByTagName("li")
+                    // Now configure which icons are available for which parts
+                    let iconList = document.getElementById("navbar-list")
+                    let liList = iconList.getElementsByTagName("li")
 
-                        for (let i = 0; i < liList.length; i++) {
-                            let listElement = liList[i]
-                            if (partsMapOfAvailableEngineering[clickedObject.name][i-1] == false) {
-                                listElement.remove()
-                            } else if (i > 0) {
-                                let icon = listElement.getElementsByTagName("i")[0]
-                                icon.title = disciplines[i-1] + " Engineering"
-                                icon.addEventListener('click', function(event) {
-                                    // Replace the info-box title with the contents of the title of the icon
-                                    console.log(event.target)
-                                    let title = document.getElementById("title")
-                                    title.innerHTML = clickedObject.name + ": " + event.target.title
+                    for (let i = 0; i < liList.length; i++) {
+                        let listElement = liList[i]
+                        if (partsMapOfAvailableEngineering[clickedObject.name][i-1] == false) {
+                            listElement.remove()
+                        } else if (i > 0) {
+                            let icon = listElement.getElementsByTagName("i")[0]
+                            icon.title = disciplines[i-1] + " Engineering"
+                            icon.addEventListener('click', function(event) {
+                                // Replace the info-box title with the contents of the title of the icon
+                                console.log(event.target)
+                                let title = document.getElementById("title")
+                                title.innerHTML = clickedObject.name + ": " + event.target.title
 
-                                    currentlySelectedDiscipline = event.target.title.split(" ")[0]
+                                currentlySelectedDiscipline = event.target.title.split(" ")[0]
 
-                                    // Replace the content in the info-box with new content via HTMX ajax GET request
-                                    let textBox = document.getElementById("info-content") 
-                                    htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
+                                // Replace the content in the info-box with new content via HTMX ajax GET request
+                                let textBox = document.getElementById("info-content") 
+                                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
-                                    // Replace the img tag with the associated img
-                                    let imgBox = document.getElementById("diagram")
-                                    imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
-                                    // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
-                                });
-                            }
-                        }
-                    })
-
-                    var info = document.createElement("div");
-                    info.className = "info-block";
-
-                    var title = document.createElement("div");
-                    title.className = "info-title";
-                    title.id = "title";
-                    title.innerHTML = "What is a " + clickedObject.name + "?"
-
-                    var content = document.createElement("div");
-                    content.className = "info-content";
-                    content.id = "info-content";
-
-                    info.appendChild(title);
-
-                    // Make an HTMX request to dynamically fill in the title of the default page
-                    info.appendChild(content)
-
-
-                    child.appendChild(info);
-                    let closer = document.createElement("button");
-                    closer.id = "X";
-                    closer.className = "X"
-                    closer.innerHTML = "X";
-                    closer.onclick = function(){
-                        if (zoomedin) { 
-                            camera.copy(camera_state, true);
-                            scene.remove(clickedObject);
-                            // Your Ctrl+Z key press logic here
-                            zoomedin = false;
-
-                            var cols = document.getElementsByClassName("info-column");
-                            var colsArr = Array.from(cols)
-                            colsArr.forEach(function(col) {
-                                col.remove()
+                                // Replace the img tag with the associated img
+                                let imgBox = document.getElementById("diagram")
+                                imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
+                                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
                             });
-
-                            unhide(scene.children[2])
-
-                            renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-
-                            const newWidth = canvasContainer.clientWidth;
-                            const newHeight = canvasContainer.clientHeight;
-
-                            renderer.setSize(newWidth, newHeight);
-                            camera.aspect = newWidth / newHeight;
-
-                            clickedObject = new THREE.Object3D();
-
-                            camera.updateProjectionMatrix();
                         }
-                    };
-                    child.appendChild(closer);
-                }else{
-                    let imageBlock = document.createElement("div");
-                    imageBlock.className = "diagram-block" ;
-                    imageBlock.id = "image-block";
-                    let img = document.createElement("img")
-                    img.id = "diagram"
-                    imageBlock.appendChild(img)
-                    child.appendChild(imageBlock);
+                    }
+                })
 
-                    img.setAttribute("src", "/diagrams/" + clickedObject.name + "/Default-image.jpg")
-                }
-                child.className = "info-container";
-                div.appendChild(child);
-                document.body.appendChild(div);
+                var info = document.createElement("div");
+                info.className = "info-block";
+
+                var title = document.createElement("div");
+                title.className = "info-title";
+                title.id = "title";
+                title.innerHTML = "What is a " + clickedObject.name + "?"
+
+                var content = document.createElement("div");
+                content.className = "info-content";
+                content.id = "info-content";
+
+                info.appendChild(title);
+
+                // Make an HTMX request to dynamically fill in the title of the default page
+                info.appendChild(content)
+
+
+                child.appendChild(info);
+                let closer = document.createElement("button");
+                closer.id = "X";
+                closer.className = "X"
+                closer.innerHTML = "X";
+                closer.onclick = function(){
+                    if (zoomedin) { 
+                        camera.copy(camera_state, true);
+                        scene.remove(clickedObject);
+                        // Your Ctrl+Z key press logic here
+                        zoomedin = false;
+
+                        var cols = document.getElementsByClassName("info-column");
+                        var colsArr = Array.from(cols)
+                        colsArr.forEach(function(col) {
+                            col.remove()
+                        });
+
+                        unhide(scene.children[2])
+
+                        renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+
+                        const newWidth = canvasContainer.clientWidth;
+                        const newHeight = canvasContainer.clientHeight;
+
+                        renderer.setSize(newWidth, newHeight);
+                        camera.aspect = newWidth / newHeight;
+
+                        clickedObject = new THREE.Object3D();
+
+                        camera.updateProjectionMatrix();
+                    }
+                };
+                child.appendChild(closer);
+            child.className = "info-container";
+            div.appendChild(child);
+            document.body.appendChild(div);
 
                 // // TODO: WAITING FOR DEVS TO FIX LOST REQUEST :(
                 // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML", source: imgElem})
@@ -473,8 +459,6 @@ function unhide(object){
                 // For now fix with another hx-get inside of the content to replace the image ;)
                 let contentElem = document.getElementById("info-content")
                 htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML", source: contentElem})
-
-            }
             renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
             const newWidth = canvasContainer.clientWidth;
