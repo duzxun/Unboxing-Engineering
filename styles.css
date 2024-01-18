@@ -232,65 +232,6 @@ canvas {
     border-radius: 30px;
     text-wrap:pretty;
   }
-
-  .hamburger-menu{
-    position: relative;
-    --x-width: calc(var(--hamburger-height) * 1.41421356237);
-    display: flex;
-    flex-direction: column;
-    gap: var(--hamburger-gap);
-    width: 100%;
-    color: var(--info-white);
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    z-index: 10;
-  }
-
-  .hamburger-menu:hover{
-    color: var(--info-white-darker);
-  }
-  
-  .hamburger-menu::before,
-  .hamburger-menu::after, 
-  .hamburger-menu input{
-    position: relative;
-    content: "";
-    width: 80%;
-    height: var(--bar-height);
-    border-radius: 9999px;
-    transform-origin: left center;
-    transition: opacity var(--animation-timing), width var(--animation-timing),
-                rotate var(--animation-timing), translate var(--animation-timing);
-    background-color: var(--info-white); 
-    z-index: 10;
-  }
-
-  .hamburger-menu input{
-    appearance: none;
-    padding: 0;
-    margin: 0;
-    outline: none;
-    pointer-events: none;
-  }
-
-  .hamburger-menu:has(input:checked)::before{
-    rotate: 45deg;
-    width: var(--x-width);
-    translate: 12% calc(var(--bar-height)/-2);
-  }
-
-  .hamburger-menu:has(input:checked)::after{
-    rotate: -45deg;
-    width: var(--x-width);
-    translate: 12% calc(var(--bar-height)/2);
-  }
-
-  .hamburger-menu input:checked{
-    opacity: 0;
-    width: 0;
-  }
   
   .btn{
     background-color: transparent;
