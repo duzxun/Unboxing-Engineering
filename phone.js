@@ -37,6 +37,7 @@ orbit.update();
 orbit.enablePan = false;
 orbit.minDistance= 3;
 orbit.maxDistance = 3500;
+orbit.autoRotate = true;
 
 const grid = new THREE.GridHelper(0,0);
 scene.add(grid);
@@ -62,6 +63,7 @@ class navBarElement{
     }
 }
 
+const autoRotateTimeout = 10000;
 // Beginning of Georgy trying to do dynamic loading with HTMX
 const listOfNavBarElements = []
 function navSetup(){
@@ -218,6 +220,10 @@ function tweenToClick(intersection){
     new TWEEN.Tween( camera ).to( { rotation: endRotation }, 600 ).start();
 }
 
+function enableAutoRotate(){
+    orbit.autoRotate = true;
+}
+
 /*function fitCameraToObject( camera, object, offset, controls ) {
 
     offset = offset || 1.25;
@@ -317,6 +323,8 @@ function unhide(object){
         // Calculate mouse coordinates
         // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+        orbit.autoRotate = false;
+        setTimeout(enableAutoRotate, autoRotateTimeout);
         let canvas = document.querySelector('canvas');
         mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
         mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
@@ -504,6 +512,7 @@ function animate() {
             mixer.update(curr);
         }
     }
+    orbit.update();
     renderer.render(scene, camera);
 }
 
@@ -518,6 +527,8 @@ window.addEventListener('resize', () => {
     camera.aspect = newWidth / newHeight;
     camera.updateProjectionMatrix();
 });
+
+
 
 /*  CODE FOR HIGHLIGHTING A PIECE   */
 
