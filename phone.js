@@ -351,14 +351,6 @@ function unhide(object){
                 navBar.className = "navbar";
 
                 var navBarList = document.createElement("ul");
-                let hamburger = document.createElement("label");
-                hamburger.className = "hamburger-menu";
-                let check = document.createElement("input");
-                check.type = "checkbox";
-                hamburger.appendChild(check);
-                let li = document.createElement("li");
-                li.appendChild(hamburger);
-                navBarList.appendChild(li);
                 navBar.setAttribute("id", "navBar")
                 child.appendChild(navBar)
 

@@ -21,6 +21,7 @@ canvas{
     position: fixed;
     top: 0;
     left: 0;
+    height: 100%;
 }
 .main-popup {
     position: absolute;
@@ -33,7 +34,7 @@ canvas{
 body {
     margin: 0;
     display: flex;
-    height: 100vh; /* Full height of the viewport */
+    height: 90vh; /* Full height of the viewport */
     background-image: url("background.png");
     background-size: cover;
 }
@@ -49,7 +50,7 @@ ul{
   padding: 0;
   width: 100%;
   height: 80%;
-  margin-top: 6%;
+  margin-top: 20%;
   z-index: 10;
   text-align: center;
   align-items: center;
@@ -72,40 +73,43 @@ li i{
   text-align: center;
 }
 
-  .column {
-    flex: 1; /* Equal width for all columns */
+.column {
+    flex: 2 1 auto; /* 2 and 1 width for columns */
     display: flex;
     flex-direction: column;
-    min-height: 500px;
-    align-items: center;
-    margin-right: 3%;
-    min-width: 360px;
-  }
-
-  #canvas-container {
-    position: relative;
-    width: 100%;
-    min-height: 500px;
-  }
-
-  canvas {
-    display: block;
-    width: 100%;
     height: 100%;
-    min-height: 500px;
-  }
-
-  .info-column{
-    position: relative;
-    flex: 1; /* Equal width for all columns */
-    display: flex;
-    flex-direction: column;
-
     align-items: center;
-    justify-content: center;
-    min-height: 500px;
-    margin-right: 3%;
-  }
+    margin: 0;  
+    overflow-y:hidden;
+    position: absolute;
+    padding: 0;
+}
+
+#canvas-container {
+  position: relative;
+  width: 100%;
+  min-height: 500px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+}
+
+.info-column{
+  margin: 0;
+  position: relative;
+  flex: 1; /* Equal width for all columns */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0;
+  z-index: 9999;
+}
 
   .diagram-column{
     position: relative;
@@ -114,26 +118,24 @@ li i{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 500px;
   }
   
   .info-container{
     position: relative;
     background-color: var(--info-color);
     display: table;
-    height: 70vh; /* Fill 80% of viewport */
-    width: 95%;
+    height: 100%; /* Fill 80% of viewport */
+    width: 100%;
     justify-content: center;
-    border-radius: 6%;
-    min-height: 300px;
-    box-shadow:  8px 8px 30px #000000;
+    z-index: 9999;
     min-width: 360px;
     align-content: center;
-    padding: 2%;
     color: #f0f0f0;
+    margin: 0;
   }
 
   .navbar{
+    background-color: var(--info-color);
     float: left;
     display: table;
     position: absolute;
@@ -141,15 +143,14 @@ li i{
     left: 0;
     overflow: hidden;
     margin: 0;
-    margin-left: 2%;
-    padding-top: 10%;
-    z-index: 9999;
+    margin-left: -10%;
+    z-index: 1;
     flex-direction: column;
-    width: 30%;
-    height: 100%;
-    margin-top: 3%;
+    width: 10%;
+    height: 100%; 
     padding-right: 2%;
     padding-left: 2%;
+    box-shadow: -10px 8px 20px -10px #000000;
   }
 
   .X{
@@ -174,12 +175,15 @@ li i{
 
   .navbar-icons{
     width: 33%;
-    height: 100%;
+    height: 80%;
     align-items: center;
     text-align: center;
     justify-content: center;
   }
 
+  #navbar-list{
+    padding-top: 100%;
+  }
   .navbar-labels{
     width: 66%;
     height: 100%;
