@@ -18,8 +18,9 @@ let opt = {
 }
 window.VIEWER={}
 let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
+let scene;
 viewer.load("").then( () => { viewer.playAllClips()  
-    const light1 = new THREE.AmbientLight("#FFFFFF", 1);
+    const light1 = new THREE.AmbientLight("#FFFFFF", 5);
     light1.name = 'ambient_light';
     scene.add(light1);
 
@@ -31,24 +32,31 @@ viewer.load("").then( () => { viewer.playAllClips()
     light3.position.set(-0.5, 0, 0.866); // ~60º
     light3.name = 'main_light2';
     scene.add(light3);
+
+    scene.background = null 
+    viewer.defaultCamera.rotation.x = -2.73382;
+    viewer.defaultCamera.rotation.y = 0.84599;
+    viewer.defaultCamera.rotation.z = 2.8288;
+    viewer.defaultCamera.position.x = 0.3624;
+    viewer.defaultCamera.position.y = 0.12729;
+    viewer.defaultCamera.position.z = -0.29466;
+    // viewer.defaultCamera.near = 10;
+    viewer.defaultCamera.lookAt(0,0,0);
+    viewer.defaultCamera.updateProjectionMatrix()
 }) 
-const scene = viewer.scene;
+scene = viewer.scene;
+const camera = viewer.defaultCamera
 let clickedObject = new THREE.Object3D();
 let navBarElements = [];
 let zoomedin = false;
 
+
 const renderer = viewer.renderer;
+renderer.setClearColor(0x000000, 0)
 const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 renderer.domElement.addEventListener('click', onClick);
 
-const camera = viewer.defaultCamera
-camera.rotation.y = 45/180*Math.PI;
-camera.position.x = 2300;
-camera.position.y = 0;
-camera.position.z = -2500;
-camera.near = 10;
-camera.lookAt(0,0,0);
 
 // canvasContainer.appendChild(renderer.domElement);
 
@@ -374,17 +382,36 @@ var tempLight;
             // camera.lookAt(mouse.x, mouse.y, 0);
             //tweenToClick(intersects[0]);
             hide(model.children[1], clickedObject);
-            console.log(model)
+            // console.log(model)
             clickedObject.rotateX(-Math.PI*1/2)
             clickedObject.frustumCulled = true;
             clickedObject.scale.set(0.1,0.1,0.1);
+
+            const boundingBox = new THREE.Box3().setFromObject(clickedObject)
+            const center = new THREE.Vector3()
+            boundingBox.getCenter(center)
+            clickedObject.position.sub(center)
+
+            const boundingSphere = boundingBox.getBoundingSphere(new THREE.Sphere());
+            const cameraDistance = boundingSphere.radius / Math.tan(Math.PI * 0.75 / 2); // Adjust the FOV (0.75 is used as an example)
+
+            camera.position.copy(boundingSphere.center.clone().add(new THREE.Vector3(0, 0, cameraDistance)));
+            camera.lookAt(boundingSphere.center);
+            camera.updateProjectionMatrix();
+
             // clickedObject.translateZ(-0.1);
-            clickedObject.translateZ(-0.5);
+            console.log(clickedObject)
+            // clickedObject.position.set(0,0,0)
+            // clickedObject.translateZ(-0.6);
             scene.add(clickedObject);
+
+            // camera.lookAt(clickedObject.getWorldPosition);
+            console.log(clickedObject.position)
+
             // tempLight = new THREE.AmbientLight(0x404040)
             // scene.add(tempLight)
             tmpA.push(clickedObject.name)
-            console.log(tmpA)
+            // console.log(tmpA)
 
                 var div = document.createElement("div");
                 div.className = "info-column"; // Add the "info-column" class for styling
@@ -538,10 +565,6 @@ var tempLight;
         }
     }
 
-
-
-
-
 window.addEventListener('resize', () => {
     const newWidth = canvasContainer.clientWidth;
     const newHeight = canvasContainer.clientHeight;
@@ -565,6 +588,9 @@ document.body.appendChild(popup);
 
 function onMouseMove(event) {
     let canvas = document.querySelector('canvas');
+
+    // console.log(camera.position)
+    // console.log(camera.rotation)
 
     mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
     mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
