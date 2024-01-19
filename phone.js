@@ -2,24 +2,35 @@
 
 import * as THREE from 'three';
 
+import * as VIEWER from './viewer.js'
+
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
 import TWEEN from '@tweenjs/tween.js'
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true});
+
+let opt = {
+    cameraPosition: null,
+    kiosk: false,
+    model: "",
+    preset: ""
+}
+window.VIEWER={}
+let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
+viewer.load("").then( () => { viewer.animate(5) }) 
+const scene = viewer.scene;
+let clickedObject = new THREE.Object3D();
+let navBarElements = [];
+let zoomedin = false;
+
+const renderer = viewer.renderer;
 const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 canvasContainer.appendChild(renderer.domElement);
 
 // renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement);
-
-const scene = new THREE.Scene();
-let clickedObject = new THREE.Object3D();
-let navBarElements = [];
-let zoomedin = false;
-
 renderer.setClearColor( 0xffffff, 0); 
 
 const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
@@ -48,7 +59,7 @@ scene.add(hlight);
 let mixer;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-let model;
+let model = scene;
 
 let loader = new GLTFLoader();
 
@@ -472,51 +483,8 @@ function unhide(object){
         }
     }
 
-// main model loader that loads navigation and phone model as well as animation
-loader.load('models/iphone12_less_parts/iphone_explosion.glb', function(gltf){
-    model = gltf.scene;
-    model.children[0].scale.set(4600,4600,4600);
-    mixer = new THREE.AnimationMixer(model);
-    const clips = gltf.animations;
 
-    console.log(model.children[0])
 
-    clips.forEach(function(clip) {
-        const action = mixer.clipAction(clip);
-        action.repetitions = 1;
-        action.play();
-    })
-    model.traverse( function( object ) {
-
-        object.frustumCulled = false;
-
-    } );
-
-    setupNav();
-    model.translateY(-350);
-    scene.add(model);
-    renderer.domElement.addEventListener('click', onClick);
-})
-
-const clock = new THREE.Clock();
-// let clock;
-let elapsed = 0
-let curr = 0;
-let stoptime = 2.9
-
-function animate() {
-    if(mixer) {
-        curr = clock.getDelta()
-        elapsed += curr;
-        if (elapsed < stoptime) {
-            mixer.update(curr);
-        }
-    }
-    orbit.update();
-    renderer.render(scene, camera);
-}
-
-renderer.setAnimationLoop(animate);
 
 
 window.addEventListener('resize', () => {
@@ -532,7 +500,7 @@ window.addEventListener('resize', () => {
 
 /*  CODE FOR HIGHLIGHTING A PIECE   */
 
-    document.addEventListener('mousemove', onMouseMove);
+document.addEventListener('mousemove', onMouseMove);
 let highlighted = 0;
 let oldparent = new THREE.Object3D();
 var popup = document.createElement("div");
