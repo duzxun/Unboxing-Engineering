@@ -18,7 +18,20 @@ let opt = {
 }
 window.VIEWER={}
 let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
-viewer.load("").then( () => { viewer.animate(5) }) 
+viewer.load("").then( () => { viewer.playAllClips()  
+    const light1 = new THREE.AmbientLight("#FFFFFF", 1);
+    light1.name = 'ambient_light';
+    scene.add(light1);
+
+    const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+    light2.position.set(0.5, 0, 0.866); // ~60º
+    light2.name = 'main_light';
+    scene.add(light2);
+    const light3 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+    light3.position.set(-0.5, 0, 0.866); // ~60º
+    light3.name = 'main_light2';
+    scene.add(light3);
+}) 
 const scene = viewer.scene;
 let clickedObject = new THREE.Object3D();
 let navBarElements = [];
@@ -27,13 +40,9 @@ let zoomedin = false;
 const renderer = viewer.renderer;
 const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-canvasContainer.appendChild(renderer.domElement);
+renderer.domElement.addEventListener('click', onClick);
 
-// renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
-renderer.setClearColor( 0xffffff, 0); 
-
-const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
+const camera = viewer.defaultCamera
 camera.rotation.y = 45/180*Math.PI;
 camera.position.x = 2300;
 camera.position.y = 0;
@@ -41,20 +50,27 @@ camera.position.z = -2500;
 camera.near = 10;
 camera.lookAt(0,0,0);
 
+// canvasContainer.appendChild(renderer.domElement);
+
+// renderer.setSize(window.innerWidth, window.innerHeight);
+// document.body.appendChild(renderer.domElement);
+
+// const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
+
 let camera_state = new THREE.PerspectiveCamera();
 
-const orbit = new OrbitControls(camera, renderer.domElement);
+const orbit = viewer.controls
 orbit.update();
 orbit.enablePan = false;
-orbit.minDistance= 3;
-orbit.maxDistance = 3500;
+// orbit.minDistance= 3;
+// orbit.maxDistance = 3500;
 orbit.autoRotate = true;
 
-const grid = new THREE.GridHelper(0,0);
-scene.add(grid);
-
-let hlight = new THREE.AmbientLight (0x404040,150);
-scene.add(hlight);
+// const grid = new THREE.GridHelper(0,0);
+// scene.add(grid);
+//
+// let hlight = new THREE.AmbientLight (0x404040,150);
+// scene.add(hlight);
 
 let mixer;
 const raycaster = new THREE.Raycaster();
@@ -62,7 +78,6 @@ const mouse = new THREE.Vector2();
 let model = scene;
 
 let loader = new GLTFLoader();
-
 
 class navBarElement{
     constructor(name, icon, exists, content = ``, img=null){
@@ -73,6 +88,8 @@ class navBarElement{
         this.img = img;
     }
 }
+
+console.log(scene)
 
 const autoRotateTimeout = 10000;
 // Beginning of Georgy trying to do dynamic loading with HTMX
@@ -330,6 +347,7 @@ function unhide(object){
 
 /*      MAIN FUNCTIONS      */
 
+var tempLight;
     async function onClick(event) {
         // Calculate mouse coordinates
         // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -350,16 +368,21 @@ function unhide(object){
         if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
             camera_state.copy(camera, true);
             // clickedObject = intersects[0].object;
+            // clickedObject.copy(intersects[0].object.parent, true)
             clickedObject.copy(intersects[0].object.parent, true)
             console.log('Clicked on:', clickedObject.name);
-            camera.lookAt(mouse.x, mouse.y, 0);
+            // camera.lookAt(mouse.x, mouse.y, 0);
             //tweenToClick(intersects[0]);
-            hide(model.children[0], clickedObject);
+            hide(model.children[1], clickedObject);
+            console.log(model)
             clickedObject.rotateX(-Math.PI*1/2)
             clickedObject.frustumCulled = true;
-            clickedObject.scale.set(50,50,50);
-            clickedObject.translateZ(-375);
+            clickedObject.scale.set(0.1,0.1,0.1);
+            // clickedObject.translateZ(-0.1);
+            clickedObject.translateZ(-0.5);
             scene.add(clickedObject);
+            // tempLight = new THREE.AmbientLight(0x404040)
+            // scene.add(tempLight)
             tmpA.push(clickedObject.name)
             console.log(tmpA)
 
@@ -433,6 +456,36 @@ function unhide(object){
                 closer.innerHTML = "X";
                 closer.onclick = function(){
                     if (zoomedin) { 
+                        var maxLighting = 2
+                        // function deleteExcessLighting(object, parent) {
+                        //     if (object instanceof THREE.Light) {
+                        //         console.log('Light:', object);
+                        //         index+=1;
+                        //         console.log(index)
+                        //         if (index > maxLighting) {
+                        //             console.log("IWMNEF LIKOJHUWEGRFKOLJHWEGRF")
+                        //             parent.remove(object)
+                        //         }
+                        //     }
+                        //
+                        //     if (object.children) {
+                        //         object.children.forEach(function(child) {
+                        //             deleteExcessLighting(child, object)
+                        //         })
+                        //     }
+                        // }
+                        //
+                        // deleteExcessLighting(scene)
+
+                        // console.log(camera.children)
+                        // for (let index = 0; index < camera.children.length; index++) {
+                        //     if (index > maxLighting) {
+                        //         camera.remove(camera.children[index])
+                        //         children[index].dispose()
+                        //         console.log("QWREWSDFIYHSDKF")
+                        //     }
+                        // }
+
                         camera.copy(camera_state, true);
                         scene.remove(clickedObject);
                         // Your Ctrl+Z key press logic here
@@ -444,7 +497,8 @@ function unhide(object){
                             col.remove()
                         });
 
-                        unhide(scene.children[2])
+                        unhide(scene.children[1])
+                        // scene.remove(tempLight)
 
                         renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
@@ -457,6 +511,7 @@ function unhide(object){
                         clickedObject = new THREE.Object3D();
 
                         camera.updateProjectionMatrix();
+                        console.log(scene)
                     }
                 };
                 child.appendChild(closer);

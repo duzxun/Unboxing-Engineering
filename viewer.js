@@ -20,6 +20,7 @@ import {
 	WebGLRenderer,
 	LinearToneMapping,
 	ACESFilmicToneMapping,
+    LoopOnce,
 } from 'three';
 import Stats from 'three/addons/libs/stats.module.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -97,8 +98,10 @@ export class Viewer {
 
 		this.backgroundColor = new Color(this.state.bgColor);
 
+        this.playAnimation = true;
+
 		this.scene = new Scene();
-		this.scene.background = this.backgroundColor;
+		// this.scene.background = this.backgroundColor;
 
 		const fov = options.preset === Preset.ASSET_GENERATOR ? (0.8 * 180) / Math.PI : 60;
 		const aspect = el.clientWidth / el.clientHeight;
@@ -106,7 +109,7 @@ export class Viewer {
 		this.activeCamera = this.defaultCamera;
 		this.scene.add(this.defaultCamera);
 
-		this.renderer = window.renderer = new WebGLRenderer({ antialias: true });
+		this.renderer = window.renderer = new WebGLRenderer({ antialias: true , alpha: true});
 		this.renderer.setClearColor(0xcccccc);
 		this.renderer.setPixelRatio(window.devicePixelRatio);
 		this.renderer.setSize(el.clientWidth, el.clientHeight);
@@ -213,7 +216,7 @@ export class Viewer {
 			const blobURLs = [];
 
 			loader.load(
-				"models/iphone12_less_parts/Test2.glb",
+				"models/iphone12_less_parts/iphone_explosion.glb",
 				(gltf) => {
 					window.VIEWER.json = gltf;
 
@@ -301,7 +304,7 @@ export class Viewer {
 
 		this.setClips(clips);
 
-		this.updateLights();
+		// this.updateLights();
 		// this.updateGUI();
 		this.updateEnvironment();
 		this.updateDisplay();
@@ -334,9 +337,23 @@ export class Viewer {
 	}
 
 	playAllClips() {
+        // if (this.playAnimation) {
+        //     for (let i = 0; i < this.clips.length; i++) {
+        //         this.mixer.clipAction(this.clips[i]).reset().play();
+        //         this.state.actionStates[this.clips[i].name] = true;
+        //         if (i == this.clips.length-1) {
+        //             this.playAnimation = false
+        //         }
+        //     }
+        // }
 		this.clips.forEach((clip) => {
-			this.mixer.clipAction(clip).reset().play();
+			let a = this.mixer.clipAction(clip).reset()
+            a.setLoop(LoopOnce)
+            a.clampWhenFinished = true
+            a.enabled = true;
+            a.play()
 			this.state.actionStates[clip.name] = true;
+
 		});
 	}
 
@@ -515,7 +532,7 @@ export class Viewer {
 
 		this.axesCorner = new AxesHelper(5);
 		this.axesScene.add(this.axesCorner);
-		this.axesDiv.appendChild(this.axesRenderer.domElement);
+		// this.axesDiv.appendChild(this.axesRenderer.domElement);
 	}
 
 	addGUI() {
