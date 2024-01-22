@@ -2,56 +2,90 @@
 
 import * as THREE from 'three';
 
+import * as VIEWER from './viewer.js'
+
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
 
 import TWEEN from '@tweenjs/tween.js'
-const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true});
-const canvasContainer = document.getElementById('canvas-container');
-renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-canvasContainer.appendChild(renderer.domElement);
 
-// renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+let opt = {
+    cameraPosition: null,
+    kiosk: false,
+    model: "",
+    preset: ""
+}
+window.VIEWER={}
+let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
+let scene;
+viewer.load("").then( () => { viewer.playAllClips()  
+    const light1 = new THREE.AmbientLight("#FFFFFF", 5);
+    light1.name = 'ambient_light';
+    scene.add(light1);
 
-const scene = new THREE.Scene();
+    const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+    light2.position.set(0.5, 0, 0.866); // ~60º
+    light2.name = 'main_light';
+    scene.add(light2);
+    const light3 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+    light3.position.set(-0.5, 0, 0.866); // ~60º
+    light3.name = 'main_light2';
+    scene.add(light3);
+
+    scene.background = null 
+    viewer.defaultCamera.rotation.x = -2.73382;
+    viewer.defaultCamera.rotation.y = 0.84599;
+    viewer.defaultCamera.rotation.z = 2.8288;
+    viewer.defaultCamera.position.x = 0.3624;
+    viewer.defaultCamera.position.y = 0.12729;
+    viewer.defaultCamera.position.z = -0.29466;
+    // viewer.defaultCamera.near = 10;
+    viewer.defaultCamera.lookAt(0,0,0);
+    viewer.defaultCamera.updateProjectionMatrix()
+}) 
+scene = viewer.scene;
+const camera = viewer.defaultCamera
 let clickedObject = new THREE.Object3D();
 let navBarElements = [];
 let zoomedin = false;
 
-renderer.setClearColor( 0xffffff, 0); 
 
-const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
-camera.rotation.y = 45/180*Math.PI;
-camera.position.x = 2300;
-camera.position.y = 0;
-camera.position.z = -2500;
-camera.near = 10;
-camera.lookAt(0,0,0);
+const renderer = viewer.renderer;
+renderer.setClearColor(0x000000, 0)
+const canvasContainer = document.getElementById('canvas-container');
+renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+renderer.domElement.addEventListener('click', onClick);
+
+
+// canvasContainer.appendChild(renderer.domElement);
+
+// renderer.setSize(window.innerWidth, window.innerHeight);
+// document.body.appendChild(renderer.domElement);
+
+// const camera = new THREE.PerspectiveCamera(40, window.innerWidth/window.innerHeight, 1, 5000);
 
 let camera_state = new THREE.PerspectiveCamera();
 
-const orbit = new OrbitControls(camera, renderer.domElement);
+const orbit = viewer.controls
 orbit.update();
 orbit.enablePan = false;
-orbit.minDistance= 3;
-orbit.maxDistance = 3500;
+// orbit.minDistance= 3;
+// orbit.maxDistance = 3500;
 orbit.autoRotate = true;
 
-const grid = new THREE.GridHelper(0,0);
-scene.add(grid);
-
-let hlight = new THREE.AmbientLight (0x404040,150);
-scene.add(hlight);
+// const grid = new THREE.GridHelper(0,0);
+// scene.add(grid);
+//
+// let hlight = new THREE.AmbientLight (0x404040,150);
+// scene.add(hlight);
 
 let mixer;
 const raycaster = new THREE.Raycaster();
 const mouse = new THREE.Vector2();
-let model;
+let model = scene;
 
 let loader = new GLTFLoader();
-
 
 class navBarElement{
     constructor(name, icon, exists, content = ``, img=null){
@@ -62,6 +96,8 @@ class navBarElement{
         this.img = img;
     }
 }
+
+console.log(scene)
 
 const autoRotateTimeout = 10000;
 // Beginning of Georgy trying to do dynamic loading with HTMX
@@ -319,6 +355,7 @@ function unhide(object){
 
 /*      MAIN FUNCTIONS      */
 
+var tempLight;
     async function onClick(event) {
         // Calculate mouse coordinates
         // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -339,18 +376,42 @@ function unhide(object){
         if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
             camera_state.copy(camera, true);
             // clickedObject = intersects[0].object;
+            // clickedObject.copy(intersects[0].object.parent, true)
             clickedObject.copy(intersects[0].object.parent, true)
             console.log('Clicked on:', clickedObject.name);
-            camera.lookAt(mouse.x, mouse.y, 0);
+            // camera.lookAt(mouse.x, mouse.y, 0);
             //tweenToClick(intersects[0]);
-            hide(model.children[0], clickedObject);
+            hide(model.children[1], clickedObject);
+            // console.log(model)
             clickedObject.rotateX(-Math.PI*1/2)
             clickedObject.frustumCulled = true;
-            clickedObject.scale.set(50,50,50);
-            clickedObject.translateZ(-375);
+            clickedObject.scale.set(0.1,0.1,0.1);
+
+            const boundingBox = new THREE.Box3().setFromObject(clickedObject)
+            const center = new THREE.Vector3()
+            boundingBox.getCenter(center)
+            clickedObject.position.sub(center)
+
+            const boundingSphere = boundingBox.getBoundingSphere(new THREE.Sphere());
+            const cameraDistance = boundingSphere.radius / Math.tan(Math.PI * 0.75 / 2); // Adjust the FOV (0.75 is used as an example)
+
+            camera.position.copy(boundingSphere.center.clone().add(new THREE.Vector3(0, 0, cameraDistance)));
+            camera.lookAt(boundingSphere.center);
+            camera.updateProjectionMatrix();
+
+            // clickedObject.translateZ(-0.1);
+            console.log(clickedObject)
+            // clickedObject.position.set(0,0,0)
+            // clickedObject.translateZ(-0.6);
             scene.add(clickedObject);
+
+            // camera.lookAt(clickedObject.getWorldPosition);
+            console.log(clickedObject.position)
+
+            // tempLight = new THREE.AmbientLight(0x404040)
+            // scene.add(tempLight)
             tmpA.push(clickedObject.name)
-            console.log(tmpA)
+            // console.log(tmpA)
 
                 var div = document.createElement("div");
                 div.className = "info-column"; // Add the "info-column" class for styling
@@ -422,6 +483,36 @@ function unhide(object){
                 closer.innerHTML = "X";
                 closer.onclick = function(){
                     if (zoomedin) { 
+                        var maxLighting = 2
+                        // function deleteExcessLighting(object, parent) {
+                        //     if (object instanceof THREE.Light) {
+                        //         console.log('Light:', object);
+                        //         index+=1;
+                        //         console.log(index)
+                        //         if (index > maxLighting) {
+                        //             console.log("IWMNEF LIKOJHUWEGRFKOLJHWEGRF")
+                        //             parent.remove(object)
+                        //         }
+                        //     }
+                        //
+                        //     if (object.children) {
+                        //         object.children.forEach(function(child) {
+                        //             deleteExcessLighting(child, object)
+                        //         })
+                        //     }
+                        // }
+                        //
+                        // deleteExcessLighting(scene)
+
+                        // console.log(camera.children)
+                        // for (let index = 0; index < camera.children.length; index++) {
+                        //     if (index > maxLighting) {
+                        //         camera.remove(camera.children[index])
+                        //         children[index].dispose()
+                        //         console.log("QWREWSDFIYHSDKF")
+                        //     }
+                        // }
+
                         camera.copy(camera_state, true);
                         scene.remove(clickedObject);
                         // Your Ctrl+Z key press logic here
@@ -433,7 +524,8 @@ function unhide(object){
                             col.remove()
                         });
 
-                        unhide(scene.children[2])
+                        unhide(scene.children[1])
+                        // scene.remove(tempLight)
 
                         renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
@@ -446,6 +538,7 @@ function unhide(object){
                         clickedObject = new THREE.Object3D();
 
                         camera.updateProjectionMatrix();
+                        console.log(scene)
                     }
                 };
                 child.appendChild(closer);
@@ -472,53 +565,6 @@ function unhide(object){
         }
     }
 
-// main model loader that loads navigation and phone model as well as animation
-loader.load('models/iphone12_less_parts/iphone_explosion.glb', function(gltf){
-    model = gltf.scene;
-    model.children[0].scale.set(4600,4600,4600);
-    mixer = new THREE.AnimationMixer(model);
-    const clips = gltf.animations;
-
-    console.log(model.children[0])
-
-    clips.forEach(function(clip) {
-        const action = mixer.clipAction(clip);
-        action.repetitions = 1;
-        action.play();
-    })
-    model.traverse( function( object ) {
-
-        object.frustumCulled = false;
-
-    } );
-
-    setupNav();
-    model.translateY(-350);
-    scene.add(model);
-    renderer.domElement.addEventListener('click', onClick);
-})
-
-const clock = new THREE.Clock();
-// let clock;
-let elapsed = 0
-let curr = 0;
-let stoptime = 2.9
-
-function animate() {
-    if(mixer) {
-        curr = clock.getDelta()
-        elapsed += curr;
-        if (elapsed < stoptime) {
-            mixer.update(curr);
-        }
-    }
-    orbit.update();
-    renderer.render(scene, camera);
-}
-
-renderer.setAnimationLoop(animate);
-
-
 window.addEventListener('resize', () => {
     const newWidth = canvasContainer.clientWidth;
     const newHeight = canvasContainer.clientHeight;
@@ -532,7 +578,7 @@ window.addEventListener('resize', () => {
 
 /*  CODE FOR HIGHLIGHTING A PIECE   */
 
-    document.addEventListener('mousemove', onMouseMove);
+document.addEventListener('mousemove', onMouseMove);
 let highlighted = 0;
 let oldparent = new THREE.Object3D();
 var popup = document.createElement("div");
@@ -542,6 +588,9 @@ document.body.appendChild(popup);
 
 function onMouseMove(event) {
     let canvas = document.querySelector('canvas');
+
+    // console.log(camera.position)
+    // console.log(camera.rotation)
 
     mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
     mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
