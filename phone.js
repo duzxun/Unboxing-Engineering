@@ -589,9 +589,6 @@ document.body.appendChild(popup);
 function onMouseMove(event) {
     let canvas = document.querySelector('canvas');
 
-    // console.log(camera.position)
-    // console.log(camera.rotation)
-
     mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
     mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
     // Update the picking ray with the camera and mouse position
@@ -599,6 +596,7 @@ function onMouseMove(event) {
 
     // Check for intersections
     const intersects = raycaster.intersectObjects(model.children, true);
+    if (intersects.length == 0) popup.style.display = "none";
 
     if (intersects.length > 0 && !zoomedin) {
         // handle the popup
@@ -608,30 +606,38 @@ function onMouseMove(event) {
         popup.style.display = 'block';
         popup.style.left = `${x}px`;
         popup.style.top = `${y}px`;
-        popup.innerHTML = intersects[0].object.parent.name.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
-        if (intersects[0].object.parent != highlighted) {
-            if (highlighted != 0) {
+        if (!viewer.inTutorial) {
+            popup.innerHTML = intersects[0].object.parent.name.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
+            if (intersects[0].object.parent != highlighted) {
+                if (highlighted != 0) {
+                    highlighted.children.forEach(function(child) {
+                        child.material.emissive.setHex(0x000000)
+                    })
+                }
+
+
+                oldparent.copy(intersects[0].object.parent, true)
+                highlighted = intersects[0].object.parent;
                 highlighted.children.forEach(function(child) {
-                    child.material.emissive.setHex(0x000000)
+
+                    let newmat = child.material.clone()
+                    if (child.material.map != null) {
+                        let newmap = child.material.map.clone()
+                        child.material.map = newmap;
+                    } else {
+                        child.material.map = null;
+                    }
+                    child.material = newmat;
+
+                    child.material.emissive.setHex(0x555555);
                 })
             }
-
-
-            oldparent.copy(intersects[0].object.parent, true)
-            highlighted = intersects[0].object.parent;
-            highlighted.children.forEach(function(child) {
-
-                let newmat = child.material.clone()
-                if (child.material.map != null) {
-                    let newmap = child.material.map.clone()
-                    child.material.map = newmap;
-                } else {
-                    child.material.map = null;
-                }
-                child.material = newmat;
-
-                child.material.emissive.setHex(0x555555);
-            })
+        } else {
+            if(intersects[0].object.name.includes("Box")) {
+                popup.innerHTML = intersects[0].object.name.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
+            } else {
+                popup.innerHTML = "iPhone"
+            }
         }
     } else if (highlighted != 0) {
         highlighted.children.forEach(function(child) {
@@ -644,6 +650,13 @@ function onMouseMove(event) {
 
 
 /*      ARCHIVED FUNCTIONS      */
+
+document.addEventListener('keydown', function(event) {
+    if (event.key == 't') {
+        if (viewer.inTutorial) viewer.inTutorial = false;   
+        viewer.mixer.timeScale = 1
+    }
+})
 
     // Debug function that was used to close content info columns and set back to main phone model
 document.addEventListener('keydown', function(event) {

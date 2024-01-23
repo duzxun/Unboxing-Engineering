@@ -21,6 +21,7 @@ import {
 	LinearToneMapping,
 	ACESFilmicToneMapping,
     LoopOnce,
+    Clock,
 } from 'three';
 import Stats from 'three/addons/libs/stats.module.js';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
@@ -54,6 +55,9 @@ Cache.enabled = true;
 
 export class Viewer {
 	constructor(el, options) {
+        this.inTutorial = true;
+        this.tutClock;
+        this.tutTime = 0;
 		this.el = el;
 		this.options = options;
 
@@ -148,6 +152,11 @@ export class Viewer {
         if (this.mixer == null) {
             this.mixer = new AnimationMixer(this.clips);
         }
+        if (this.tutClock != null) this.tutTime += this.tutClock.getDelta();
+        if (this.tutClock != null && this.tutTime > 2.5 && this.inTutorial) {
+            console.log(this.tutClock.getDelta())
+            this.mixer.timeScale = 0;
+        }
 		requestAnimationFrame(this.animate);
 
 		const dt = (time - this.prevTime) / 1000;
@@ -216,7 +225,7 @@ export class Viewer {
 			const blobURLs = [];
 
 			loader.load(
-				"models/iphone12_less_parts/iphone_explosion.glb",
+				"models/iphone12_less_parts/tut_with_more_delay.glb",
 				(gltf) => {
 					window.VIEWER.json = gltf;
 
@@ -336,6 +345,10 @@ export class Viewer {
 		this.mixer = new AnimationMixer(this.content);
 	}
 
+    pauseAnimation() {
+        this.mixer.timeScale = 0; // Set timeScale to 0 to pause
+    }
+
 	playAllClips() {
         // if (this.playAnimation) {
         //     for (let i = 0; i < this.clips.length; i++) {
@@ -346,6 +359,8 @@ export class Viewer {
         //         }
         //     }
         // }
+        this.tutClock = new Clock();
+        
 		this.clips.forEach((clip) => {
 			let a = this.mixer.clipAction(clip).reset()
             a.setLoop(LoopOnce)
