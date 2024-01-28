@@ -58,6 +58,7 @@ renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 renderer.domElement.addEventListener('click', onClick);
 
 
+
 // canvasContainer.appendChild(renderer.domElement);
 
 // renderer.setSize(window.innerWidth, window.innerHeight);
@@ -73,6 +74,62 @@ orbit.enablePan = false;
 // orbit.minDistance= 3;
 // orbit.maxDistance = 3500;
 orbit.autoRotate = true;
+
+// Tutorial functionality, uses global TutorialCounter to request the right files
+var TutorialCounter = 0;
+function progressTutorial() {
+
+    // If no popup exists, want to create it
+    var popup = document.getElementById("tutorial-popup")
+    if (!document.getElementById("tutorial-popup")) {
+        // Create a new div element for the popup
+        var popup = document.createElement('div');
+        popup.id = "tutorial-popup"
+
+        // Set the popup content and style
+        popup.style.position = 'fixed';
+        popup.style.top = '10' + 'px';
+        popup.style.left = '10' + 'px';
+        popup.style.padding = '10px';
+        popup.style.backgroundColor = '#f0f0f0';
+        popup.style.border = '1px solid #ccc';
+        popup.style.borderRadius = '5px';
+        popup.style.zIndex = '1000';
+        popup.style.boxSizing = 'border-box';
+        // popup.style.width = "25%"
+        // popup.style.height = "15%"
+        popup.style.maxWidth = "25%"
+        document.body.appendChild(popup);
+    }
+
+    // The message is always updated, using the fixed tutorial htmx templates,
+    // increasing by 1
+    // popup.innerHTML = "testing";
+    fetch("htmx-templates/tutorial/"+String(TutorialCounter)+".html")
+        .then(response => response.text())
+        .then(htmlContent => {
+            // Set the fetched HTML content as the innerHTML of the popup
+            popup.innerHTML = htmlContent;
+            TutorialCounter += 1;
+        })
+}
+
+progressTutorial();
+
+
+var mouseDown = false
+renderer.domElement.addEventListener('mousedown', () => {
+    mouseDown = true
+});
+renderer.domElement.addEventListener('mouseup', () => {
+    mouseDown = false
+})
+renderer.domElement.addEventListener('wheel', () => {
+    if(TutorialCounter == 2) {
+        progressTutorial();
+    }
+})
+
 
 // const grid = new THREE.GridHelper(0,0);
 // scene.add(grid);
@@ -150,6 +207,7 @@ partsMapOfAvailableEngineering["Charging_Port"] = [true,true,true,true,true,true
 partsMapOfAvailableEngineering["Antenna"] = [true,true,true,true,true,true,true,true]
 partsMapOfAvailableEngineering["Simholder"] = [true,true,true,true,true,true,true,true]
 partsMapOfAvailableEngineering["Motherboard"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["iPhone Box"] = [true,true,true,true,true,true,true,true]
 // End of Georgy trying to do dynamic loading with HTMX
 
 
@@ -259,54 +317,28 @@ function tweenToClick(intersection){
 function enableAutoRotate(){
     orbit.autoRotate = true;
 }
-
-/*function fitCameraToObject( camera, object, offset, controls ) {
-
-    offset = offset || 1.25;
-
-    const boundingBox = object.geometry.boundingBox;
-    console.log(object.geometry.boundingBox);
-
-    // get bounding box of object - this will be used to setup controls and camera
-    const minX =  object.geometry.boundingBox.min.x;
-    const maxX = object.geometry.boundingBox.max.x;
-
-    const minY =  object.geometry.boundingBox.min.y;
-    const maxY = object.geometry.boundingBox.max.y;
-
-    const miniZ =  object.geometryo.boundingBox.min.z;
-    const maxZ = object.geometry.boundingBx.max.z;
-
-
-
-    const center =  new THREE.Vector3(object.geometry.boundingBox);
-
-    const size = object.geometry.boundingBox.getSize();
-
-    // get the max side of the bounding box (fits to width OR height as needed )
-    const maxDim = Math.max( size.x, size.y, size.z );
-    const fov = camera.fov * ( Math.PI / 180 );
-    let cameraZ = Math.abs( maxDim / 4 * Math.tan( fov * 2 ) );
-
-    cameraZ *= offset; // zoom out a little so that objects don't fill the screen
-
-    camera.position.z = cameraZ;
-
-    const minZ = boundingBox.min.z;
-    const cameraToFar (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43993:46)
-    at TransformContext.error (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43989:19)
-    at TransformContext.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:41740:22)
-    at async Object.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:44283:30)
-    at async loadAndTransform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:54950:29)
-    at async viteTransformMiddrEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
-    const cameraToFar (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43993:46)
-    at TransformContext.error (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:43989:19)
-    at TransformContext.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:41740:22)
-    at async Object.transform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:44283:30)
-    at async loadAndTransform (file:///home/georgy/capstone/UnboxingEngineering/node_modules/vite/dist/node/chunks/dep-df561101.js:54950:29)
-    at async viteTransformMiddrEdge = ( minZ < 0 ) ? -minZ + cameraZ : cameraZ - minZ;
-}*/
-
+// function showPopup(message) {
+//     // Create a new div element for the popup
+//     var popup = document.createElement('div');
+//     popup.id = "tutorial-popup"
+//
+//     // Set the popup content and style
+//     popup.innerHTML = message;
+//     popup.style.position = 'fixed';
+//     popup.style.top = '10' + 'px';
+//     popup.style.left = '10' + 'px';
+//     popup.style.padding = '10px';
+//     popup.style.backgroundColor = '#f0f0f0';
+//     popup.style.border = '1px solid #ccc';
+//     popup.style.borderRadius = '5px';
+//     popup.style.zIndex = '1000';
+//
+//     // Append the popup to the body
+//     document.body.appendChild(popup);
+//
+// }
+//
+// showPopup("Testing!");
 
     /*      HIDING AND UNHIDING PIECES      */
 
@@ -355,8 +387,8 @@ function unhide(object){
 
 /*      MAIN FUNCTIONS      */
 
-var tempLight;
     async function onClick(event) {
+        if (viewer.inTutorial && TutorialCounter < 3) return;
         // Calculate mouse coordinates
         // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
         // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -372,16 +404,31 @@ var tempLight;
         // Check for intersections
         const intersects = raycaster.intersectObjects(model.children, true);
 
+        console.log(intersects)
 
         if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
             camera_state.copy(camera, true);
             // clickedObject = intersects[0].object;
             // clickedObject.copy(intersects[0].object.parent, true)
-            clickedObject.copy(intersects[0].object.parent, true)
+            if (!viewer.inTutorial) {
+                clickedObject.copy(intersects[0].object.parent, true)
+            } else {
+                if (!intersects[0].object.parent.name.includes("Container")) return;
+                clickedObject.copy(intersects[0].object.parent, true)
+                clickedObject.name = "iPhone Box"
+                clickedObject.rotation.x += Math.PI / 2;
+                progressTutorial()
+            }
+
             console.log('Clicked on:', clickedObject.name);
-            // camera.lookAt(mouse.x, mouse.y, 0);
+
             //tweenToClick(intersects[0]);
-            hide(model.children[1], clickedObject);
+            if(!viewer.inTutorial) {
+                hide(model.children[1], clickedObject);
+            } else {
+                hide(model.children[1], clickedObject);
+            }
+            popup.style.display = 'none';
             // console.log(model)
             clickedObject.rotateX(-Math.PI*1/2)
             clickedObject.frustumCulled = true;
@@ -404,6 +451,7 @@ var tempLight;
             // clickedObject.position.set(0,0,0)
             // clickedObject.translateZ(-0.6);
             scene.add(clickedObject);
+            console.log(scene)
 
             // camera.lookAt(clickedObject.getWorldPosition);
             console.log(clickedObject.position)
@@ -575,6 +623,12 @@ window.addEventListener('resize', () => {
 });
 
 
+// to skip tut
+document.addEventListener("keydown", (key) => {
+    if (key.key == 'n') {
+        viewer.inTutorial=false;
+    }
+})
 
 /*  CODE FOR HIGHLIGHTING A PIECE   */
 
@@ -587,6 +641,10 @@ document.body.appendChild(popup);
 
 
 function onMouseMove(event) {
+    if(TutorialCounter == 1 && mouseDown) {
+        progressTutorial();
+        mouseDown = false
+    }
     let canvas = document.querySelector('canvas');
 
     mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
@@ -633,7 +691,7 @@ function onMouseMove(event) {
                 })
             }
         } else {
-            if(intersects[0].object.name.includes("Box")) {
+            if(intersects[0].object.parent.name.includes("Container")) {
                 popup.innerHTML = intersects[0].object.name.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
             } else {
                 popup.innerHTML = "iPhone"

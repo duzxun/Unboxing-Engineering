@@ -59,6 +59,7 @@ export class Viewer {
         this.tutClock;
         this.tutTime = 0;
 		this.el = el;
+        this.previousControlsState = {} 
 		this.options = options;
 
 		this.lights = [];
@@ -225,7 +226,7 @@ export class Viewer {
 			const blobURLs = [];
 
 			loader.load(
-				"models/iphone12_less_parts/tut_with_more_delay.glb",
+				"models/iphone12_less_parts/tut-1-28.glb",
 				(gltf) => {
 					window.VIEWER.json = gltf;
 
