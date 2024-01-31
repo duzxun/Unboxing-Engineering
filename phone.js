@@ -78,6 +78,9 @@ orbit.autoRotate = true;
 // Tutorial functionality, uses global TutorialCounter to request the right files
 var TutorialCounter = 0;
 function progressTutorial() {
+    console.log("----------------------------")
+    console.log(TutorialCounter)
+    console.log("----------------------------")
 
     // If no popup exists, want to create it
     var popup = document.getElementById("tutorial-popup")
@@ -110,8 +113,8 @@ function progressTutorial() {
         .then(htmlContent => {
             // Set the fetched HTML content as the innerHTML of the popup
             popup.innerHTML = htmlContent;
-            TutorialCounter += 1;
         })
+    TutorialCounter += 1;
 }
 
 progressTutorial();
@@ -417,7 +420,9 @@ function unhide(object){
                 clickedObject.copy(intersects[0].object.parent, true)
                 clickedObject.name = "iPhone Box"
                 clickedObject.rotation.x += Math.PI / 2;
-                progressTutorial()
+                if (TutorialCounter == 3) {
+                    progressTutorial()
+                }
             }
 
             console.log('Clicked on:', clickedObject.name);
