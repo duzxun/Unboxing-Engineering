@@ -11,7 +11,18 @@
           <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     </head>
   <body>
-      <div class="column" id="canvas-container">
+    <div class="overlay" id="overlay">
+      <div class="popup">
+        <!-- Your pop-up content goes here -->
+        <div class="popup-header"><b>Welcome to Unboxing Engineering!</b></div> <br>
+        <div class="popup-content"><i>"Scientists study the world as it is, <br> engineers create the world that never has been."</i>
+        <br>
+        <br>
+        ~Theodore von Kármán</div>
+        <button id = "global-close" onclick="closePopup()">X</button>
+      </div>
+    </div>
+    <div class="column" id="canvas-container">
           <!-- Three.js canvas will be inserted here -->
     </div>
       <!-- <canvas id="bg"></canvas> -->

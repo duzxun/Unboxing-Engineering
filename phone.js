@@ -16,34 +16,13 @@ let opt = {
     model: "",
     preset: ""
 }
+
+
+
 window.VIEWER={}
 let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
 let scene;
-viewer.load("").then( () => { viewer.playAllClips()  
-    const light1 = new THREE.AmbientLight("#FFFFFF", 5);
-    light1.name = 'ambient_light';
-    scene.add(light1);
 
-    const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
-    light2.position.set(0.5, 0, 0.866); // ~60º
-    light2.name = 'main_light';
-    scene.add(light2);
-    const light3 = new THREE.DirectionalLight("#FFFFFF", 0.8);
-    light3.position.set(-0.5, 0, 0.866); // ~60º
-    light3.name = 'main_light2';
-    scene.add(light3);
-
-    scene.background = null 
-    viewer.defaultCamera.rotation.x = -2.73382;
-    viewer.defaultCamera.rotation.y = 0.84599;
-    viewer.defaultCamera.rotation.z = 2.8288;
-    viewer.defaultCamera.position.x = 0.3624;
-    viewer.defaultCamera.position.y = 0.12729;
-    viewer.defaultCamera.position.z = -0.29466;
-    // viewer.defaultCamera.near = 10;
-    viewer.defaultCamera.lookAt(0,0,0);
-    viewer.defaultCamera.updateProjectionMatrix()
-}) 
 scene = viewer.scene;
 const camera = viewer.defaultCamera
 let clickedObject = new THREE.Object3D();
@@ -57,7 +36,42 @@ const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 renderer.domElement.addEventListener('click', onClick);
 
+// Global Purpose pop up functions:
+function showPopup() {
+    if(viewer.inTutorial){
+        document.getElementById('overlay').style.display = 'flex';
+    }   
+}
 
+// Function to close the global purpose pop-up
+function closePopup() {
+    document.getElementById('overlay').style.display = 'none';
+    viewer.load("").then( () => { viewer.playAllClips()  
+        const light1 = new THREE.AmbientLight("#FFFFFF", 5);
+        light1.name = 'ambient_light';
+        scene.add(light1);
+    
+        const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+        light2.position.set(0.5, 0, 0.866); // ~60º
+        light2.name = 'main_light';
+        scene.add(light2);
+        const light3 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+        light3.position.set(-0.5, 0, 0.866); // ~60º
+        light3.name = 'main_light2';
+        scene.add(light3);
+    
+        scene.background = null 
+        viewer.defaultCamera.rotation.x = -2.73382;
+        viewer.defaultCamera.rotation.y = 0.84599;
+        viewer.defaultCamera.rotation.z = 2.8288;
+        viewer.defaultCamera.position.x = 0.3624;
+        viewer.defaultCamera.position.y = 0.12729;
+        viewer.defaultCamera.position.z = -0.29466;
+        // viewer.defaultCamera.near = 10;
+        viewer.defaultCamera.lookAt(0,0,0);
+        viewer.defaultCamera.updateProjectionMatrix()
+    }) 
+}
 
 // canvasContainer.appendChild(renderer.domElement);
 
@@ -74,6 +88,11 @@ orbit.enablePan = false;
 // orbit.minDistance= 3;
 // orbit.maxDistance = 3500;
 orbit.autoRotate = true;
+
+
+document.getElementById('global-close').addEventListener("click", closePopup);
+// Show the pop-up when the window loads
+window.onload = showPopup;
 
 // Tutorial functionality, uses global TutorialCounter to request the right files
 var TutorialCounter = 0;
@@ -480,7 +499,7 @@ function unhide(object){
                 htmx.ajax("GET", "/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
 
                     // Now configure which icons are available for which parts
-                    let iconList = document.getElementById("navbar-list")
+                    let iconList = document.getElementById("navbar-labels")
                     let liList = iconList.getElementsByTagName("li")
 
                     for (let i = 0; i < liList.length; i++) {
