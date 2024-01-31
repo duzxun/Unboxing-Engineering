@@ -494,7 +494,7 @@ function unhide(object){
                 htmx.ajax("GET", "/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
 
                     // Now configure which icons are available for which parts
-                    let iconList = document.getElementById("navbar-list")
+                    let iconList = document.getElementById("navbar-labels")
                     let liList = iconList.getElementsByTagName("li")
 
                     for (let i = 0; i < liList.length; i++) {

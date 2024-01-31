@@ -177,8 +177,8 @@ canvas {
   }
 
   .navbar-icons{
-    width: 33%;
-    height: 80%;
+    width: 66%;
+    height: 90%;
     align-items: center;
     text-align: center;
     justify-content: center;
@@ -189,7 +189,7 @@ canvas {
 
     
   .navbar-labels{
-    width: 66%;
+    width: 100%;
     height: 100%;
     margin-top: 5%;
     transition: translate var(--animation-timing);
@@ -232,6 +232,8 @@ canvas {
     height: 90%;
     border-radius: 30px;
     text-wrap:pretty;
+    overflow-x: hidden;
+    overflow-y: auto;
   }
   
   .btn{
