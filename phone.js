@@ -70,6 +70,7 @@ function closePopup() {
         // viewer.defaultCamera.near = 10;
         viewer.defaultCamera.lookAt(0,0,0);
         viewer.defaultCamera.updateProjectionMatrix()
+        progressTutorial();
     }) 
 }
 
@@ -93,6 +94,33 @@ orbit.autoRotate = true;
 document.getElementById('global-close').addEventListener("click", closePopup);
 // Show the pop-up when the window loads
 window.onload = showPopup;
+
+function addTutorialNextButton() {
+    var button = document.createElement("button");
+    button.innerHTML = "Next!";
+
+    // Set an id for the button
+    button.id = "tut-button";
+
+    button.style.position = "absolute"
+    button.style.bottom = "10px"
+    button.style.right = "10px"
+    button.style.padding = "10px"
+    button.style.color = "white"
+    button.style.backgroundColor = "green"
+    button.style.fontWeight = "bold"
+
+    // Get the container div
+    var container = document.getElementById("tutorial-popup");
+
+    // Add the onclick
+    button.addEventListener("click", () => {
+        progressTutorial()
+    })
+
+    // Append the button to the container
+    container.appendChild(button);
+}
 
 // Tutorial functionality, uses global TutorialCounter to request the right files
 var TutorialCounter = 0;
@@ -136,7 +164,6 @@ function progressTutorial() {
     TutorialCounter += 1;
 }
 
-progressTutorial();
 
 
 var mouseDown = false
@@ -148,7 +175,7 @@ renderer.domElement.addEventListener('mouseup', () => {
 })
 renderer.domElement.addEventListener('wheel', () => {
     if(TutorialCounter == 2) {
-        progressTutorial();
+        addTutorialNextButton();
     }
 })
 
@@ -440,7 +467,7 @@ function unhide(object){
                 clickedObject.name = "iPhone Box"
                 clickedObject.rotation.x += Math.PI / 2;
                 if (TutorialCounter == 3) {
-                    progressTutorial()
+                    addTutorialNextButton()
                 }
             }
 
@@ -666,7 +693,7 @@ document.body.appendChild(popup);
 
 function onMouseMove(event) {
     if(TutorialCounter == 1 && mouseDown) {
-        progressTutorial();
+        addTutorialNextButton();
         mouseDown = false
     }
     let canvas = document.querySelector('canvas');
