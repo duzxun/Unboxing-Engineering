@@ -314,3 +314,11 @@ p{
   z-index: 10000;
   cursor: pointer;
 }
+
+.popup-button{
+  position: absolute;
+  padding: 10px;
+  color: white;
+  background-color: green;
+  font-weight: bold;
+}

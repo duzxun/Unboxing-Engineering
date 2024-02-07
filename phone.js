@@ -36,8 +36,8 @@ const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 renderer.domElement.addEventListener('click', onClick);
 
-// Function to close the global purpose pop-up
-function closePopup() {
+// Function to close the global purpose pop-up and run the tutorial
+function closePopupTut() {
     document.getElementById('overlay').style.display = 'none';
     viewer.load("").then( () => { viewer.playAllClips()  
         const light1 = new THREE.AmbientLight("#FFFFFF", 5);
@@ -67,6 +67,37 @@ function closePopup() {
     }) 
 }
 
+// Function to close the global purpose pop-up and go to the main learning space
+function closePopupMain() {
+    document.getElementById('overlay').style.display = 'none'; 
+    viewer.load("").then( () => { viewer.playAllClips()  
+        const light1 = new THREE.AmbientLight("#FFFFFF", 5);
+        light1.name = 'ambient_light';
+        scene.add(light1);
+    
+        const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+        light2.position.set(0.5, 0, 0.866); // ~60º
+        light2.name = 'main_light';
+        scene.add(light2);
+        const light3 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+        light3.position.set(-0.5, 0, 0.866); // ~60º
+        light3.name = 'main_light2';
+        scene.add(light3);
+    
+        scene.background = null 
+        viewer.defaultCamera.rotation.x = -2.73382;
+        viewer.defaultCamera.rotation.y = 0.84599;
+        viewer.defaultCamera.rotation.z = 2.8288;
+        viewer.defaultCamera.position.x = 0.3624;
+        viewer.defaultCamera.position.y = 0.12729;
+        viewer.defaultCamera.position.z = -0.29466;
+        // viewer.defaultCamera.near = 10;
+        viewer.defaultCamera.lookAt(0,0,0);
+        viewer.defaultCamera.updateProjectionMatrix()
+    });
+    viewer.inTutorial=false; 
+}
+
 // Global Purpose pop up functions, path_to_template is string path to template:
 function showPopup(path_to_template) {
     //grab the overlay object and make it visible
@@ -75,8 +106,14 @@ function showPopup(path_to_template) {
     //thing popup content is being added to
     let popup_inner = document.getElementById('popup-inner');
     htmx.ajax("GET", path_to_template, {target: popup_inner, swap: "overlay"}).then(() => {
-        //close function attached to close button
-        document.getElementById('global-close').addEventListener("click", closePopup);
+        //if this is the global pop-up, attach both the close and go to tutorial and skip tutorial
+        //button events
+        if(path_to_template == "/htmx-templates/global_pop_initial.html"){
+            document.getElementById('runTut').addEventListener("click", closePopupTut);
+            document.getElementById('skipTut').addEventListener("click", closePopupMain);
+        }else{
+            document.getElementById('global-close').addEventListener("click", closePopupMain);
+        }
     });
 }
 
@@ -108,14 +145,10 @@ function addTutorialNextButton() {
     // Set an id for the button
     button.id = "tut-button";
 
-    button.style.position = "absolute"
+    button.classList.add("popup-button");
     button.style.bottom = "10px"
     button.style.right = "10px"
     button.style.padding = "10px"
-    button.style.color = "white"
-    button.style.backgroundColor = "green"
-    button.style.fontWeight = "bold"
-
     // Get the container div
     var container = document.getElementById("tutorial-popup");
 
