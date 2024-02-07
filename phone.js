@@ -36,13 +36,6 @@ const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 renderer.domElement.addEventListener('click', onClick);
 
-// Global Purpose pop up functions:
-function showPopup() {
-    if(viewer.inTutorial){
-        document.getElementById('overlay').style.display = 'flex';
-    }   
-}
-
 // Function to close the global purpose pop-up
 function closePopup() {
     document.getElementById('overlay').style.display = 'none';
@@ -74,6 +67,19 @@ function closePopup() {
     }) 
 }
 
+// Global Purpose pop up functions, path_to_template is string path to template:
+function showPopup(path_to_template) {
+    //grab the overlay object and make it visible
+    document.getElementById('overlay').style.display = 'flex';
+    
+    //thing popup content is being added to
+    let popup_inner = document.getElementById('popup-inner');
+    htmx.ajax("GET", path_to_template, {target: popup_inner, swap: "overlay"}).then(() => {
+        //close function attached to close button
+        document.getElementById('global-close').addEventListener("click", closePopup);
+    });
+}
+
 // canvasContainer.appendChild(renderer.domElement);
 
 // renderer.setSize(window.innerWidth, window.innerHeight);
@@ -91,9 +97,9 @@ orbit.enablePan = false;
 orbit.autoRotate = true;
 
 
-document.getElementById('global-close').addEventListener("click", closePopup);
+
 // Show the pop-up when the window loads
-window.onload = showPopup;
+window.onload = showPopup("/htmx-templates/global_pop_initial.html");
 
 function addTutorialNextButton() {
     var button = document.createElement("button");
@@ -389,7 +395,7 @@ function enableAutoRotate(){
 //
 // showPopup("Testing!");
 
-    /*      HIDING AND UNHIDING PIECES      */
+/*      HIDING AND UNHIDING PIECES      */
 
     // function that hides an object that has been clicked on recursively
 function hide(object, targetObject){
@@ -531,6 +537,27 @@ function unhide(object){
 
                     for (let i = 0; i < liList.length; i++) {
                         let listElement = liList[i]
+                        if(i == 0){
+                            let icon = listElement.getElementsByTagName("i")[0];
+                            icon.title = "Description" ;
+                            icon.addEventListener('click', function(event) {
+                                // Replace the info-box title with the contents of the title of the icon
+                                console.log(event.target)
+                                let title = document.getElementById("title")
+                                title.innerHTML = clickedObject.name + ": " + event.target.title
+
+                                currentlySelectedDiscipline = event.target.title.split(" ")[0]
+
+                                // Replace the content in the info-box with new content via HTMX ajax GET request
+                                let textBox = document.getElementById("info-content") 
+                                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
+
+                                // Replace the img tag with the associated img
+                                let imgBox = document.getElementById("diagram")
+                                imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
+                                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
+                            });
+                        }
                         if (partsMapOfAvailableEngineering[clickedObject.name][i-1] == false) {
                             listElement.remove()
                         } else if (i > 0) {
