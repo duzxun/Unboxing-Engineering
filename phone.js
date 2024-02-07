@@ -577,7 +577,7 @@ function unhide(object){
                                 // Replace the info-box title with the contents of the title of the icon
                                 console.log(event.target)
                                 let title = document.getElementById("title")
-                                title.innerHTML = clickedObject.name + ": " + event.target.title
+                                title.innerHTML = "What is a " + clickedObject.name + "?"
 
                                 currentlySelectedDiscipline = event.target.title.split(" ")[0]
 
