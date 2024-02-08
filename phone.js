@@ -135,9 +135,22 @@ orbit.autoRotate = true;
 // Show the pop-up when the window loads
 window.onload = showPopup("/htmx-templates/global_pop_initial.html");
 
+// ending the tutorial by hiding the boxes and playing the rest of the animation
+function endTutorial() {
+    
+    scene.children[1].children[3].visible = false
+    scene.children[1].children[4].visible = false
+    viewer.inTutorial = false
+    viewer.mixer.timeScale = 1
+    if(document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove()
+}
+
 function addTutorialNextButton() {
+    console.log("TUTNEXT " + TutorialCounter)
     var button = document.createElement("button");
+    if (TutorialCounter <= 8)
     button.innerHTML = "Next!";
+    else button.innerHTML = "End Tutorial"
 
     // Set an id for the button
     button.id = "tut-button";
@@ -149,11 +162,14 @@ function addTutorialNextButton() {
     // Get the container div
     var container = document.getElementById("tutorial-popup");
 
-    // Add the onclick
+    // Add the onclick if still in tutorial, else make an onclick to end the tutorial
     button.addEventListener("click", () => {
+        if (TutorialCounter <= 8)
         progressTutorial()
+        else { 
+            endTutorial()
+        }
     })
-
     // Append the button to the container
     container.appendChild(button);
 }
@@ -245,6 +261,7 @@ function progressTutorial() {
     console.log(TutorialCounter)
     console.log("----------------------------")
 
+    console.log("progtut " + TutorialCounter)
     // If no popup exists, want to create it
     var popup = document.getElementById("tutorial-popup")
     if (!document.getElementById("tutorial-popup")) {
@@ -276,8 +293,10 @@ function progressTutorial() {
         .then(htmlContent => {
             // Set the fetched HTML content as the innerHTML of the popup
             popup.innerHTML = htmlContent;
+            if (TutorialCounter == 9) addTutorialNextButton()
         })
     TutorialCounter += 1;
+
 }
 
 
@@ -661,15 +680,13 @@ function unhide(object){
                                 title.innerHTML = "What is a " + clickedObject.name + "?"
 
                                 currentlySelectedDiscipline = event.target.title.split(" ")[0]
+                                if (currentlySelectedDiscipline == "Description") currentlySelectedDiscipline = "Default-content"
 
                                 // Replace the content in the info-box with new content via HTMX ajax GET request
                                 let textBox = document.getElementById("info-content") 
                                 htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
-                                // Replace the img tag with the associated img
-                                let imgBox = document.getElementById("diagram")
-                                imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
-                                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
+
                             });
                         }
                         if (partsMapOfAvailableEngineering[clickedObject.name][i-1] == false) {
@@ -689,9 +706,7 @@ function unhide(object){
                                 let textBox = document.getElementById("info-content") 
                                 htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
-                                // Replace the img tag with the associated img
-                                let imgBox = document.getElementById("diagram")
-                                imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
+                                if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
                                 // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
                             });
                         }
@@ -752,6 +767,10 @@ function unhide(object){
                         //         console.log("QWREWSDFIYHSDKF")
                         //     }
                         // }
+                        
+                        if (viewer.inTutorial && TutorialCounter == 8) {
+                            addTutorialNextButton()
+                        }
 
                         camera.copy(camera_state, true);
                         scene.remove(clickedObject);
