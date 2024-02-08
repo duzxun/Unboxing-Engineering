@@ -27,7 +27,6 @@ let clickedObject = new THREE.Object3D();
 let navBarElements = [];
 let zoomedin = false;
 
-
 const renderer = viewer.renderer;
 renderer.setClearColor(0x000000, 0)
 const canvasContainer = document.getElementById('canvas-container');
@@ -159,6 +158,86 @@ function addTutorialNextButton() {
     container.appendChild(button);
 }
 
+function imageOnClick() {
+
+    // if already zoomed in
+    if (document.getElementById("zoomedInImage")) return;
+
+    var eImg = document.getElementsByTagName("img")[0] 
+    var canvas = document.getElementById("canvas-container");
+
+    // Get the canvas size
+    var canvasWidth = canvas.clientWidth;
+    var canvasHeight = canvas.clientHeight;
+
+    // Create a new div element
+    var div = document.createElement("div");
+
+    var navBarWidth = document.getElementsByClassName("navbar")[0].clientWidth
+    div.style.width = (canvasWidth - navBarWidth) + "px";
+    div.style.height = canvasHeight + "px";
+    div.className = "info-container"
+    div.setAttribute("id", "zoomedInImage")
+
+    // Position the div over the canvas
+    div.style.position = "absolute";
+    div.style.top = canvas.offsetTop + "px";
+    div.style.left = canvas.offsetLeft + "px";
+    div.style.zIndex = 800
+    div.style.display = "flex"
+    div.style.justifyContent = "center"
+    div.style.alignItems = "center"
+
+    // Create an image element
+    var img = document.createElement("img");
+
+    img.src = eImg.src
+
+    // Set the image size to match the canvas
+    img.style.width = 0.9*(canvasWidth - navBarWidth) + "px";
+    img.style.height = 0.9*canvasHeight + "px";
+    // img.style.padding = "10%"
+    img.style.zIndex = 801
+
+    // the close button
+    let closer = document.createElement("button");
+    closer.id = "X";
+    closer.className = "imgX"
+    closer.innerHTML = "X";
+    closer.style.position = "absolute"
+    closer.addEventListener("click", () => {
+
+        var todel = document.getElementById("zoomedInImage") 
+        todel.remove()
+
+        if (viewer.inTutorial && TutorialCounter == 5) {
+            addTutorialNextButton()
+        }
+    })
+    div.appendChild(closer)
+    // Append the image to the div
+    div.appendChild(img);
+
+    // Append the div to the document body
+    document.body.appendChild(div);
+
+    if (viewer.inTutorial && TutorialCounter == 4) {
+        addTutorialNextButton()
+    }
+}
+
+document.addEventListener("htmx:afterSwap", (event) => {
+    // Just make a div as large as the canvas, and add the image to it with 
+    // twice the size
+    // Get the canvas element
+    // Set the image source
+    var eImg = event.target.querySelector("img") 
+    if (eImg) {
+        eImg.addEventListener('click', imageOnClick)
+        event.stopPropagation()
+    }
+})
+
 // Tutorial functionality, uses global TutorialCounter to request the right files
 var TutorialCounter = 0;
 function progressTutorial() {
@@ -211,7 +290,10 @@ renderer.domElement.addEventListener('mouseup', () => {
     mouseDown = false
 })
 renderer.domElement.addEventListener('wheel', () => {
-    if(TutorialCounter == 2) {
+    if(viewer.inTutorial && TutorialCounter == 2) {
+        addTutorialNextButton();
+    }
+    if(viewer.inTutorial && TutorialCounter == 6) {
         addTutorialNextButton();
     }
 })
@@ -751,7 +833,7 @@ document.body.appendChild(popup);
 
 
 function onMouseMove(event) {
-    if(TutorialCounter == 1 && mouseDown) {
+    if((TutorialCounter == 1 || TutorialCounter == 6) && mouseDown) {
         addTutorialNextButton();
         mouseDown = false
     }
