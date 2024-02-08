@@ -1,6 +1,51 @@
+<script>
+function imageOnClick() {
+    // Just make a div as large as the canvas, and add the image to it with 
+    // twice the size
+    // Get the canvas element
+    // Set the image source
+    var eImg = document.getElementsByTagName("img")[0] 
+    var canvas = document.getElementById("canvas-container");
+
+    // Get the canvas size
+    var canvasWidth = canvas.clientWidth;
+    var canvasHeight = canvas.clientHeight;
+
+    // Create a new div element
+    var div = document.createElement("div");
+
+    var navBarWidth = document.getElementsByClassName("navbar")[0].clientWidth
+    div.style.width = (canvasWidth - navBarWidth) + "px";
+    div.style.height = canvasHeight + "px";
+    div.className = "info-container"
+    div.setAttribute("id", "zoomedInImage")
+
+    // Position the div over the canvas
+    div.style.position = "absolute";
+    div.style.top = canvas.offsetTop + "px";
+    div.style.left = canvas.offsetLeft + "px";
+    div.style.zIndex = 800
+
+    // Create an image element
+    var img = document.createElement("img");
+
+    img.src = eImg.src
+
+    // Set the image size to match the canvas
+    img.style.width = (canvasWidth - navBarWidth) + "px";
+    img.style.height = canvasHeight + "px";
+    // img.style.padding = "10%"
+    img.style.zIndex = 801
+
+    // Append the image to the div
+    div.appendChild(img);
+
+    // Append the div to the document body
+    document.body.appendChild(div);
+}
+</script>
 <p>The box is really important and so on :)</p>
 
-<p><img alt="" src="https://ckeditor.com/apps/ckfinder/userfiles/files/mike.jpg" style="height:382px; width:680px" /></p>
+<p><img alt="" onclick="imageOnClick()" src="/htmx-templates/iPhone Box/test.jpeg" style="height:428; width:428" /></p>
 
 <p style="text-align:right">&nbsp;</p>
-

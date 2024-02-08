@@ -17,8 +17,6 @@ let opt = {
     preset: ""
 }
 
-
-
 window.VIEWER={}
 let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
 let scene;
@@ -452,6 +450,7 @@ function hide(object, targetObject){
         }
     }
 }
+
 
 // function that unhides an object recursively
 function unhide(object){
