@@ -17,8 +17,6 @@ let opt = {
     preset: ""
 }
 
-
-
 window.VIEWER={}
 let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
 let scene;
@@ -29,22 +27,14 @@ let clickedObject = new THREE.Object3D();
 let navBarElements = [];
 let zoomedin = false;
 
-
 const renderer = viewer.renderer;
 renderer.setClearColor(0x000000, 0)
 const canvasContainer = document.getElementById('canvas-container');
 renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 renderer.domElement.addEventListener('click', onClick);
 
-// Global Purpose pop up functions:
-function showPopup() {
-    if(viewer.inTutorial){
-        document.getElementById('overlay').style.display = 'flex';
-    }   
-}
-
-// Function to close the global purpose pop-up
-function closePopup() {
+// Function to close the global purpose pop-up and run the tutorial
+function closePopupTut() {
     document.getElementById('overlay').style.display = 'none';
     viewer.load("").then( () => { viewer.playAllClips()  
         const light1 = new THREE.AmbientLight("#FFFFFF", 5);
@@ -70,7 +60,58 @@ function closePopup() {
         // viewer.defaultCamera.near = 10;
         viewer.defaultCamera.lookAt(0,0,0);
         viewer.defaultCamera.updateProjectionMatrix()
+        progressTutorial();
     }) 
+}
+
+// Function to close the global purpose pop-up and go to the main learning space
+function closePopupMain() {
+    document.getElementById('overlay').style.display = 'none'; 
+    viewer.load("").then( () => { viewer.playAllClips()  
+        const light1 = new THREE.AmbientLight("#FFFFFF", 5);
+        light1.name = 'ambient_light';
+        scene.add(light1);
+    
+        const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+        light2.position.set(0.5, 0, 0.866); // ~60º
+        light2.name = 'main_light';
+        scene.add(light2);
+        const light3 = new THREE.DirectionalLight("#FFFFFF", 0.8);
+        light3.position.set(-0.5, 0, 0.866); // ~60º
+        light3.name = 'main_light2';
+        scene.add(light3);
+    
+        scene.background = null 
+        viewer.defaultCamera.rotation.x = -2.73382;
+        viewer.defaultCamera.rotation.y = 0.84599;
+        viewer.defaultCamera.rotation.z = 2.8288;
+        viewer.defaultCamera.position.x = 0.3624;
+        viewer.defaultCamera.position.y = 0.12729;
+        viewer.defaultCamera.position.z = -0.29466;
+        // viewer.defaultCamera.near = 10;
+        viewer.defaultCamera.lookAt(0,0,0);
+        viewer.defaultCamera.updateProjectionMatrix()
+    });
+    viewer.inTutorial=false; 
+}
+
+// Global Purpose pop up functions, path_to_template is string path to template:
+function showPopup(path_to_template) {
+    //grab the overlay object and make it visible
+    document.getElementById('overlay').style.display = 'flex';
+    
+    //thing popup content is being added to
+    let popup_inner = document.getElementById('popup-inner');
+    htmx.ajax("GET", path_to_template, {target: popup_inner, swap: "overlay"}).then(() => {
+        //if this is the global pop-up, attach both the close and go to tutorial and skip tutorial
+        //button events
+        if(path_to_template == "/htmx-templates/global_pop_initial.html"){
+            document.getElementById('runTut').addEventListener("click", closePopupTut);
+            document.getElementById('skipTut').addEventListener("click", closePopupMain);
+        }else{
+            document.getElementById('global-close').addEventListener("click", closePopupMain);
+        }
+    });
 }
 
 // canvasContainer.appendChild(renderer.domElement);
@@ -90,14 +131,137 @@ orbit.enablePan = false;
 orbit.autoRotate = true;
 
 
-document.getElementById('global-close').addEventListener("click", closePopup);
+
 // Show the pop-up when the window loads
-window.onload = showPopup;
+window.onload = showPopup("/htmx-templates/global_pop_initial.html");
+
+// ending the tutorial by hiding the boxes and playing the rest of the animation
+function endTutorial() {
+    
+    scene.children[1].children[3].visible = false
+    scene.children[1].children[4].visible = false
+    viewer.inTutorial = false
+    viewer.mixer.timeScale = 1
+    if(document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove()
+}
+
+function addTutorialNextButton() {
+    console.log("TUTNEXT " + TutorialCounter)
+    var button = document.createElement("button");
+    if (TutorialCounter <= 8)
+    button.innerHTML = "Next!";
+    else button.innerHTML = "End Tutorial"
+
+    // Set an id for the button
+    button.id = "tut-button";
+
+    button.classList.add("popup-button");
+    button.style.bottom = "10px"
+    button.style.right = "10px"
+    button.style.padding = "10px"
+    // Get the container div
+    var container = document.getElementById("tutorial-popup");
+
+    // Add the onclick if still in tutorial, else make an onclick to end the tutorial
+    button.addEventListener("click", () => {
+        if (TutorialCounter <= 8)
+        progressTutorial()
+        else { 
+            endTutorial()
+        }
+    })
+    // Append the button to the container
+    container.appendChild(button);
+}
+
+function imageOnClick() {
+
+    // if already zoomed in
+    if (document.getElementById("zoomedInImage")) return;
+
+    var eImg = document.getElementsByTagName("img")[0] 
+    var canvas = document.getElementById("canvas-container");
+
+    // Get the canvas size
+    var canvasWidth = canvas.clientWidth;
+    var canvasHeight = canvas.clientHeight;
+
+    // Create a new div element
+    var div = document.createElement("div");
+
+    var navBarWidth = document.getElementsByClassName("navbar")[0].clientWidth
+    div.style.width = (canvasWidth - navBarWidth) + "px";
+    div.style.height = canvasHeight + "px";
+    div.className = "info-container"
+    div.setAttribute("id", "zoomedInImage")
+
+    // Position the div over the canvas
+    div.style.position = "absolute";
+    div.style.top = canvas.offsetTop + "px";
+    div.style.left = canvas.offsetLeft + "px";
+    div.style.zIndex = 800
+    div.style.display = "flex"
+    div.style.justifyContent = "center"
+    div.style.alignItems = "center"
+
+    // Create an image element
+    var img = document.createElement("img");
+
+    img.src = eImg.src
+
+    // Set the image size to match the canvas
+    img.style.width = 0.9*(canvasWidth - navBarWidth) + "px";
+    img.style.height = 0.9*canvasHeight + "px";
+    // img.style.padding = "10%"
+    img.style.zIndex = 801
+
+    // the close button
+    let closer = document.createElement("button");
+    closer.id = "X";
+    closer.className = "imgX"
+    closer.innerHTML = "X";
+    closer.style.position = "absolute"
+    closer.addEventListener("click", () => {
+
+        var todel = document.getElementById("zoomedInImage") 
+        todel.remove()
+
+        if (viewer.inTutorial && TutorialCounter == 5) {
+            addTutorialNextButton()
+        }
+    })
+    div.appendChild(closer)
+    // Append the image to the div
+    div.appendChild(img);
+
+    // Append the div to the document body
+    document.body.appendChild(div);
+
+    if (viewer.inTutorial && TutorialCounter == 4) {
+        addTutorialNextButton()
+    }
+}
+
+document.addEventListener("htmx:afterSwap", (event) => {
+    // Just make a div as large as the canvas, and add the image to it with 
+    // twice the size
+    // Get the canvas element
+    // Set the image source
+    var eImg = event.target.querySelector("img") 
+    if (eImg) {
+        eImg.addEventListener('click', imageOnClick)
+        event.stopPropagation()
+    }
+})
 
 // Tutorial functionality, uses global TutorialCounter to request the right files
 var TutorialCounter = 0;
 function progressTutorial() {
+    console.log("----------------------------")
+    console.log(TutorialCounter)
+    console.log("----------------------------")
 
+    console.log("progtut " + TutorialCounter)
     // If no popup exists, want to create it
     var popup = document.getElementById("tutorial-popup")
     if (!document.getElementById("tutorial-popup")) {
@@ -129,11 +293,12 @@ function progressTutorial() {
         .then(htmlContent => {
             // Set the fetched HTML content as the innerHTML of the popup
             popup.innerHTML = htmlContent;
-            TutorialCounter += 1;
+            if (TutorialCounter == 9) addTutorialNextButton()
         })
+    TutorialCounter += 1;
+
 }
 
-progressTutorial();
 
 
 var mouseDown = false
@@ -144,8 +309,11 @@ renderer.domElement.addEventListener('mouseup', () => {
     mouseDown = false
 })
 renderer.domElement.addEventListener('wheel', () => {
-    if(TutorialCounter == 2) {
-        progressTutorial();
+    if(viewer.inTutorial && TutorialCounter == 2) {
+        addTutorialNextButton();
+    }
+    if(viewer.inTutorial && TutorialCounter == 6) {
+        addTutorialNextButton();
     }
 })
 
@@ -359,7 +527,7 @@ function enableAutoRotate(){
 //
 // showPopup("Testing!");
 
-    /*      HIDING AND UNHIDING PIECES      */
+/*      HIDING AND UNHIDING PIECES      */
 
     // function that hides an object that has been clicked on recursively
 function hide(object, targetObject){
@@ -383,6 +551,7 @@ function hide(object, targetObject){
         }
     }
 }
+
 
 // function that unhides an object recursively
 function unhide(object){
@@ -436,7 +605,9 @@ function unhide(object){
                 clickedObject.copy(intersects[0].object.parent, true)
                 clickedObject.name = "iPhone Box"
                 clickedObject.rotation.x += Math.PI / 2;
-                progressTutorial()
+                if (TutorialCounter == 3) {
+                    addTutorialNextButton()
+                }
             }
 
             console.log('Clicked on:', clickedObject.name);
@@ -494,11 +665,30 @@ function unhide(object){
                 htmx.ajax("GET", "/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
 
                     // Now configure which icons are available for which parts
-                    let iconList = document.getElementById("navbar-list")
+                    let iconList = document.getElementById("navbar-labels")
                     let liList = iconList.getElementsByTagName("li")
 
                     for (let i = 0; i < liList.length; i++) {
                         let listElement = liList[i]
+                        if(i == 0){
+                            let icon = listElement.getElementsByTagName("i")[0];
+                            icon.title = "Description" ;
+                            icon.addEventListener('click', function(event) {
+                                // Replace the info-box title with the contents of the title of the icon
+                                console.log(event.target)
+                                let title = document.getElementById("title")
+                                title.innerHTML = "What is a " + clickedObject.name + "?"
+
+                                currentlySelectedDiscipline = event.target.title.split(" ")[0]
+                                if (currentlySelectedDiscipline == "Description") currentlySelectedDiscipline = "Default-content"
+
+                                // Replace the content in the info-box with new content via HTMX ajax GET request
+                                let textBox = document.getElementById("info-content") 
+                                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
+
+
+                            });
+                        }
                         if (partsMapOfAvailableEngineering[clickedObject.name][i-1] == false) {
                             listElement.remove()
                         } else if (i > 0) {
@@ -516,9 +706,7 @@ function unhide(object){
                                 let textBox = document.getElementById("info-content") 
                                 htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
-                                // Replace the img tag with the associated img
-                                let imgBox = document.getElementById("diagram")
-                                imgBox.setAttribute("src", "/diagrams/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.jpg")
+                                if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
                                 // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
                             });
                         }
@@ -579,6 +767,10 @@ function unhide(object){
                         //         console.log("QWREWSDFIYHSDKF")
                         //     }
                         // }
+                        
+                        if (viewer.inTutorial && TutorialCounter == 8) {
+                            addTutorialNextButton()
+                        }
 
                         camera.copy(camera_state, true);
                         scene.remove(clickedObject);
@@ -660,8 +852,8 @@ document.body.appendChild(popup);
 
 
 function onMouseMove(event) {
-    if(TutorialCounter == 1 && mouseDown) {
-        progressTutorial();
+    if((TutorialCounter == 1 || TutorialCounter == 6) && mouseDown) {
+        addTutorialNextButton();
         mouseDown = false
     }
     let canvas = document.querySelector('canvas');

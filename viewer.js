@@ -155,7 +155,6 @@ export class Viewer {
         }
         if (this.tutClock != null) this.tutTime += this.tutClock.getDelta();
         if (this.tutClock != null && this.tutTime > 2.5 && this.inTutorial) {
-            console.log(this.tutClock.getDelta())
             this.mixer.timeScale = 0;
         }
 		requestAnimationFrame(this.animate);
