@@ -149,7 +149,7 @@ function addTutorialNextButton() {
     console.log("TUTNEXT " + TutorialCounter)
     var button = document.createElement("button");
     if (TutorialCounter <= 8)
-    button.innerHTML = "Next!";
+    button.innerHTML = "Next";
     else button.innerHTML = "End Tutorial"
 
     // Set an id for the button
@@ -645,7 +645,6 @@ function unhide(object){
 
             // camera.lookAt(clickedObject.getWorldPosition);
             console.log(clickedObject.position)
-
             // tempLight = new THREE.AmbientLight(0x404040)
             // scene.add(tempLight)
             tmpA.push(clickedObject.name)
