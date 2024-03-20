@@ -172,8 +172,6 @@ canvas {
   .X{
     padding-left: 1px;
     padding-right: 1px;
-    font-family: Inter;
-    font-size: 12px;
     float: right;
     position: relative;
     top: 4;
@@ -284,7 +282,7 @@ img{
   background-color: rgba(0, 0, 0, 0.9);
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 100000;
 }
 
 /* Style for the pop-up */
@@ -329,4 +327,42 @@ p{
   color: white;
   background-color: green;
   font-weight: bold;
+  caret-color: transparent  ;
+}
+
+.tutorial-popup{
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1000;
+  box-sizing: border-box;
+  max-width: 25%;
+}
+
+.help-but{
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1000;
+  box-sizing: border-box;
+  width: 25px;
+  height: 25px;
+  caret-color: transparent;
+}
+
+.popup-header{
+  caret-color: transparent;
+}
+
+
+.popup-content{
+  caret-color: transparent;
 }
