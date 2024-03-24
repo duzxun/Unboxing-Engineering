@@ -67,6 +67,8 @@ function closePopupTut() {
 // Function to close the global purpose pop-up and go to the main learning space
 function closePopupMain() {
     document.getElementById('overlay').style.display = 'none'; 
+    viewer.inTutorial=false; 
+
     viewer.load("").then( () => { viewer.playAllClips()  
         const light1 = new THREE.AmbientLight("#FFFFFF", 5);
         light1.name = 'ambient_light';
@@ -91,15 +93,17 @@ function closePopupMain() {
         // viewer.defaultCamera.near = 10;
         viewer.defaultCamera.lookAt(0,0,0);
         viewer.defaultCamera.updateProjectionMatrix()
+        endTutorial()
     });
-    viewer.inTutorial=false; 
+    
+    
 }
 
 // Global Purpose pop up functions, path_to_template is string path to template:
 function showPopup(path_to_template) {
     //grab the overlay object and make it visible
     document.getElementById('overlay').style.display = 'flex';
-    
+    document.getElementById('help').style.display = 'none';
     //thing popup content is being added to
     let popup_inner = document.getElementById('popup-inner');
     htmx.ajax("GET", path_to_template, {target: popup_inner, swap: "overlay"}).then(() => {
@@ -109,7 +113,13 @@ function showPopup(path_to_template) {
             document.getElementById('runTut').addEventListener("click", closePopupTut);
             document.getElementById('skipTut').addEventListener("click", closePopupMain);
         }else{
-            document.getElementById('global-close').addEventListener("click", closePopupMain);
+            document.getElementById('global-close').onclick= function() {
+                document.getElementById('overlay').style.display = 'none'; 
+                viewer.inTutorial=false; 
+                document.getElementById('help').style.display = 'block';
+                document.getElementById('help').onclick = function(){
+                    showPopup("/htmx-templates/global_pop_help.html");};
+              };
         }
     });
 }
@@ -137,12 +147,16 @@ window.onload = showPopup("/htmx-templates/global_pop_initial.html");
 
 // ending the tutorial by hiding the boxes and playing the rest of the animation
 function endTutorial() {
-    
-    scene.children[1].children[3].visible = false
-    scene.children[1].children[4].visible = false
+    let somecontainer = scene.children[1].children[3]
+    somecontainer.removeFromParent();
+    somecontainer = scene.children[1].children[3];
+    somecontainer.removeFromParent();
     viewer.inTutorial = false
     viewer.mixer.timeScale = 1
-    if(document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove()
+    if(document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove();
+    document.getElementById('help').style.display = 'block';
+    document.getElementById('help').onclick = function(){
+        showPopup("/htmx-templates/global_pop_help.html");};
 }
 
 function addTutorialNextButton() {
@@ -219,7 +233,7 @@ function imageOnClick() {
     let closer = document.createElement("button");
     closer.id = "X";
     closer.className = "imgX"
-    closer.innerHTML = "X";
+    closer.innerHTML = '<i class="fas fa-lg fa-times"><\i>';
     closer.style.position = "absolute"
     closer.addEventListener("click", () => {
 
@@ -270,18 +284,7 @@ function progressTutorial() {
         popup.id = "tutorial-popup"
 
         // Set the popup content and style
-        popup.style.position = 'fixed';
-        popup.style.top = '10' + 'px';
-        popup.style.left = '10' + 'px';
-        popup.style.padding = '10px';
-        popup.style.backgroundColor = '#f0f0f0';
-        popup.style.border = '1px solid #ccc';
-        popup.style.borderRadius = '5px';
-        popup.style.zIndex = '1000';
-        popup.style.boxSizing = 'border-box';
-        // popup.style.width = "25%"
-        // popup.style.height = "15%"
-        popup.style.maxWidth = "25%"
+        popup.className = 'tutorial-popup';
         document.body.appendChild(popup);
     }
 
@@ -733,8 +736,8 @@ function unhide(object){
                 child.appendChild(info);
                 let closer = document.createElement("button");
                 closer.id = "X";
-                closer.className = "X"
-                closer.innerHTML = "X";
+                closer.className = "X";
+                closer.innerHTML = '<i class="fas fa-lg fa-times" style= "caret-color: transparent;"></i>';
                 closer.onclick = function(){
                     if (zoomedin) { 
                         var maxLighting = 2
