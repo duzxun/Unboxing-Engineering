@@ -4,9 +4,9 @@ import * as THREE from 'https://unpkg.com/three@0.126.1/build/three.module.js';
 
 import * as VIEWER from './viewer.js'
 
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.126.1/examples/js/loaders/GLTFLoader.js';
 
-import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js'
+import {OrbitControls} from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.jss'
 
 import TWEEN from '@tweenjs/tween.js'
 
