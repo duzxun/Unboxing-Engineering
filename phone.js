@@ -6,7 +6,6 @@ import * as VIEWER from './viewer.js'
 import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
-import {TWEEN} from 'https://www.unpkg.com/browse/tween@0.9.0/'
 
 let opt = {
     cameraPosition: null,
@@ -489,17 +488,6 @@ function setupNav(){
     navBarElements.push(new navBarElement("Materials", "fa-atom"));
     navBarElements.push(new navBarElement("Mechanical", "fa-cogs"));
     navBarElements.push(new navBarElement("Mineral", "fa-gem"));
-}
-
-function tweenToClick(intersection){
-    var startRotation = new THREE.Euler().copy(camera.rotation);
-
-    camera.lookAt(intersection.point);
-    var endRotation = new THREE.Euler().copy(camera.rotation);
-
-    camera.rotation.copy(startRotation);
-
-    new TWEEN.Tween( camera ).to( { rotation: endRotation }, 600 ).start();
 }
 
 function enableAutoRotate(){
