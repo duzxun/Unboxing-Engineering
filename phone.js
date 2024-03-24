@@ -1,14 +1,12 @@
 // import './styles.css'
-
-import * as THREE from 'https://unpkg.com/three@0.126.1/build/three.module.js';
+import*as THREE from 'three';
 
 import * as VIEWER from './viewer.js'
 
-import { GLTFLoader } from 'https://unpkg.com/three@0.126.1/examples/js/loaders/GLTFLoader.js';
+import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
 
-import {OrbitControls} from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.jss'
-
-import TWEEN from 'https://www.unpkg.com/browse/tween@0.9.0/'
+import {TWEEN} from 'https://www.unpkg.com/browse/tween@0.9.0/'
 
 let opt = {
     cameraPosition: null,
