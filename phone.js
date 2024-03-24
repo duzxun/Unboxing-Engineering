@@ -8,7 +8,7 @@ import { GLTFLoader } from 'https://unpkg.com/three@0.126.1/examples/js/loaders/
 
 import {OrbitControls} from 'https://unpkg.com/three@0.126.1/examples/jsm/controls/OrbitControls.jss'
 
-import TWEEN from '@tweenjs/tween.js'
+import TWEEN from 'https://www.unpkg.com/browse/tween@0.9.0/'
 
 let opt = {
     cameraPosition: null,
