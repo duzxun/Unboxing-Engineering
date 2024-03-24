@@ -1,10 +1,10 @@
 // import './styles.css'
-import*as THREE from 'three';
+import *as THREE from 'three';
 
 import * as VIEWER from './viewer.js'
 
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
-import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 
 
 let opt = {
@@ -14,8 +14,8 @@ let opt = {
     preset: ""
 }
 
-window.VIEWER={}
-let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt); 
+window.VIEWER = {}
+let viewer = new VIEWER.Viewer(document.getElementById('canvas-container'), opt);
 let scene;
 
 scene = viewer.scene;
@@ -33,11 +33,12 @@ renderer.domElement.addEventListener('click', onClick);
 // Function to close the global purpose pop-up and run the tutorial
 function closePopupTut() {
     document.getElementById('overlay').style.display = 'none';
-    viewer.load("").then( () => { viewer.playAllClips()  
+    viewer.load("").then(() => {
+        viewer.playAllClips()
         const light1 = new THREE.AmbientLight("#FFFFFF", 5);
         light1.name = 'ambient_light';
         scene.add(light1);
-    
+
         const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
         light2.position.set(0.5, 0, 0.866); // ~60º
         light2.name = 'main_light';
@@ -46,8 +47,8 @@ function closePopupTut() {
         light3.position.set(-0.5, 0, 0.866); // ~60º
         light3.name = 'main_light2';
         scene.add(light3);
-    
-        scene.background = null 
+
+        scene.background = null
         viewer.defaultCamera.rotation.x = -2.73382;
         viewer.defaultCamera.rotation.y = 0.84599;
         viewer.defaultCamera.rotation.z = 2.8288;
@@ -55,22 +56,23 @@ function closePopupTut() {
         viewer.defaultCamera.position.y = 0.12729;
         viewer.defaultCamera.position.z = -0.29466;
         // viewer.defaultCamera.near = 10;
-        viewer.defaultCamera.lookAt(0,0,0);
+        viewer.defaultCamera.lookAt(0, 0, 0);
         viewer.defaultCamera.updateProjectionMatrix()
         progressTutorial();
-    }) 
+    })
 }
 
 // Function to close the global purpose pop-up and go to the main learning space
 function closePopupMain() {
-    document.getElementById('overlay').style.display = 'none'; 
-    viewer.inTutorial=false; 
+    document.getElementById('overlay').style.display = 'none';
+    viewer.inTutorial = false;
 
-    viewer.load("").then( () => { viewer.playAllClips()  
+    viewer.load("").then(() => {
+        viewer.playAllClips()
         const light1 = new THREE.AmbientLight("#FFFFFF", 5);
         light1.name = 'ambient_light';
         scene.add(light1);
-    
+
         const light2 = new THREE.DirectionalLight("#FFFFFF", 0.8);
         light2.position.set(0.5, 0, 0.866); // ~60º
         light2.name = 'main_light';
@@ -79,8 +81,8 @@ function closePopupMain() {
         light3.position.set(-0.5, 0, 0.866); // ~60º
         light3.name = 'main_light2';
         scene.add(light3);
-    
-        scene.background = null 
+
+        scene.background = null
         viewer.defaultCamera.rotation.x = -2.73382;
         viewer.defaultCamera.rotation.y = 0.84599;
         viewer.defaultCamera.rotation.z = 2.8288;
@@ -88,12 +90,12 @@ function closePopupMain() {
         viewer.defaultCamera.position.y = 0.12729;
         viewer.defaultCamera.position.z = -0.29466;
         // viewer.defaultCamera.near = 10;
-        viewer.defaultCamera.lookAt(0,0,0);
+        viewer.defaultCamera.lookAt(0, 0, 0);
         viewer.defaultCamera.updateProjectionMatrix()
         endTutorial()
     });
-    
-    
+
+
 }
 
 // Global Purpose pop up functions, path_to_template is string path to template:
@@ -103,20 +105,21 @@ function showPopup(path_to_template) {
     document.getElementById('help').style.display = 'none';
     //thing popup content is being added to
     let popup_inner = document.getElementById('popup-inner');
-    htmx.ajax("GET", path_to_template, {target: popup_inner, swap: "overlay"}).then(() => {
+    htmx.ajax("GET", path_to_template, { target: popup_inner, swap: "overlay" }).then(() => {
         //if this is the global pop-up, attach both the close and go to tutorial and skip tutorial
         //button events
-        if(path_to_template == "/htmx-templates/global_pop_initial.html"){
+        if (path_to_template == "/htmx-templates/global_pop_initial.html") {
             document.getElementById('runTut').addEventListener("click", closePopupTut);
             document.getElementById('skipTut').addEventListener("click", closePopupMain);
-        }else{
-            document.getElementById('global-close').onclick= function() {
-                document.getElementById('overlay').style.display = 'none'; 
-                viewer.inTutorial=false; 
+        } else {
+            document.getElementById('global-close').onclick = function() {
+                document.getElementById('overlay').style.display = 'none';
+                viewer.inTutorial = false;
                 document.getElementById('help').style.display = 'block';
-                document.getElementById('help').onclick = function(){
-                    showPopup("/htmx-templates/global_pop_help.html");};
-              };
+                document.getElementById('help').onclick = function() {
+                    showPopup("/htmx-templates/global_pop_help.html");
+                };
+            };
         }
     });
 }
@@ -150,17 +153,18 @@ function endTutorial() {
     somecontainer.removeFromParent();
     viewer.inTutorial = false
     viewer.mixer.timeScale = 1
-    if(document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove();
+    if (document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove();
     document.getElementById('help').style.display = 'block';
-    document.getElementById('help').onclick = function(){
-        showPopup("/htmx-templates/global_pop_help.html");};
+    document.getElementById('help').onclick = function() {
+        showPopup("/htmx-templates/global_pop_help.html");
+    };
 }
 
 function addTutorialNextButton() {
     console.log("TUTNEXT " + TutorialCounter)
     var button = document.createElement("button");
     if (TutorialCounter <= 8)
-    button.innerHTML = "Next";
+        button.innerHTML = "Next";
     else button.innerHTML = "End Tutorial"
 
     // Set an id for the button
@@ -176,8 +180,8 @@ function addTutorialNextButton() {
     // Add the onclick if still in tutorial, else make an onclick to end the tutorial
     button.addEventListener("click", () => {
         if (TutorialCounter <= 8)
-        progressTutorial()
-        else { 
+            progressTutorial()
+        else {
             endTutorial()
         }
     })
@@ -190,7 +194,7 @@ function imageOnClick() {
     // if already zoomed in
     if (document.getElementById("zoomedInImage")) return;
 
-    var eImg = document.getElementsByTagName("img")[0] 
+    var eImg = document.getElementsByTagName("img")[0]
     var canvas = document.getElementById("canvas-container");
 
     // Get the canvas size
@@ -221,8 +225,8 @@ function imageOnClick() {
     img.src = eImg.src
 
     // Set the image size to match the canvas
-    img.style.width = 0.9*(canvasWidth - navBarWidth) + "px";
-    img.style.height = 0.9*canvasHeight + "px";
+    img.style.width = 0.9 * (canvasWidth - navBarWidth) + "px";
+    img.style.height = 0.9 * canvasHeight + "px";
     // img.style.padding = "10%"
     img.style.zIndex = 801
 
@@ -234,7 +238,9 @@ function imageOnClick() {
     closer.style.position = "absolute"
     closer.addEventListener("click", () => {
 
-        var todel = document.getElementById("zoomedInImage") 
+        if (viewer.inTutorial && TutorialCounter != 5) return;
+
+        var todel = document.getElementById("zoomedInImage")
         todel.remove()
 
         if (viewer.inTutorial && TutorialCounter == 5) {
@@ -258,7 +264,7 @@ document.addEventListener("htmx:afterSwap", (event) => {
     // twice the size
     // Get the canvas element
     // Set the image source
-    var eImg = event.target.querySelector("img") 
+    var eImg = event.target.querySelector("img")
     if (eImg) {
         eImg.addEventListener('click', imageOnClick)
         event.stopPropagation()
@@ -288,7 +294,7 @@ function progressTutorial() {
     // The message is always updated, using the fixed tutorial htmx templates,
     // increasing by 1
     // popup.innerHTML = "testing";
-    fetch("/htmx-templates/tutorial/"+String(TutorialCounter)+".html")
+    fetch("/htmx-templates/tutorial/" + String(TutorialCounter) + ".html")
         .then(response => response.text())
         .then(htmlContent => {
             // Set the fetched HTML content as the innerHTML of the popup
@@ -309,10 +315,10 @@ renderer.domElement.addEventListener('mouseup', () => {
     mouseDown = false
 })
 renderer.domElement.addEventListener('wheel', () => {
-    if(viewer.inTutorial && TutorialCounter == 2) {
+    if (viewer.inTutorial && TutorialCounter == 2) {
         addTutorialNextButton();
     }
-    if(viewer.inTutorial && TutorialCounter == 6) {
+    if (viewer.inTutorial && TutorialCounter == 6) {
         addTutorialNextButton();
     }
 })
@@ -331,8 +337,8 @@ let model = scene;
 
 let loader = new GLTFLoader();
 
-class navBarElement{
-    constructor(name, icon, exists, content = ``, img=null){
+class navBarElement {
+    constructor(name, icon, exists, content = ``, img = null) {
         this.name = name;
         this.icon = icon;
         this.exists = exists;
@@ -346,7 +352,7 @@ console.log(scene)
 const autoRotateTimeout = 10000;
 // Beginning of Georgy trying to do dynamic loading with HTMX
 const listOfNavBarElements = []
-function navSetup(){
+function navSetup() {
     listOfNavBarElements.push(new navBarElement("Chemical", "fa-flask"));
     listOfNavBarElements.push(new navBarElement("Civil", "fa-drafting-compass"));
     listOfNavBarElements.push(new navBarElement("Computer", "fa-desktop"));
@@ -378,34 +384,34 @@ const disciplines = [
 var currentlySelectedDiscipline = ""
 
 // Have to hard code which disciplines are enabled for which part :)
-partsMapOfAvailableEngineering["Battery"] = [true,true,true,true,true,true,true,false]
-partsMapOfAvailableEngineering["Screen"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Wireless_Charging_Coil"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Chassis"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Front_Sensors"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Back_Cameras"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Vibration_Motor"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Microphone"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Earspeaker"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Front_Camera"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Volume_Off_Button"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Volume_Buttons"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Charging_Port"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Antenna"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Simholder"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["Motherboard"] = [true,true,true,true,true,true,true,true]
-partsMapOfAvailableEngineering["iPhone Box"] = [true,true,true,true,true,true,true,true]
+partsMapOfAvailableEngineering["Battery"] = [true, true, true, true, true, true, true, false]
+partsMapOfAvailableEngineering["Screen"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Wireless_Charging_Coil"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Chassis"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Front_Sensors"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Back_Cameras"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Vibration_Motor"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Microphone"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Earspeaker"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Front_Camera"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Volume_Off_Button"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Volume_Buttons"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Charging_Port"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Antenna"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Simholder"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Motherboard"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["iPhone Box"] = [true, true, true, true, true, true, true, true]
 // End of Georgy trying to do dynamic loading with HTMX
 
 
-class objectContent{
-    constructor(name, elements){
+class objectContent {
+    constructor(name, elements) {
         this.name = name;
         this.elements = elements;
     }
 }
 
-function batteryContent(){
+function batteryContent() {
     let disciplineElements = []
     disciplineElements.push(new navBarElement("Chemical", "fa-flask", true,
         `Battery Chemistry: Chemical engineers are involved in selecting and 
@@ -426,7 +432,7 @@ function batteryContent(){
         Facilities: Civil engineers may be involved in the construction and layout of manufacturing
         facilities where the battery is produced. They ensure that the infrastructure meets
         safety standards and supports efficient production processes.`, ""));
-    disciplineElements.push(new navBarElement("Computer", "fa-desktop" , true, `Embedded Systems: 
+    disciplineElements.push(new navBarElement("Computer", "fa-desktop", true, `Embedded Systems: 
         Computer engineers are responsible for designing and implementing embedded systems within 
         the battery and the overall device. This includes programming the microcontrollers and 
         ensuring communication between the battery and other device components.`, `/diagrams/battery/comp_eng.webp`));
@@ -466,20 +472,20 @@ let batteryInfo = new objectContent("battery", batteryStuff);
 // light.position.set(0,300,500);
 // scene.add(light);
 //
-    // let light2 = new THREE.PointLight(0xc4c4c4,10);
+// let light2 = new THREE.PointLight(0xc4c4c4,10);
 // light2.position.set(500,100,0);
 // scene.add(light2);
 //
-    // let light3 = new THREE.PointLight(0xc4c4c4,10);
+// let light3 = new THREE.PointLight(0xc4c4c4,10);
 // light3.position.set(0,100,-500);
 // scene.add(light3);
 //
-    // let light4 = new THREE.PointLight(0xc4c4c4,10);
+// let light4 = new THREE.PointLight(0xc4c4c4,10);
 // light4.position.set(-500,300,500);
 // scene.add(light4);
 
 //Used to setup navbar list that can be iterated through
-function setupNav(){
+function setupNav() {
     navBarElements.push(new navBarElement("Chemical", "fa-flask"));
     navBarElements.push(new navBarElement("Civil", "fa-drafting-compass"));
     navBarElements.push(new navBarElement("Computer", "fa-desktop"));
@@ -490,7 +496,7 @@ function setupNav(){
     navBarElements.push(new navBarElement("Mineral", "fa-gem"));
 }
 
-function enableAutoRotate(){
+function enableAutoRotate() {
     orbit.autoRotate = true;
 }
 // function showPopup(message) {
@@ -518,43 +524,43 @@ function enableAutoRotate(){
 
 /*      HIDING AND UNHIDING PIECES      */
 
-    // function that hides an object that has been clicked on recursively
-function hide(object, targetObject){
+// function that hides an object that has been clicked on recursively
+function hide(object, targetObject) {
     // base case that checks whether we've reached the end of component tree
-    if (object.children.length == 0){
+    if (object.children.length == 0) {
         // if this object isn't the object clicked on, hide it
-        if (object != targetObject){
+        if (object != targetObject) {
             object.visible = false
             return;
         }
         // recursive case that runs through all the children of a component and
         // recursively calls hide
-    }else{
-        for(let i = 0; i < object.children.length; i++){
-            if (object.children[i] != targetObject){
+    } else {
+        for (let i = 0; i < object.children.length; i++) {
+            if (object.children[i] != targetObject) {
                 // call hide on the child of this component
                 hide(object.children[i], targetObject)
                 object.visible = false;
                 return;
-            } 
+            }
         }
     }
 }
 
 
 // function that unhides an object recursively
-function unhide(object){
+function unhide(object) {
     // base case that checks whether we've reached the end of the component tree
-    if (object.children.length == 0){
+    if (object.children.length == 0) {
         console.log(object)
         // make the component visible again
         object.visible = true
 
-    }else{
+    } else {
         console.log(object.children.length)
         // recursive case that runs through all the children of a component
         // and recursively unhides them
-        for(let i = 0; i < object.children.length; i++){
+        for (let i = 0; i < object.children.length; i++) {
             unhide(object.children[i])
             object.visible = true;
             return;
@@ -564,253 +570,255 @@ function unhide(object){
 
 /*      MAIN FUNCTIONS      */
 
-    async function onClick(event) {
-        if (viewer.inTutorial && TutorialCounter < 3) return;
-        // Calculate mouse coordinates
-        // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-        // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-        orbit.autoRotate = false;
-        setTimeout(enableAutoRotate, autoRotateTimeout);
-        let canvas = document.querySelector('canvas');
-        mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
-        mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
+async function onClick(event) {
+    if (viewer.inTutorial && TutorialCounter < 3) return;
+    // Calculate mouse coordinates
+    // mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    // mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+    orbit.autoRotate = false;
+    setTimeout(enableAutoRotate, autoRotateTimeout);
+    let canvas = document.querySelector('canvas');
+    mouse.x = (event.offsetX / canvas.clientWidth) * 2 - 1;
+    mouse.y = -(event.offsetY / canvas.clientHeight) * 2 + 1;
 
-        // Update the picking ray with the camera and mouse position
-        raycaster.setFromCamera(mouse, camera);
+    // Update the picking ray with the camera and mouse position
+    raycaster.setFromCamera(mouse, camera);
 
-        // Check for intersections
-        const intersects = raycaster.intersectObjects(model.children, true);
+    // Check for intersections
+    const intersects = raycaster.intersectObjects(model.children, true);
 
-        console.log(intersects)
+    console.log(intersects)
 
-        if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
-            camera_state.copy(camera, true);
-            // clickedObject = intersects[0].object;
-            // clickedObject.copy(intersects[0].object.parent, true)
-            if (!viewer.inTutorial) {
-                clickedObject.copy(intersects[0].object.parent, true)
-            } else {
-                if (!intersects[0].object.parent.name.includes("Container")) return;
-                clickedObject.copy(intersects[0].object.parent, true)
-                clickedObject.name = "iPhone Box"
-                clickedObject.rotation.x += Math.PI / 2;
-                if (TutorialCounter == 3) {
-                    addTutorialNextButton()
+    if (intersects.length > 0 && intersects[0].object.visible && !zoomedin) {
+        camera_state.copy(camera, true);
+        // clickedObject = intersects[0].object;
+        // clickedObject.copy(intersects[0].object.parent, true)
+        if (!viewer.inTutorial) {
+            clickedObject.copy(intersects[0].object.parent, true)
+        } else {
+            if (!intersects[0].object.parent.name.includes("Container")) return;
+            clickedObject.copy(intersects[0].object.parent, true)
+            clickedObject.name = "iPhone Box"
+            clickedObject.rotation.x += Math.PI / 2;
+            if (TutorialCounter == 3) {
+                addTutorialNextButton()
+            }
+        }
+
+        console.log('Clicked on:', clickedObject.name);
+
+        //tweenToClick(intersects[0]);
+        if (!viewer.inTutorial) {
+            hide(model.children[1], clickedObject);
+        } else {
+            hide(model.children[1], clickedObject);
+        }
+        popup.style.display = 'none';
+        // console.log(model)
+        clickedObject.rotateX(-Math.PI * 1 / 2)
+        clickedObject.frustumCulled = true;
+        clickedObject.scale.set(0.1, 0.1, 0.1);
+
+        const boundingBox = new THREE.Box3().setFromObject(clickedObject)
+        const center = new THREE.Vector3()
+        boundingBox.getCenter(center)
+        clickedObject.position.sub(center)
+
+        const boundingSphere = boundingBox.getBoundingSphere(new THREE.Sphere());
+        const cameraDistance = boundingSphere.radius / Math.tan(Math.PI * 0.75 / 2); // Adjust the FOV (0.75 is used as an example)
+
+        camera.position.copy(boundingSphere.center.clone().add(new THREE.Vector3(0, 0, cameraDistance)));
+        camera.lookAt(boundingSphere.center);
+        camera.updateProjectionMatrix();
+
+        // clickedObject.translateZ(-0.1);
+        console.log(clickedObject)
+        // clickedObject.position.set(0,0,0)
+        // clickedObject.translateZ(-0.6);
+        scene.add(clickedObject);
+        console.log(scene)
+
+        // camera.lookAt(clickedObject.getWorldPosition);
+        console.log(clickedObject.position)
+        // tempLight = new THREE.AmbientLight(0x404040)
+        // scene.add(tempLight)
+        tmpA.push(clickedObject.name)
+        // console.log(tmpA)
+
+        var div = document.createElement("div");
+        div.className = "info-column"; // Add the "info-column" class for styling
+        var child = document.createElement("div");
+        var navBar = document.createElement("div");
+        navBar.className = "navbar";
+
+        var navBarList = document.createElement("ul");
+        navBar.setAttribute("id", "navBar")
+        child.appendChild(navBar)
+
+        // Get the navbar using a GET request, replace it in-place
+        htmx.ajax("GET", "/htmx-templates/navbar.html", { target: navBar, swap: "outerHTML" }).then(() => {
+
+            // Now configure which icons are available for which parts
+            let iconList = document.getElementById("navbar-labels")
+            let liList = iconList.getElementsByTagName("li")
+
+            for (let i = 0; i < liList.length; i++) {
+                let listElement = liList[i]
+                if (i == 0) {
+                    let icon = listElement.getElementsByTagName("i")[0];
+                    icon.title = "Description";
+                    icon.addEventListener('click', function(event) {
+                        // Replace the info-box title with the contents of the title of the icon
+                        console.log(event.target)
+                        let title = document.getElementById("title")
+                        title.innerHTML = "What is a " + clickedObject.name + "?"
+
+                        currentlySelectedDiscipline = event.target.title.split(" ")[0]
+                        if (currentlySelectedDiscipline == "Description") currentlySelectedDiscipline = "Default-content"
+
+                        // Replace the content in the info-box with new content via HTMX ajax GET request
+                        let textBox = document.getElementById("info-content")
+                        htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
+
+
+                    });
+                }
+                if (partsMapOfAvailableEngineering[clickedObject.name][i - 1] == false) {
+                    listElement.remove()
+                } else if (i > 0) {
+                    let icon = listElement.getElementsByTagName("i")[0]
+                    icon.title = disciplines[i - 1] + " Engineering"
+                    icon.addEventListener('click', function(event) {
+                        if (viewer.inTutorial && TutorialCounter < 7) return;
+                        // Replace the info-box title with the contents of the title of the icon
+                        console.log(event.target)
+                        let title = document.getElementById("title")
+                        title.innerHTML = clickedObject.name + ": " + event.target.title
+
+                        currentlySelectedDiscipline = event.target.title.split(" ")[0]
+
+                        // Replace the content in the info-box with new content via HTMX ajax GET request
+                        let textBox = document.getElementById("info-content")
+                        htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
+
+                        if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
+                        // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
+                    });
                 }
             }
+        })
 
-            console.log('Clicked on:', clickedObject.name);
+        var info = document.createElement("div");
+        info.className = "info-block";
 
-            //tweenToClick(intersects[0]);
-            if(!viewer.inTutorial) {
-                hide(model.children[1], clickedObject);
-            } else {
-                hide(model.children[1], clickedObject);
+        var title = document.createElement("div");
+        title.className = "info-title";
+        title.id = "title";
+        title.innerHTML = "What is a " + clickedObject.name + "?"
+
+        var content = document.createElement("div");
+        content.className = "info-content";
+        content.id = "info-content";
+
+        info.appendChild(title);
+
+        // Make an HTMX request to dynamically fill in the title of the default page
+        info.appendChild(content)
+
+
+        child.appendChild(info);
+        let closer = document.createElement("button");
+        closer.id = "X";
+        closer.className = "X";
+        closer.innerHTML = '<i class="fas fa-lg fa-times" style= "caret-color: transparent;"></i>';
+        closer.onclick = function() {
+            if (zoomedin) {
+                var maxLighting = 2
+                // function deleteExcessLighting(object, parent) {
+                //     if (object instanceof THREE.Light) {
+                //         console.log('Light:', object);
+                //         index+=1;
+                //         console.log(index)
+                //         if (index > maxLighting) {
+                //             console.log("IWMNEF LIKOJHUWEGRFKOLJHWEGRF")
+                //             parent.remove(object)
+                //         }
+                //     }
+                //
+                //     if (object.children) {
+                //         object.children.forEach(function(child) {
+                //             deleteExcessLighting(child, object)
+                //         })
+                //     }
+                // }
+                //
+                // deleteExcessLighting(scene)
+
+                // console.log(camera.children)
+                // for (let index = 0; index < camera.children.length; index++) {
+                //     if (index > maxLighting) {
+                //         camera.remove(camera.children[index])
+                //         children[index].dispose()
+                //         console.log("QWREWSDFIYHSDKF")
+                //     }
+                // }
+
+                if (viewer.inTutorial && TutorialCounter < 8) return;
+                if (viewer.inTutorial && TutorialCounter == 8) {
+                    addTutorialNextButton()
+                }
+
+                camera.copy(camera_state, true);
+                scene.remove(clickedObject);
+                // Your Ctrl+Z key press logic here
+                zoomedin = false;
+
+                var cols = document.getElementsByClassName("info-column");
+                var colsArr = Array.from(cols)
+                colsArr.forEach(function(col) {
+                    col.remove()
+                });
+
+                unhide(scene.children[1])
+                // scene.remove(tempLight)
+
+                renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
+
+                const newWidth = canvasContainer.clientWidth;
+                const newHeight = canvasContainer.clientHeight;
+
+                renderer.setSize(newWidth, newHeight);
+                camera.aspect = newWidth / newHeight;
+
+                clickedObject = new THREE.Object3D();
+
+                camera.updateProjectionMatrix();
+                console.log(scene)
             }
-            popup.style.display = 'none';
-            // console.log(model)
-            clickedObject.rotateX(-Math.PI*1/2)
-            clickedObject.frustumCulled = true;
-            clickedObject.scale.set(0.1,0.1,0.1);
+        };
+        child.appendChild(closer);
+        child.className = "info-container";
+        div.appendChild(child);
+        document.body.appendChild(div);
 
-            const boundingBox = new THREE.Box3().setFromObject(clickedObject)
-            const center = new THREE.Vector3()
-            boundingBox.getCenter(center)
-            clickedObject.position.sub(center)
+        // // TODO: WAITING FOR DEVS TO FIX LOST REQUEST :(
+        // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML", source: imgElem})
 
-            const boundingSphere = boundingBox.getBoundingSphere(new THREE.Sphere());
-            const cameraDistance = boundingSphere.radius / Math.tan(Math.PI * 0.75 / 2); // Adjust the FOV (0.75 is used as an example)
+        // For now fix with another hx-get inside of the content to replace the image ;)
+        let contentElem = document.getElementById("info-content")
+        htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", { target: contentElem, swap: "innerHTML", source: contentElem })
+        renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
-            camera.position.copy(boundingSphere.center.clone().add(new THREE.Vector3(0, 0, cameraDistance)));
-            camera.lookAt(boundingSphere.center);
-            camera.updateProjectionMatrix();
+        const newWidth = canvasContainer.clientWidth;
+        const newHeight = canvasContainer.clientHeight;
 
-            // clickedObject.translateZ(-0.1);
-            console.log(clickedObject)
-            // clickedObject.position.set(0,0,0)
-            // clickedObject.translateZ(-0.6);
-            scene.add(clickedObject);
-            console.log(scene)
+        renderer.setSize(newWidth, newHeight);
+        camera.aspect = newWidth / newHeight;
 
-            // camera.lookAt(clickedObject.getWorldPosition);
-            console.log(clickedObject.position)
-            // tempLight = new THREE.AmbientLight(0x404040)
-            // scene.add(tempLight)
-            tmpA.push(clickedObject.name)
-            // console.log(tmpA)
-
-                var div = document.createElement("div");
-                div.className = "info-column"; // Add the "info-column" class for styling
-                var child = document.createElement("div");
-                var navBar = document.createElement("div");
-                navBar.className = "navbar";
-
-                var navBarList = document.createElement("ul");  
-                navBar.setAttribute("id", "navBar")
-                child.appendChild(navBar)
-
-                // Get the navbar using a GET request, replace it in-place
-                htmx.ajax("GET", "/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
-
-                    // Now configure which icons are available for which parts
-                    let iconList = document.getElementById("navbar-labels")
-                    let liList = iconList.getElementsByTagName("li")
-
-                    for (let i = 0; i < liList.length; i++) {
-                        let listElement = liList[i]
-                        if(i == 0){
-                            let icon = listElement.getElementsByTagName("i")[0];
-                            icon.title = "Description" ;
-                            icon.addEventListener('click', function(event) {
-                                // Replace the info-box title with the contents of the title of the icon
-                                console.log(event.target)
-                                let title = document.getElementById("title")
-                                title.innerHTML = "What is a " + clickedObject.name + "?"
-
-                                currentlySelectedDiscipline = event.target.title.split(" ")[0]
-                                if (currentlySelectedDiscipline == "Description") currentlySelectedDiscipline = "Default-content"
-
-                                // Replace the content in the info-box with new content via HTMX ajax GET request
-                                let textBox = document.getElementById("info-content") 
-                                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
-
-
-                            });
-                        }
-                        if (partsMapOfAvailableEngineering[clickedObject.name][i-1] == false) {
-                            listElement.remove()
-                        } else if (i > 0) {
-                            let icon = listElement.getElementsByTagName("i")[0]
-                            icon.title = disciplines[i-1] + " Engineering"
-                            icon.addEventListener('click', function(event) {
-                                // Replace the info-box title with the contents of the title of the icon
-                                console.log(event.target)
-                                let title = document.getElementById("title")
-                                title.innerHTML = clickedObject.name + ": " + event.target.title
-
-                                currentlySelectedDiscipline = event.target.title.split(" ")[0]
-
-                                // Replace the content in the info-box with new content via HTMX ajax GET request
-                                let textBox = document.getElementById("info-content") 
-                                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
-
-                                if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
-                                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
-                            });
-                        }
-                    }
-                })
-
-                var info = document.createElement("div");
-                info.className = "info-block";
-
-                var title = document.createElement("div");
-                title.className = "info-title";
-                title.id = "title";
-                title.innerHTML = "What is a " + clickedObject.name + "?"
-
-                var content = document.createElement("div");
-                content.className = "info-content";
-                content.id = "info-content";
-
-                info.appendChild(title);
-
-                // Make an HTMX request to dynamically fill in the title of the default page
-                info.appendChild(content)
-
-
-                child.appendChild(info);
-                let closer = document.createElement("button");
-                closer.id = "X";
-                closer.className = "X";
-                closer.innerHTML = '<i class="fas fa-lg fa-times" style= "caret-color: transparent;"></i>';
-                closer.onclick = function(){
-                    if (zoomedin) { 
-                        var maxLighting = 2
-                        // function deleteExcessLighting(object, parent) {
-                        //     if (object instanceof THREE.Light) {
-                        //         console.log('Light:', object);
-                        //         index+=1;
-                        //         console.log(index)
-                        //         if (index > maxLighting) {
-                        //             console.log("IWMNEF LIKOJHUWEGRFKOLJHWEGRF")
-                        //             parent.remove(object)
-                        //         }
-                        //     }
-                        //
-                        //     if (object.children) {
-                        //         object.children.forEach(function(child) {
-                        //             deleteExcessLighting(child, object)
-                        //         })
-                        //     }
-                        // }
-                        //
-                        // deleteExcessLighting(scene)
-
-                        // console.log(camera.children)
-                        // for (let index = 0; index < camera.children.length; index++) {
-                        //     if (index > maxLighting) {
-                        //         camera.remove(camera.children[index])
-                        //         children[index].dispose()
-                        //         console.log("QWREWSDFIYHSDKF")
-                        //     }
-                        // }
-                        
-                        if (viewer.inTutorial && TutorialCounter == 8) {
-                            addTutorialNextButton()
-                        }
-
-                        camera.copy(camera_state, true);
-                        scene.remove(clickedObject);
-                        // Your Ctrl+Z key press logic here
-                        zoomedin = false;
-
-                        var cols = document.getElementsByClassName("info-column");
-                        var colsArr = Array.from(cols)
-                        colsArr.forEach(function(col) {
-                            col.remove()
-                        });
-
-                        unhide(scene.children[1])
-                        // scene.remove(tempLight)
-
-                        renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-
-                        const newWidth = canvasContainer.clientWidth;
-                        const newHeight = canvasContainer.clientHeight;
-
-                        renderer.setSize(newWidth, newHeight);
-                        camera.aspect = newWidth / newHeight;
-
-                        clickedObject = new THREE.Object3D();
-
-                        camera.updateProjectionMatrix();
-                        console.log(scene)
-                    }
-                };
-                child.appendChild(closer);
-            child.className = "info-container";
-            div.appendChild(child);
-            document.body.appendChild(div);
-
-                // // TODO: WAITING FOR DEVS TO FIX LOST REQUEST :(
-                // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-image.html", {target: imgElem, swap: "innerHTML", source: imgElem})
-
-                // For now fix with another hx-get inside of the content to replace the image ;)
-                let contentElem = document.getElementById("info-content")
-                htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML", source: contentElem})
-            renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
-
-            const newWidth = canvasContainer.clientWidth;
-            const newHeight = canvasContainer.clientHeight;
-
-            renderer.setSize(newWidth, newHeight);
-            camera.aspect = newWidth / newHeight;
-
-            camera.updateProjectionMatrix();
-            zoomedin = true;
-        }
+        camera.updateProjectionMatrix();
+        zoomedin = true;
     }
+}
 
 window.addEventListener('resize', () => {
     const newWidth = canvasContainer.clientWidth;
@@ -825,7 +833,7 @@ window.addEventListener('resize', () => {
 // to skip tut
 document.addEventListener("keydown", (key) => {
     if (key.key == 'n') {
-        viewer.inTutorial=false;
+        viewer.inTutorial = false;
     }
 })
 
@@ -840,7 +848,7 @@ document.body.appendChild(popup);
 
 
 function onMouseMove(event) {
-    if((TutorialCounter == 1 || TutorialCounter == 6) && mouseDown) {
+    if ((TutorialCounter == 1 || TutorialCounter == 6) && mouseDown) {
         addTutorialNextButton();
         mouseDown = false
     }
@@ -890,7 +898,7 @@ function onMouseMove(event) {
                 })
             }
         } else {
-            if(intersects[0].object.parent.name.includes("Container")) {
+            if (intersects[0].object.parent.name.includes("Container")) {
                 popup.innerHTML = intersects[0].object.name.replace(/_/g, ' ').replace(/\b\w/g, (match) => match.toUpperCase());
             } else {
                 popup.innerHTML = "iPhone"
@@ -903,22 +911,22 @@ function onMouseMove(event) {
         popup.style.display = 'none';
         highlighted = 0;
     }
-} 
+}
 
 
 /*      ARCHIVED FUNCTIONS      */
 
 document.addEventListener('keydown', function(event) {
     if (event.key == 't') {
-        if (viewer.inTutorial) viewer.inTutorial = false;   
+        if (viewer.inTutorial) viewer.inTutorial = false;
         viewer.mixer.timeScale = 1
     }
 })
 
-    // Debug function that was used to close content info columns and set back to main phone model
+// Debug function that was used to close content info columns and set back to main phone model
 document.addEventListener('keydown', function(event) {
     // Check if Ctrl (or Command on Mac) and 'Z' key are pressed
-    if (zoomedin) { 
+    if (zoomedin) {
         if (event.ctrlKey || event.metaKey) {
             if (event.key === 'z' || event.key === 'Z') {
 
