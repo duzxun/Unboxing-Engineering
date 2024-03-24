@@ -106,7 +106,7 @@ function showPopup(path_to_template) {
     htmx.ajax("GET", path_to_template, {target: popup_inner, swap: "overlay"}).then(() => {
         //if this is the global pop-up, attach both the close and go to tutorial and skip tutorial
         //button events
-        if(path_to_template == "/unboxingengineering/htmx-templates/global_pop_initial.html"){
+        if(path_to_template == "/unboxingengineering/public/htmx-templates/global_pop_initial.html"){
             document.getElementById('runTut').addEventListener("click", closePopupTut);
             document.getElementById('skipTut').addEventListener("click", closePopupMain);
         }else{
@@ -115,7 +115,7 @@ function showPopup(path_to_template) {
                 viewer.inTutorial=false; 
                 document.getElementById('help').style.display = 'block';
                 document.getElementById('help').onclick = function(){
-                    showPopup("/unboxingengineering/htmx-templates/global_pop_help.html");};
+                    showPopup("/unboxingengineering/public/htmx-templates/global_pop_help.html");};
               };
         }
     });
@@ -140,7 +140,7 @@ orbit.autoRotate = true;
 
 
 // Show the pop-up when the window loads
-window.onload = showPopup("/unboxingengineering/htmx-templates/global_pop_initial.html");
+window.onload = showPopup("/unboxingengineering/public/htmx-templates/global_pop_initial.html");
 
 // ending the tutorial by hiding the boxes and playing the rest of the animation
 function endTutorial() {
@@ -153,7 +153,7 @@ function endTutorial() {
     if(document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove();
     document.getElementById('help').style.display = 'block';
     document.getElementById('help').onclick = function(){
-        showPopup("/unboxingengineering/htmx-templates/global_pop_help.html");};
+        showPopup("/unboxingengineering/public/htmx-templates/global_pop_help.html");};
 }
 
 function addTutorialNextButton() {
@@ -288,7 +288,7 @@ function progressTutorial() {
     // The message is always updated, using the fixed tutorial htmx templates,
     // increasing by 1
     // popup.innerHTML = "testing";
-    fetch("/unboxingengineering/htmx-templates/tutorial/"+String(TutorialCounter)+".html")
+    fetch("/unboxingengineering/public/htmx-templates/tutorial/"+String(TutorialCounter)+".html")
         .then(response => response.text())
         .then(htmlContent => {
             // Set the fetched HTML content as the innerHTML of the popup
@@ -650,7 +650,7 @@ function unhide(object){
                 child.appendChild(navBar)
 
                 // Get the navbar using a GET request, replace it in-place
-                htmx.ajax("GET", "/unboxingengineering/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
+                htmx.ajax("GET", "/unboxingengineering/public/htmx-templates/navbar.html", {target: navBar, swap: "outerHTML"} ).then(() => {
 
                     // Now configure which icons are available for which parts
                     let iconList = document.getElementById("navbar-labels")
@@ -672,7 +672,7 @@ function unhide(object){
 
                                 // Replace the content in the info-box with new content via HTMX ajax GET request
                                 let textBox = document.getElementById("info-content") 
-                                htmx.ajax("GET", "/unboxingengineering/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
+                                htmx.ajax("GET", "/unboxingengineering/public/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
 
                             });
@@ -692,7 +692,7 @@ function unhide(object){
 
                                 // Replace the content in the info-box with new content via HTMX ajax GET request
                                 let textBox = document.getElementById("info-content") 
-                                htmx.ajax("GET", "/unboxingengineering/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
+                                htmx.ajax("GET", "/unboxingengineering/public/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", {target: textBox, swap: "innerHTML"})
 
                                 if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
                                 // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
@@ -798,7 +798,7 @@ function unhide(object){
 
                 // For now fix with another hx-get inside of the content to replace the image ;)
                 let contentElem = document.getElementById("info-content")
-                htmx.ajax("GET", "/unboxingengineering/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML", source: contentElem})
+                htmx.ajax("GET", "/unboxingengineering/public/htmx-templates/" + clickedObject.name + "/Default-content.html", {target: contentElem, swap: "innerHTML", source: contentElem})
             renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
             const newWidth = canvasContainer.clientWidth;
