@@ -108,7 +108,7 @@ function showPopup(path_to_template) {
     htmx.ajax("GET", path_to_template, { target: popup_inner, swap: "overlay" }).then(() => {
         //if this is the global pop-up, attach both the close and go to tutorial and skip tutorial
         //button events
-        if (path_to_template == "/htmx-templates/global_pop_initial.html") {
+        if (path_to_template == "/public/htmx-templates/global_pop_initial.html") {
             document.getElementById('runTut').addEventListener("click", closePopupTut);
             document.getElementById('skipTut').addEventListener("click", closePopupMain);
         } else {
@@ -117,7 +117,7 @@ function showPopup(path_to_template) {
                 viewer.inTutorial = false;
                 document.getElementById('help').style.display = 'block';
                 document.getElementById('help').onclick = function() {
-                    showPopup("/htmx-templates/global_pop_help.html");
+                    showPopup("/public/htmx-templates/global_pop_help.html");
                 };
             };
         }
@@ -143,7 +143,7 @@ orbit.autoRotate = true;
 
 
 // Show the pop-up when the window loads
-window.onload = showPopup("/htmx-templates/global_pop_initial.html");
+window.onload = showPopup("/public/htmx-templates/global_pop_initial.html");
 
 // ending the tutorial by hiding the boxes and playing the rest of the animation
 function endTutorial() {
@@ -156,7 +156,7 @@ function endTutorial() {
     if (document.getElementById("tutorial-popup")) document.getElementById("tutorial-popup").remove();
     document.getElementById('help').style.display = 'block';
     document.getElementById('help').onclick = function() {
-        showPopup("/htmx-templates/global_pop_help.html");
+        showPopup("/public/htmx-templates/global_pop_help.html");
     };
 }
 
@@ -294,7 +294,7 @@ function progressTutorial() {
     // The message is always updated, using the fixed tutorial htmx templates,
     // increasing by 1
     // popup.innerHTML = "testing";
-    fetch("/htmx-templates/tutorial/" + String(TutorialCounter) + ".html")
+    fetch("/public/htmx-templates/tutorial/" + String(TutorialCounter) + ".html")
         .then(response => response.text())
         .then(htmlContent => {
             // Set the fetched HTML content as the innerHTML of the popup
@@ -656,7 +656,7 @@ async function onClick(event) {
         child.appendChild(navBar)
 
         // Get the navbar using a GET request, replace it in-place
-        htmx.ajax("GET", "/htmx-templates/navbar.html", { target: navBar, swap: "outerHTML" }).then(() => {
+        htmx.ajax("GET", "/public/htmx-templates/navbar.html", { target: navBar, swap: "outerHTML" }).then(() => {
 
             // Now configure which icons are available for which parts
             let iconList = document.getElementById("navbar-labels")
@@ -678,7 +678,7 @@ async function onClick(event) {
 
                         // Replace the content in the info-box with new content via HTMX ajax GET request
                         let textBox = document.getElementById("info-content")
-                        htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
+                        htmx.ajax("GET", "/public/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
 
 
                     });
@@ -699,7 +699,7 @@ async function onClick(event) {
 
                         // Replace the content in the info-box with new content via HTMX ajax GET request
                         let textBox = document.getElementById("info-content")
-                        htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
+                        htmx.ajax("GET", "/public/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
 
                         if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
                         // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
@@ -806,7 +806,7 @@ async function onClick(event) {
 
         // For now fix with another hx-get inside of the content to replace the image ;)
         let contentElem = document.getElementById("info-content")
-        htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/Default-content.html", { target: contentElem, swap: "innerHTML", source: contentElem })
+        htmx.ajax("GET", "/public/htmx-templates/" + clickedObject.name + "/Default-content.html", { target: contentElem, swap: "innerHTML", source: contentElem })
         renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
         const newWidth = canvasContainer.clientWidth;
