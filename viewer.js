@@ -225,7 +225,7 @@ export class Viewer {
 			const blobURLs = [];
 
 			loader.load(
-				"models/iphone12_less_parts/tut-1-28.glb",
+				"/public/models/iphone12_less_parts/tut-1-28.glb",
 				(gltf) => {
 					window.VIEWER.json = gltf;
 
