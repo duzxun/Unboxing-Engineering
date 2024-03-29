@@ -382,27 +382,30 @@ const disciplines = [
     'Mineral'
 ];
 var currentlySelectedDiscipline = ""
+// Chemical, Civil, Computer, Electrical, Industrial, Materials, Mechanical, Mineral
 
 // Have to hard code which disciplines are enabled for which part :)
 partsMapOfAvailableEngineering["Battery"] = [true, true, true, true, true, true, true, false]
 partsMapOfAvailableEngineering["Screen"] = [true, true, true, true, true, true, true, true]
 partsMapOfAvailableEngineering["Wireless_Charging_Coil"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Chassis"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Front_Sensors"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Back_Cameras"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Vibration_Motor"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Microphone"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Earspeaker"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Front_Camera"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Chassis"] = [true, false, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Front_Sensors"] = [false, false, true, true, false, true, true, true]
+partsMapOfAvailableEngineering["Back_Cameras"] = [true, false, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Vibration_Motor"] = [false, false, true, true, true, false, true, false]
+partsMapOfAvailableEngineering["Microphone"] = [true, false, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Earspeaker"] = [true, false, true, true, true, true, true, false]
+partsMapOfAvailableEngineering["Front_Camera"] = [true, false, true, true, true, true, true, true]
 partsMapOfAvailableEngineering["Volume_Off_Button"] = [true, true, true, true, true, true, true, true]
 partsMapOfAvailableEngineering["Volume_Buttons"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Charging_Port"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Antenna"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Off_Button"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Charging_Port"] = [true, true, true, true, true, true, true, false]
+partsMapOfAvailableEngineering["Antenna"] = [false, false, true, true, true, true, true, false]
 partsMapOfAvailableEngineering["Simholder"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["Motherboard"] = [true, true, true, true, true, true, true, true]
-partsMapOfAvailableEngineering["iPhone Box"] = [true, true, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["Motherboard"] = [true, false, true, true, true, true, true, true]
+partsMapOfAvailableEngineering["iPhone_Box"] = [true, false, true, true, true, true, true, false]
 // End of Georgy trying to do dynamic loading with HTMX
 
+// Chemical, Civil, Computer, Electrical, Industrial, Materials, Mechanical, Mineral
 
 class objectContent {
     constructor(name, elements) {
@@ -567,6 +570,15 @@ function unhide(object) {
         }
     }
 }
+function capitalizeWords(str) {
+    if (str == "iPhone Box") {
+        return str
+    }
+    let stringWithSpaces = str.replace(/_/g, ' ');
+    return stringWithSpaces.replace(/\b\w/g, function(char) {
+        return char.toUpperCase();
+    });
+}
 
 /*      MAIN FUNCTIONS      */
 
@@ -671,39 +683,40 @@ async function onClick(event) {
                         // Replace the info-box title with the contents of the title of the icon
                         console.log(event.target)
                         let title = document.getElementById("title")
-                        title.innerHTML = "What is a " + clickedObject.name + "?"
+                        let objName = capitalizeWords(clickedObject.name)
+                        title.innerHTML = "What is a " + objName + "?"
 
                         currentlySelectedDiscipline = event.target.title.split(" ")[0]
                         if (currentlySelectedDiscipline == "Description") currentlySelectedDiscipline = "Default-content"
 
                         // Replace the content in the info-box with new content via HTMX ajax GET request
                         let textBox = document.getElementById("info-content")
-                        htmx.ajax("GET", "/public/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
-
-
+                        htmx.ajax("GET", "/public/htmx-templates/" + objName.replace(/ /g, "_") + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
                     });
-                }
-                if (partsMapOfAvailableEngineering[clickedObject.name][i - 1] == false) {
-                    listElement.remove()
-                } else if (i > 0) {
-                    let icon = listElement.getElementsByTagName("i")[0]
-                    icon.title = disciplines[i - 1] + " Engineering"
-                    icon.addEventListener('click', function(event) {
-                        if (viewer.inTutorial && TutorialCounter < 7) return;
-                        // Replace the info-box title with the contents of the title of the icon
-                        console.log(event.target)
-                        let title = document.getElementById("title")
-                        title.innerHTML = clickedObject.name + ": " + event.target.title
+                } else {
+                    let objName = capitalizeWords(clickedObject.name)
+                    if (partsMapOfAvailableEngineering[objName.replace(/ /g, '_')][i - 1] == false) {
+                        listElement.remove()
+                    } else if (i > 0) {
+                        let icon = listElement.getElementsByTagName("i")[0]
+                        icon.title = disciplines[i - 1] + " Engineering"
+                        icon.addEventListener('click', function(event) {
+                            if (viewer.inTutorial && TutorialCounter < 7) return;
+                            // Replace the info-box title with the contents of the title of the icon
+                            console.log(event.target)
+                            let title = document.getElementById("title")
+                            title.innerHTML = objName + ": " + event.target.title
 
-                        currentlySelectedDiscipline = event.target.title.split(" ")[0]
+                            currentlySelectedDiscipline = event.target.title.split(" ")[0]
 
-                        // Replace the content in the info-box with new content via HTMX ajax GET request
-                        let textBox = document.getElementById("info-content")
-                        htmx.ajax("GET", "/public/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
+                            // Replace the content in the info-box with new content via HTMX ajax GET request
+                            let textBox = document.getElementById("info-content")
+                            htmx.ajax("GET", "/public/htmx-templates/" + objName.replace(/ /g, "_") + "/" + currentlySelectedDiscipline + ".html", { target: textBox, swap: "innerHTML" })
 
-                        if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
-                        // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
-                    });
+                            if (viewer.inTutorial && TutorialCounter == 7) addTutorialNextButton()
+                            // htmx.ajax("GET", "/htmx-templates/" + clickedObject.name + "/" + currentlySelectedDiscipline + "-image.html", {target: imgBox, swap: "innerHTML"})
+                        });
+                    }
                 }
             }
         })
@@ -714,7 +727,8 @@ async function onClick(event) {
         var title = document.createElement("div");
         title.className = "info-title";
         title.id = "title";
-        title.innerHTML = "What is a " + clickedObject.name + "?"
+        let objName = capitalizeWords(clickedObject.name)
+        title.innerHTML = "What is a " + objName + "?"
 
         var content = document.createElement("div");
         content.className = "info-content";
@@ -806,7 +820,7 @@ async function onClick(event) {
 
         // For now fix with another hx-get inside of the content to replace the image ;)
         let contentElem = document.getElementById("info-content")
-        htmx.ajax("GET", "/public/htmx-templates/" + clickedObject.name + "/Default-content.html", { target: contentElem, swap: "innerHTML", source: contentElem })
+        htmx.ajax("GET", "/public/htmx-templates/" + objName.replace(/ /g, "_") + "/Default-content.html", { target: contentElem, swap: "innerHTML", source: contentElem })
         renderer.setSize(canvasContainer.clientWidth, canvasContainer.clientHeight);
 
         const newWidth = canvasContainer.clientWidth;
