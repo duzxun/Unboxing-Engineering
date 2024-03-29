@@ -65,7 +65,7 @@ for i, section in enumerate(sections):
         elif "Industrial" in cont:
             fname = "Industrial"
         elif "Material" in cont:
-            fname = "Material"
+            fname = "Materials"
         elif "Chemical" in cont:
             fname = "Chemical"
         elif "Mechanical" in cont:
@@ -79,6 +79,7 @@ for i, section in enumerate(sections):
             soup = BeautifulSoup(section, 'html.parser')
             ol_elements = soup.find_all('ol')
             li_elements = soup.find_all('li')
+            div_elements = soup.find_all('div')
             sup_e = soup.find_all('sup')
             for s in sup_e:
                 s.extract()
@@ -88,6 +89,8 @@ for i, section in enumerate(sections):
             # Replace <li> with <div>
             for li in li_elements:
                 li.extract()
+            for div in div_elements:
+                div.extract()
             final = soup.prettify().replace('images/', f'htmx-templates/{folder}/images/')
             f.write(final)
 

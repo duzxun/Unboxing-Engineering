@@ -304,8 +304,8 @@ h2{
 }
 
 p{
-  font-family: Inter;
-  font-size: 18px;
+  font-family: Inter !important;
+  font-size: 18px !important;
 }
 
 #global-close{
