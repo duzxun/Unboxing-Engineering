@@ -131,7 +131,7 @@ canvas {
     z-index: 9999;
     min-width: 360px;
     align-content: center;
-    color: #f0f0f0;
+    color: #f0f0f0 !important;
     margin: 0;
   }
 

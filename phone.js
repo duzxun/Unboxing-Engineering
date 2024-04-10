@@ -62,6 +62,16 @@ function closePopupTut() {
     })
 }
 
+function reloadCSS() {
+    var link = document.getElementById('main-style-sheet');
+    var newLink = document.createElement('link');
+
+    newLink.rel = 'stylesheet';
+    newLink.href = 'styles.css?' + new Date().getTime(); // Append a unique query string to force browser to reload CSS
+    newLink.type = "text/css"
+
+    link.parentNode.replaceChild(newLink, link);
+}
 // Function to close the global purpose pop-up and go to the main learning space
 function closePopupMain() {
     document.getElementById('overlay').style.display = 'none';
@@ -673,6 +683,7 @@ async function onClick(event) {
             // Now configure which icons are available for which parts
             let iconList = document.getElementById("navbar-labels")
             let liList = iconList.getElementsByTagName("li")
+            let toRem = []
 
             for (let i = 0; i < liList.length; i++) {
                 let listElement = liList[i]
@@ -695,11 +706,13 @@ async function onClick(event) {
                     });
                 } else {
                     let objName = capitalizeWords(clickedObject.name)
+
                     if (partsMapOfAvailableEngineering[objName.replace(/ /g, '_')][i - 1] == false) {
-                        listElement.remove()
+                        toRem.push(listElement)
                     } else if (i > 0) {
                         let icon = listElement.getElementsByTagName("i")[0]
                         icon.title = disciplines[i - 1] + " Engineering"
+                        console.log(icon.title)
                         icon.addEventListener('click', function(event) {
                             if (viewer.inTutorial && TutorialCounter < 7) return;
                             // Replace the info-box title with the contents of the title of the icon
@@ -719,6 +732,10 @@ async function onClick(event) {
                     }
                 }
             }
+            for (let a = 0; a < toRem.length; a++) {
+                toRem[a].remove()
+            }
+            reloadCSS()
         })
 
         var info = document.createElement("div");
