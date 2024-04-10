@@ -359,3 +359,31 @@ p{
 .popup-header{
   font-size: 2.4vh;
 }
+
+.help-but{
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1000;
+  box-sizing: border-box;
+  width: 25px;
+  height: 25px;
+  caret-color: transparent;
+}
+
+.tutorial-popup{
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  z-index: 1000;
+  box-sizing: border-box;
+  max-width: 25%;
+}
