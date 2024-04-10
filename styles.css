@@ -221,8 +221,9 @@ canvas {
     color: var(--info-white);
     display: block;
     width: 100%;
-    height: 10%;
+    height: 8%;
     margin-top: 6%;
+    margin-bottom: 2%;
     text-align: center;
     margin-left: -2%;
   }
