@@ -16,7 +16,14 @@
     font-family: 'Inter var', sans-serif; 
   }
 }
-
+.donezo {
+    display: block !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100% !important; /* Ensure the image doesn't exceed the container's width */
+    max-height: 100% !important; /* Ensure the image doesn't exceed the container's height */
+    height: auto !important; /* Maintain aspect ratio */
+}
 canvas{
     position: fixed;
     top: 0;
