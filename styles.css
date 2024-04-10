@@ -286,12 +286,15 @@ img{
 }
 
 /* Style for the pop-up */
+
+/* Style for the pop-up */
 .popup {
   position: relative;
-  width: 40%;
-  height: 40%;
+  width: 50%;
+  height: 50%;
   background-color: var(--info-white);
   padding: 40px;
+  padding-bottom: 60px;
   border-radius: 30px;
   text-align: center;
   align-content: center;
@@ -300,12 +303,18 @@ img{
 
 h2{
   font-family: Inter;
-  font-size: 24px;
+  font-size: 2.4vh;
+}
+
+.popup h2{
+  font-size: 2.6vh;
+  margin-top: 0px;
+  padding-top: 0px;
 }
 
 p{
-  font-family: Inter !important;
-  font-size: 18px !important;
+  font-family: Inter;
+  font-size: 18px;
 }
 
 #global-close{
@@ -327,42 +336,26 @@ p{
   color: white;
   background-color: green;
   font-weight: bold;
-  caret-color: transparent  ;
 }
 
-.tutorial-popup{
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  z-index: 1000;
-  box-sizing: border-box;
-  max-width: 25%;
+.popup div{
+  font-family: Inter;
+  font-size: 1.8vh;
 }
 
-.help-but{
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  padding: 5px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  z-index: 1000;
-  box-sizing: border-box;
-  width: 25px;
-  height: 25px;
-  caret-color: transparent;
+.popup ul{
+  all: revert;
+  font-family: Inter;
+  font-size: 1.8vh;
+}
+.popup li{
+  all: revert;
+  font-family: Inter;
+  font-size: 1.8vh;
+  text-align: left;
+  color: black;
 }
 
 .popup-header{
-  caret-color: transparent;
-}
-
-
-.popup-content{
-  caret-color: transparent;
+  font-size: 2.4vh;
 }
