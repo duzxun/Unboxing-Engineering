@@ -708,7 +708,7 @@ async function onClick(event) {
                         console.log(event.target)
                         let title = document.getElementById("title")
                         let objName = capitalizeWords(clickedObject.name)
-                        title.innerHTML = "What is a " + objName + "?"
+                        title.innerHTML = "<b><u>What is a " + objName + "?</u><b>"
 
                         currentlySelectedDiscipline = event.target.title.split(" ")[0]
                         if (currentlySelectedDiscipline == "Description") currentlySelectedDiscipline = "Default-content"
@@ -724,14 +724,14 @@ async function onClick(event) {
                         toRem.push(listElement)
                     } else if (i > 0) {
                         let icon = listElement.getElementsByTagName("i")[0]
-                        icon.title = disciplines[i - 1] + " Engineering"
+                        icon.title = "<b><u>" + disciplines[i - 1] + " Engineering</u></b>"
                         console.log(icon.title)
                         icon.addEventListener('click', function(event) {
                             if (viewer.inTutorial && TutorialCounter < 7) return;
                             // Replace the info-box title with the contents of the title of the icon
                             console.log(event.target)
                             let title = document.getElementById("title")
-                            title.innerHTML = objName + ": " + event.target.title
+                            title.innerHTML = "<b><u>"+ objName + ": </u></b>" + event.target.title
 
                             currentlySelectedDiscipline = event.target.title.split(" ")[0]
 
@@ -758,7 +758,7 @@ async function onClick(event) {
         title.className = "info-title";
         title.id = "title";
         let objName = capitalizeWords(clickedObject.name)
-        title.innerHTML = "What is a " + objName + "?"
+        title.innerHTML = "<b><u> What is a " + objName + "?</u></b>"
 
         var content = document.createElement("div");
         content.className = "info-content";
