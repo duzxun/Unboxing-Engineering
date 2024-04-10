@@ -201,6 +201,9 @@ function addTutorialNextButton() {
 
 function imageOnClick() {
 
+    console.log(TutorialCounter);
+    if (viewer.inTutorial && TutorialCounter != 4) return;
+
     // if already zoomed in
     if (document.getElementById("zoomedInImage")) return;
 
@@ -275,7 +278,17 @@ document.addEventListener("htmx:afterSwap", (event) => {
     // Get the canvas element
     // Set the image source
     var eImg = event.target.querySelector("img")
-    if (eImg) {
+    var spansInH1 = document.querySelectorAll('h1 span');
+    spansInH1.forEach(function(span) {
+        // Insert the span before its parent h1 tag
+        span.parentNode.parentNode.insertBefore(span, span.parentNode);
+    });
+
+    if (eImg != null) {
+        var par = eImg.parentNode;
+        par.parentNode.insertBefore(eImg, par)
+        par.parentNode.removeChild(par)
+        eImg.classList.add('donezo')
         eImg.addEventListener('click', imageOnClick)
         event.stopPropagation()
     }
