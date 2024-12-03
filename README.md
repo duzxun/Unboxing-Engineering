@@ -5,18 +5,18 @@ Through an interactive 3D model of an iPhone, users can explore 19 components an
 
 Read more about it here: [Unboxing Engineering, An Interactive Educational Website Project](https://d-uzun.wixsite.com/deniz-uzun/post/unboxing-engineering)
 
-# Live Demo
+## Live Demo
 You can visit the live website here: [Unboxing Engineering](https://unboxingengineering-npsg.onrender.com)
 
-# About the Project
+## About the Project
 Unboxing Engineering aims to address the need for engaging and educational resources for students to learn about the interdisciplinary nature of engineering. By breaking down a familiar device like the iPhone, the website highlights the contributions of different engineering fields, providing a comprehensive understanding of how technology is created.
 
-# Features
+## Features
 - Interactive 3D Model: Deconstructed iPhone model with clickable components.
 - Educational Content: Detailed explanations of the engineering disciplines involved in the creation of each component.
 - User-Friendly Design: UI/UX design crafted for easy navigation and interaction.
 
-# Technologies Used
+## Technologies Used
 - Blender: For creating 3D animations of the iPhone disassembly.
 - Figma: For UI/UX design.
 - HTML/CSS/JavaScript: For building the structure, style, and interactivity of the website.
