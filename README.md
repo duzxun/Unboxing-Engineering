@@ -23,5 +23,5 @@ Unboxing Engineering aims to address the need for engaging and educational resou
 - Three.js: For rendering the 3D iPhone model in the browser.
 - HTMX: For dynamic icon management.
 
-# Acknowledgments
+## Acknowledgments
 We would like to extend our heartfelt thanks to our supervisor Prof. Belinda Wang, our administrator John Taglione and our course instructor Prof. Bruno Korst. This project was completed as part of the ECE496 Capstone Design Project course during our final year. Their guidance, support, and expertise were invaluable throughout the development of this project.
