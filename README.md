@@ -24,4 +24,4 @@ Unboxing Engineering aims to address the need for engaging and educational resou
 - HTMX: For dynamic icon management.
 
 # Acknowledgments
-We would like to extend our heartfelt thanks to our supervisor, Prof. Belinda Wang, our administrator John Taglione and our course instructor Prof. Bruno Korst. This project was completed as part of the ECE496 Capstone Design Project course during our final year. Their guidance, support, and expertise were invaluable throughout the development of this project.
+We would like to extend our heartfelt thanks to our supervisor Prof. Belinda Wang, our administrator John Taglione and our course instructor Prof. Bruno Korst. This project was completed as part of the ECE496 Capstone Design Project course during our final year. Their guidance, support, and expertise were invaluable throughout the development of this project.
