@@ -3,6 +3,8 @@ This repository hosts the code for Unboxing Engineering, an interactive educatio
 
 Through an interactive 3D model of an iPhone, users can explore 19 components and learn how various engineering fields like electrical, mechanical, software, and more come together to create a technological product.
 
+Read more about it here: [Unboxing Engineering, An Interactive Educational Website Project](https://d-uzun.wixsite.com/deniz-uzun/post/unboxing-engineering)
+
 # Live Demo
 You can visit the live website here: [Unboxing Engineering](https://unboxingengineering-npsg.onrender.com)
 
@@ -21,4 +23,5 @@ Unboxing Engineering aims to address the need for engaging and educational resou
 - Three.js: For rendering the 3D iPhone model in the browser.
 - HTMX: For dynamic icon management.
 
-Read more about it here: [Unboxing Engineering, An Interactive Educational Website Project](https://d-uzun.wixsite.com/deniz-uzun/post/unboxing-engineering)
+# Acknowledgments
+We would like to extend our heartfelt thanks to our supervisor, Prof. Belinda Wang, our administrator John Taglione and our course instructor Prof. Bruno Korst. This project was completed as part of the ECE496 Capstone Design Project course during our final year. Their guidance, support, and expertise were invaluable throughout the development of this project.
